@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeEmail;
 
 class AuthController extends Controller
 {
@@ -66,6 +68,13 @@ class AuthController extends Controller
             'role' => 'staff', // Default role
             'status' => 'active',
         ]);
+
+        try {
+            Mail::to($user->email)->send(new WelcomeEmail($user));
+        } catch (\Exception $e) {
+            // Log error but don't stop the signup process
+            \Log::error('Failed to send welcome email: ' . $e->getMessage());
+        }
 
         Auth::login($user);
 

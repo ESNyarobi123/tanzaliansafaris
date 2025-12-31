@@ -620,6 +620,22 @@
     </header>
 
     <main>
+        @if(session('success'))
+            <div style="max-width: 1240px; margin: 20px auto; padding: 15px 20px; background: #dcfce7; color: #166534; border-radius: 10px; border: 1px solid #bbf7d0;">
+                <i class="fas fa-check-circle"></i> {{ session('success') }}
+            </div>
+        @endif
+
+        @if($errors->any())
+            <div style="max-width: 1240px; margin: 20px auto; padding: 15px 20px; background: #fee2e2; color: #991b1b; border-radius: 10px; border: 1px solid #fecaca;">
+                <ul style="list-style: none;">
+                    @foreach($errors->all() as $error)
+                        <li><i class="fas fa-times-circle"></i> {{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         @yield('content')
     </main>
 
@@ -660,9 +676,10 @@
             <div class="footer-column">
                 <h4>Newsletter</h4>
                 <p>Join our community for exclusive travel deals and safari updates.</p>
-                <form class="newsletter-form">
+                <form class="newsletter-form" action="{{ route('newsletter.subscribe') }}" method="POST">
+                    @csrf
                     <div class="input-group">
-                        <input type="email" placeholder="Your Email" required>
+                        <input type="email" name="email" placeholder="Your Email" required>
                         <button type="submit">Join</button>
                     </div>
                 </form>

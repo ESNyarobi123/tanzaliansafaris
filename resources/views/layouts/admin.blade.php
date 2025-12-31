@@ -274,6 +274,14 @@
                 <i class="fas fa-credit-card"></i>
                 <span>Payment Settings</span>
             </a>
+            <a href="{{ route('admin.newsletter') }}" class="menu-item {{ request()->routeIs('admin.newsletter') ? 'active' : '' }}">
+                <i class="fas fa-bullhorn"></i>
+                <span>Broadcast & Newsletter</span>
+            </a>
+            <a href="{{ route('admin.settings') }}" class="menu-item {{ request()->routeIs('admin.settings') ? 'active' : '' }}">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
             <a href="{{ route('home') }}" class="menu-item" target="_blank">
                 <i class="fas fa-external-link-alt"></i>
                 <span>View Website</span>

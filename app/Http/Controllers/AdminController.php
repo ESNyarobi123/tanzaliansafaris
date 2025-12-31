@@ -8,7 +8,11 @@ use App\Models\SafariPackage;
 use App\Models\Booking;
 use App\Models\PageContent;
 use App\Models\PaymentSetting;
+use App\Models\SiteSetting;
+use App\Models\Newsletter;
+use App\Models\BroadcastHistory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
@@ -305,5 +309,100 @@ class AdminController extends Controller
         }
 
         return back()->with('success', 'Payment settings updated successfully.');
+    }
+
+    public function siteSettings()
+    {
+        $settings = SiteSetting::all()->groupBy('group');
+        return view('admin.settings', compact('settings'));
+    }
+
+    public function updateSiteSettings(Request $request)
+    {
+        $data = $request->except('_token');
+
+        foreach ($data as $key => $value) {
+            SiteSetting::updateOrCreate(['key' => $key], ['value' => $value]);
+        }
+
+        return back()->with('success', 'Site settings updated successfully.');
+    }
+
+    public function newsletter()
+    {
+        $subscribers = Newsletter::orderBy('created_at', 'desc')->get();
+        $history = BroadcastHistory::orderBy('created_at', 'desc')->get();
+        
+        $counts = [
+            'newsletter' => Newsletter::count(),
+            'staff' => User::whereIn('role', ['staff', 'admin', 'super_admin'])->count(),
+            'users' => User::count(),
+            'all' => (Newsletter::pluck('email')->merge(User::pluck('email')))->unique()->count(),
+        ];
+
+        return view('admin.newsletter', compact('subscribers', 'history', 'counts'));
+    }
+
+    public function deleteNewsletter(Newsletter $subscriber)
+    {
+        $subscriber->delete();
+        return back()->with('success', 'Subscriber removed.');
+    }
+
+    public function sendAnnouncement(Request $request)
+    {
+        $request->validate([
+            'target' => 'required|in:newsletter,staff,users,all',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        $emails = collect();
+
+        if (in_array($request->target, ['newsletter', 'all'])) {
+            $emails = $emails->merge(Newsletter::pluck('email'));
+        }
+
+        if (in_array($request->target, ['staff', 'all'])) {
+            $emails = $emails->merge(User::whereIn('role', ['staff', 'admin', 'super_admin'])->pluck('email'));
+        }
+
+        if (in_array($request->target, ['users', 'all'])) {
+            $emails = $emails->merge(User::pluck('email'));
+        }
+
+        // Remove duplicates and empty emails
+        $emails = $emails->unique()->filter();
+
+        if ($emails->isEmpty()) {
+            return back()->with('error', 'No recipients found for the selected target.');
+        }
+        
+        // In a real app, you'd use a Job/Queue for this
+        $sentCount = 0;
+        $failedCount = 0;
+        foreach ($emails as $email) {
+            try {
+                Mail::raw($request->message, function ($mail) use ($email, $request) {
+                    $mail->to($email)
+                         ->subject($request->subject);
+                });
+                $sentCount++;
+            } catch (\Exception $e) {
+                $failedCount++;
+                \Log::error("Failed to send broadcast email to $email: " . $e->getMessage());
+            }
+        }
+
+        // Save to history
+        BroadcastHistory::create([
+            'subject' => $request->subject,
+            'message' => $request->message,
+            'target' => $request->target,
+            'sent_count' => $sentCount,
+            'failed_count' => $failedCount,
+        ]);
+
+        return back()->with('success', "Announcement sent successfully to $sentCount recipients" . ($failedCount > 0 ? " ($failedCount failed)." : "."));
     }
 }

@@ -188,6 +188,12 @@
                 <p>Enter your details to access your Tanzalian Safari's account.</p>
             </div>
 
+            @if (session('success'))
+                <div class="alert" style="background: #dcfce7; color: #166534; border: 1px solid #bbf7d0;">
+                    <i class="fas fa-check-circle"></i> {{ session('success') }}
+                </div>
+            @endif
+
             @if ($errors->any())
                 <div class="alert alert-error">
                     <strong>Login failed:</strong>
@@ -219,7 +225,7 @@
                         <input type="checkbox" id="remember" name="remember">
                         <label for="remember" style="font-weight:400;">Remember me</label>
                     </div>
-                    <a href="#">Forgot password?</a>
+                    <a href="{{ route('password.request') }}">Forgot password?</a>
                 </div>
 
                 <button type="submit">

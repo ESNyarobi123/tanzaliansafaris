@@ -7,6 +7,8 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -34,6 +36,14 @@ Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/logout', [AuthController::class, 'logout']); // For ease of use
+
+// Password Reset
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotForm'])->name('password.request');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOTP'])->name('password.otp');
+Route::get('/reset-password', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset.form');
+Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.reset.submit');
+
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -73,4 +83,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Payment Settings
     Route::get('/payment-settings', [AdminController::class, 'paymentSettings'])->name('payment-settings');
     Route::post('/payment-settings', [AdminController::class, 'updatePaymentSettings'])->name('payment-settings.update');
+
+    // Site Settings
+    Route::get('/settings', [AdminController::class, 'siteSettings'])->name('settings');
+    Route::post('/settings', [AdminController::class, 'updateSiteSettings'])->name('settings.update');
+
+    // Newsletter
+    Route::get('/newsletter', [AdminController::class, 'newsletter'])->name('newsletter');
+    Route::delete('/newsletter/{subscriber}', [AdminController::class, 'deleteNewsletter'])->name('newsletter.delete');
+    Route::post('/newsletter/send', [AdminController::class, 'sendAnnouncement'])->name('newsletter.send');
 });

@@ -26,6 +26,8 @@ class User extends Authenticatable
         'phone',
         'avatar',
         'last_login',
+        'otp',
+        'otp_expires_at',
     ];
 
     /**
@@ -48,6 +50,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'otp_expires_at' => 'datetime',
         ];
     }
 }
