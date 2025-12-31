@@ -1,0 +1,76 @@
+<?php
+
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\PackageController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Placeholder routes for other pages
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/packages', [PackageController::class, 'index'])->name('packages');
+Route::get('/services', function () { return view('services'); })->name('services');
+Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
+Route::get('/blog', function () { return view('blog'); })->name('blog');
+Route::get('/destinations', function () { return view('destinations'); })->name('destinations');
+Route::get('/faqs', function () { return view('faqs'); })->name('faqs');
+Route::get('/privacy', function () { return view('privacy'); })->name('privacy');
+Route::get('/terms', function () { return view('terms'); })->name('terms');
+Route::get('/travel-guide', function () { return view('travel-guide'); })->name('travel-guide');
+Route::get('/travel-tips', function () { return view('travel-tips'); })->name('travel-tips');
+Route::get('/testimonials', function () { return view('testimonials'); })->name('testimonials');
+Route::get('/booking', [BookingController::class, 'index'])->name('booking');
+Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+Route::get('/booking/success', [BookingController::class, 'success'])->name('booking.success');
+Route::get('/booking/status/{ref}', [BookingController::class, 'checkPaymentStatus'])->name('booking.status');
+Route::get('/signin', [AuthController::class, 'showSignin'])->name('signin');
+Route::post('/signin', [AuthController::class, 'signin']);
+Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
+Route::post('/signup', [AuthController::class, 'signup']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout']); // For ease of use
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+
+// Admin Routes
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+    
+    // Users
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::post('/users/{user}/role', [AdminController::class, 'updateUserRole'])->name('users.role');
+    Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('users.delete');
+    
+    // Gallery
+    Route::get('/gallery', [AdminController::class, 'gallery'])->name('gallery');
+    Route::post('/gallery/upload', [AdminController::class, 'uploadGalleryImage'])->name('gallery.upload');
+    Route::post('/gallery/{image}/toggle', [AdminController::class, 'toggleGalleryStatus'])->name('gallery.toggle');
+    Route::delete('/gallery/{image}', [AdminController::class, 'deleteGalleryImage'])->name('gallery.delete');
+    
+    // Pages
+    Route::get('/pages', [AdminController::class, 'pages'])->name('pages');
+    Route::get('/pages/{slug}/edit', [AdminController::class, 'editPageContent'])->name('pages.edit');
+    Route::post('/pages/{slug}/update', [AdminController::class, 'updatePageContent'])->name('pages.update');
+    
+    // Packages
+    Route::get('/packages', [AdminController::class, 'packages'])->name('packages');
+    Route::post('/packages/store', [AdminController::class, 'storePackage'])->name('packages.store');
+    Route::post('/packages/{package}/update', [AdminController::class, 'updatePackage'])->name('packages.update');
+    Route::delete('/packages/{package}', [AdminController::class, 'deletePackage'])->name('packages.delete');
+    
+    // Bookings
+    Route::get('/bookings', [AdminController::class, 'bookings'])->name('bookings');
+    Route::post('/bookings/{booking}/approve', [AdminController::class, 'approveBooking'])->name('bookings.approve');
+    Route::delete('/bookings/{booking}', [AdminController::class, 'deleteBooking'])->name('bookings.delete');
+
+    // Payment Settings
+    Route::get('/payment-settings', [AdminController::class, 'paymentSettings'])->name('payment-settings');
+    Route::post('/payment-settings', [AdminController::class, 'updatePaymentSettings'])->name('payment-settings.update');
+});
