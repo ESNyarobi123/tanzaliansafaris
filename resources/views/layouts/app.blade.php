@@ -110,7 +110,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            z-index: 1000;
+            z-index: 1100;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 2px 15px rgba(0,0,0,0.05);
         }
@@ -238,14 +238,14 @@
             height: 20px;
             position: relative;
             cursor: pointer;
-            z-index: 1100;
+            z-index: 1200;
         }
 
         .menu-toggle span {
             display: block;
             width: 100%;
             height: 2px;
-            background: #fff;
+            background: var(--secondary-color);
             position: absolute;
             transition: all 0.3s;
         }
@@ -276,7 +276,7 @@
                 gap: 15px;
                 transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
                 box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-                z-index: 1050;
+                z-index: 1150;
             }
 
             .nav-menu.open {
@@ -319,8 +319,8 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: rgba(15, 23, 42, 0.8);
-                backdrop-filter: blur(8px);
+                background: rgba(15, 23, 42, 0.6);
+                backdrop-filter: blur(4px);
                 z-index: 1040;
                 opacity: 0;
                 visibility: hidden;
@@ -571,7 +571,7 @@
 <body>
     <!-- Mobile Overlay -->
     <div class="nav-overlay" id="navOverlay"></div>
-
+ 
     <!-- Top Bar -->
     <div class="top-bar">
         <div class="container">
