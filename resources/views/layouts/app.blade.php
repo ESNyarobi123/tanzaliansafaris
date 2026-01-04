@@ -684,7 +684,7 @@
                     </div>
                 </form>
                 <div style="margin-top: 20px; color: #94a3b8; font-size: 14px;">
-                    <i class="fas fa-phone-alt" style="color: var(--primary-color); margin-right: 10px;"></i> +255 691 111 111
+                    <i class="fas fa-phone-alt" style="color: var(--primary-color); margin-right:  10px;"></i> +255 691 111 111
                 </div>
             </div>
         </div>
