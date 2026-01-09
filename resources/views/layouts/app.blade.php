@@ -349,6 +349,59 @@
             }
         }
 
+        /* ========== WHATSAPP FLOATING BUTTON ========== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: pulse 2s infinite;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
+        }
+
+        .whatsapp-float i {
+            color: #fff;
+            font-size: 32px;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            }
+            50% {
+                box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4), 0 0 0 10px rgba(37, 211, 102, 0.1);
+            }
+            100% {
+                box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4), 0 0 0 10px rgba(37, 211, 102, 0), 0 0 0 20px rgba(37, 211, 102, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .whatsapp-float {
+                bottom: 20px;
+                right: 20px;
+                width: 55px;
+                height: 55px;
+            }
+            .whatsapp-float i {
+                font-size: 28px;
+            }
+        }
+
         /* ========== FOOTER ========== */
         footer {
             background: #0f172a; /* Darker navy for premium feel */
@@ -576,7 +629,7 @@
     <div class="top-bar">
         <div class="container">
             <div class="top-bar-left">
-                <span><i class="fas fa-phone"></i> +255 762 402 880</span>
+                <span><i class="fas fa-phone"></i> +255 691 111 111</span>
                 <span><i class="fas fa-envelope"></i> info@tanzaliansafaris.com</span>
             </div>
             <div class="top-bar-right">
@@ -638,6 +691,11 @@
 
         @yield('content')
     </main>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/255691111111" target="_blank" class="whatsapp-float" aria-label="Contact us on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
     <!-- Footer -->
     <footer>

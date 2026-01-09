@@ -63,7 +63,7 @@
                 </div>
                 <div class="form-group">
                     <label>Contact Phone</label>
-                    <input type="text" name="contact_phone" value="{{ $settings['general'] ?? '' ? $settings['general']->where('key', 'contact_phone')->first()->value ?? '+255 762 402 880' : '+255 762 402 880' }}">
+                    <input type="text" name="contact_phone" value="{{ $settings['general'] ?? '' ? $settings['general']->where('key', 'contact_phone')->first()->value ?? '+255 691 111 111' : '+255 691 111 111' }}">
                 </div>
                 <div class="form-group">
                     <label>Contact Email</label>

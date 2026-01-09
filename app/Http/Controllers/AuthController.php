@@ -18,6 +18,11 @@ class AuthController extends Controller
 
     public function signin(Request $request)
     {
+        // Store redirect_after_login from query parameter if present
+        if ($request->has('redirect_after_login')) {
+            $request->session()->put('redirect_after_login', $request->query('redirect_after_login'));
+        }
+
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -35,6 +40,13 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->has('remember'))) {
             $request->session()->regenerate();
+
+            // Check for redirect after login (from booking page or form)
+            $redirectAfterLogin = $request->input('redirect_after_login') ?? $request->session()->get('redirect_after_login');
+            if ($redirectAfterLogin) {
+                $request->session()->forget('redirect_after_login');
+                return redirect($redirectAfterLogin);
+            }
 
             if ($user->role === 'super_admin' || $user->role === 'admin') {
                 return redirect()->intended(route('admin.dashboard'));

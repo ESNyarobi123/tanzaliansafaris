@@ -27,9 +27,10 @@ Route::get('/travel-guide', function () { return view('travel-guide'); })->name(
 Route::get('/travel-tips', function () { return view('travel-tips'); })->name('travel-tips');
 Route::get('/testimonials', function () { return view('testimonials'); })->name('testimonials');
 Route::get('/booking', [BookingController::class, 'index'])->name('booking');
-Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
-Route::get('/booking/success', [BookingController::class, 'success'])->name('booking.success');
-Route::get('/booking/status/{ref}', [BookingController::class, 'checkPaymentStatus'])->name('booking.status');
+Route::post('/booking', [BookingController::class, 'store'])->middleware('auth')->name('booking.store');
+Route::get('/booking/success', [BookingController::class, 'success'])->middleware('auth')->name('booking.success');
+Route::get('/booking/status/{ref}', [BookingController::class, 'checkPaymentStatus'])->middleware('auth')->name('booking.status');
+Route::get('/flight-booking', [BookingController::class, 'flightBooking'])->name('flight.booking');
 Route::get('/signin', [AuthController::class, 'showSignin'])->name('signin');
 Route::post('/signin', [AuthController::class, 'signin']);
 Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');

@@ -205,8 +205,25 @@
                 </div>
             @endif
 
+            @if (session('error'))
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>{{ session('error') }}</p>
+                </div>
+            @endif
+
+            @if (session('redirect_after_login'))
+                <div class="alert" style="background: #dbeafe; color: #1e40af; border-color: #93c5fd;">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Please sign in to continue with your booking.</p>
+                </div>
+            @endif
+
             <form action="{{ route('signin') }}" method="post" novalidate>
                 @csrf
+                @if (session('redirect_after_login'))
+                    <input type="hidden" name="redirect_after_login" value="{{ session('redirect_after_login') }}">
+                @endif
                 <div class="form-group">
                     <label for="email">Email Address</label>
                     <input type="email" id="email" name="email"

@@ -74,6 +74,17 @@
         line-height: 1.8;
         font-size: 16px;
     }
+    .service-card-page .btn-primary {
+        background: var(--accent-color);
+        color: #fff !important;
+        box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4);
+        transition: all 0.3s;
+    }
+    .service-card-page .btn-primary:hover {
+        background: var(--primary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(212, 163, 115, 0.4);
+    }
 </style>
 @endsection
 
@@ -136,6 +147,17 @@
                 </div>
                 <h3>Travel Planning</h3>
                 <p>Complete trip planning including visas, flights, and itinerary customization to ensure a stress-free experience.</p>
+            </div>
+
+            <div class="service-card-page" data-aos="fade-up" data-aos-delay="600">
+                <div class="service-icon-page">
+                    <i class="fas fa-plane"></i>
+                </div>
+                <h3>Flight Booking</h3>
+                <p>Domestic and international flight bookings to make your journey seamless. Coming soon!</p>
+                <a href="{{ route('flight.booking') }}" class="btn-primary" style="margin-top: 25px; display: inline-block; padding: 12px 30px; font-size: 14px; border-radius: 30px; text-decoration: none; transition: all 0.3s;">
+                    <i class="fas fa-calendar-check"></i> Book Now (Coming Soon)
+                </a>
             </div>
         </div>
     </div>

@@ -165,7 +165,7 @@
         <div class="highlight-box-privacy">
             <p><strong>Tanzalian Safari's Limited</strong><br>
             Arusha, Tanzania<br>
-            <i class="fas fa-phone"></i> Phone: +255 762 402 880<br>
+            <i class="fas fa-phone"></i> Phone: +255 691 111 111<br>
             <i class="fas fa-envelope"></i> Email: info@tanzaliansafaris.com</p>
         </div>
     </div>

@@ -58,6 +58,206 @@
         }
     }
 
+    /* Booking Type Selection */
+    .booking-type-selection {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    .booking-type-card {
+        border: 3px solid #f1f5f9;
+        border-radius: 20px;
+        padding: 40px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        background: white;
+        overflow: hidden;
+    }
+
+    .booking-type-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(212, 163, 115, 0.1), transparent);
+        transition: left 0.5s;
+    }
+
+    .booking-type-card:hover::before {
+        left: 100%;
+    }
+
+    .booking-type-card:hover {
+        border-color: var(--booking-primary);
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(212, 163, 115, 0.2);
+    }
+
+    .booking-type-card.selected {
+        border-color: var(--booking-primary);
+        background: linear-gradient(135deg, rgba(212, 163, 115, 0.05), rgba(255, 255, 255, 0.95));
+        box-shadow: 0 15px 35px rgba(212, 163, 115, 0.25);
+    }
+
+    .booking-type-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, var(--booking-primary), var(--booking-secondary));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 25px;
+        transition: all 0.3s;
+    }
+
+    .booking-type-card:hover .booking-type-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .booking-type-card.selected .booking-type-icon {
+        box-shadow: 0 10px 30px rgba(212, 163, 115, 0.4);
+    }
+
+    .booking-type-icon i {
+        font-size: 48px;
+        color: white;
+    }
+
+    .booking-type-card h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 28px;
+        color: var(--booking-dark);
+        margin-bottom: 15px;
+        font-weight: 900;
+    }
+
+    .booking-type-card p {
+        color: #64748b;
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .booking-type-badge {
+        display: inline-block;
+        padding: 6px 15px;
+        background: var(--accent-color);
+        color: white;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .coming-soon-content {
+        text-align: center;
+        padding: 60px 40px;
+        display: none;
+    }
+
+    .coming-soon-content.active {
+        display: block;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .coming-soon-icon-large {
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(135deg, var(--booking-primary), var(--accent-color));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px;
+        animation: pulse 2s infinite;
+    }
+
+    .coming-soon-icon-large i {
+        font-size: 80px;
+        color: white;
+    }
+
+    .coming-soon-content h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 36px;
+        color: var(--booking-dark);
+        margin-bottom: 15px;
+    }
+
+    .coming-soon-content .badge-large {
+        display: inline-block;
+        padding: 12px 30px;
+        background: var(--accent-color);
+        color: white;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 25px;
+    }
+
+    .coming-soon-content p {
+        color: #64748b;
+        font-size: 18px;
+        line-height: 1.8;
+        max-width: 600px;
+        margin: 0 auto 40px;
+    }
+
+    .contact-box {
+        background: #f8fafc;
+        padding: 30px;
+        border-radius: 20px;
+        margin: 30px 0;
+    }
+
+    .contact-box h4 {
+        font-size: 20px;
+        color: var(--booking-dark);
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+
+    .contact-box a {
+        color: var(--booking-primary);
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin: 5px 15px;
+        transition: all 0.3s;
+    }
+
+    .contact-box a:hover {
+        color: var(--accent-color);
+        transform: translateX(5px);
+    }
+
+    @media (max-width: 768px) {
+        .booking-type-selection {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .booking-type-card {
+            padding: 30px;
+        }
+        
+        .coming-soon-content h2 {
+            font-size: 28px;
+        }
+    }
+
     /* Sidebar Steps */
     .booking-sidebar {
         background: var(--booking-secondary);
@@ -353,10 +553,96 @@
 
 <div class="booking-wrapper">
     <div class="booking-container">
-        <div class="booking-card" data-aos="zoom-in">
+        @if(isset($requiresLogin) && $requiresLogin)
+        <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 15px; padding: 20px; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; box-shadow: 0 5px 15px rgba(255,193,7,0.2);">
+            <i class="fas fa-exclamation-triangle" style="font-size: 28px; color: #ff9800;"></i>
+            <div style="flex: 1;">
+                <h3 style="margin: 0 0 8px 0; color: #856404; font-size: 18px; font-weight: 700;">Sign In Required</h3>
+                <p style="margin: 0; color: #856404; font-size: 15px; line-height: 1.6;">
+                    You need to <a href="{{ route('signin') }}" style="color: var(--booking-primary); font-weight: 700; text-decoration: underline;">sign in</a> to complete your booking. 
+                    Don't have an account? <a href="{{ route('signup') }}" style="color: var(--booking-primary); font-weight: 700; text-decoration: underline;">Create one now</a>.
+                </p>
+            </div>
+        </div>
+        @endif
+
+        <!-- Booking Type Selection Card -->
+        <div class="booking-card" data-aos="zoom-in" id="booking-type-card">
+            <div class="booking-form-content" style="grid-column: 1 / -1;">
+                <!-- Step 0: Booking Type Selection -->
+                <div class="form-step active" id="step-0">
+                    <h2 class="step-title">Choose Your Booking Type</h2>
+                    <p style="text-align: center; color: #64748b; margin-bottom: 40px; font-size: 16px;">
+                        Select the type of booking you'd like to make
+                    </p>
+                    
+                    <div class="booking-type-selection">
+                        <div class="booking-type-card" onclick="selectBookingType('safari')">
+                            <div class="booking-type-icon">
+                                <i class="fas fa-binoculars"></i>
+                            </div>
+                            <h3>Safari Booking</h3>
+                            <p>Book amazing safari tours, packages, and adventures across Tanzania's national parks and reserves.</p>
+                            <div style="margin-top: 20px;">
+                                <i class="fas fa-check-circle" style="color: var(--booking-primary);"></i>
+                                <span style="color: #64748b; font-size: 14px; margin-left: 8px;">Available Now</span>
+                            </div>
+                        </div>
+                        
+                        <div class="booking-type-card" onclick="selectBookingType('flight')">
+                            <div class="booking-type-icon">
+                                <i class="fas fa-plane"></i>
+                            </div>
+                            <h3>Flight Booking</h3>
+                            <p>Book domestic and international flights to make your journey seamless and convenient.</p>
+                            <div style="margin-top: 20px;">
+                                <span class="booking-type-badge">Coming Soon</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" id="booking_type" name="booking_type" value="">
+                </div>
+
+                <!-- Coming Soon Content (for Flight Booking) -->
+                <div class="coming-soon-content" id="coming-soon-flight">
+                    <div class="coming-soon-icon-large">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <span class="badge-large">Coming Soon</span>
+                    <h2>Flight Booking</h2>
+                    <p>
+                        We're working hard to bring you an amazing flight booking experience! 
+                        Soon you'll be able to book both domestic and international flights directly through our platform.
+                    </p>
+                    
+                    <div class="contact-box">
+                        <h4><i class="fas fa-info-circle"></i> Want to be notified when it's ready?</h4>
+                        <div>
+                            <a href="tel:+255691111111">
+                                <i class="fas fa-phone"></i> +255 691 111 111
+                            </a>
+                            <a href="mailto:info@tanzaliansafaris.com">
+                                <i class="fas fa-envelope"></i> info@tanzaliansafaris.com
+                            </a>
+                            <a href="https://wa.me/255691111111" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-prev" onclick="goBackToSelection()" style="margin-top: 20px;">
+                        <i class="fas fa-arrow-left"></i> Back to Selection
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Safari Booking Form Card (Hidden Initially) -->
+        <div class="booking-card" data-aos="zoom-in" id="safari-booking-card" style="display: none;">
             <!-- Sidebar -->
-            <div class="booking-sidebar">
-                <div class="step-item active" id="step-nav-1">
+            <div class="booking-sidebar" id="booking-sidebar">
+                <div class="step-item" id="step-nav-1">
                     <div class="step-number">1</div>
                     <div class="step-label">Personal Info</div>
                 </div>
@@ -376,7 +662,7 @@
                     @csrf
                     
                     <!-- Step 1: Personal Info -->
-                    <div class="form-step active" id="step-1">
+                    <div class="form-step" id="step-1">
                         <h2 class="step-title">Personal Information</h2>
                         <div class="form-grid">
                             <div class="input-group">
@@ -567,9 +853,75 @@
             });
     });
 
+    function selectBookingType(type) {
+        @if(isset($requiresLogin) && $requiresLogin)
+        if (type === 'safari') {
+            // Redirect to signin if not authenticated
+            window.location.href = '{{ route("signin") }}?redirect_after_login={{ urlencode(route("booking")) }}';
+            return;
+        }
+        @endif
+
+        // Remove selected class from all cards
+        document.querySelectorAll('.booking-type-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+
+        // Add selected class to clicked card
+        event.currentTarget.classList.add('selected');
+        document.getElementById('booking_type').value = type;
+
+        if (type === 'flight') {
+            // Hide safari booking card
+            document.getElementById('safari-booking-card').style.display = 'none';
+            
+            // Hide step-0 (selection) and show coming soon
+            document.getElementById('step-0').classList.remove('active');
+            document.getElementById('coming-soon-flight').classList.add('active');
+        } else if (type === 'safari') {
+            // Hide booking type selection card
+            document.getElementById('booking-type-card').style.display = 'none';
+            
+            // Hide coming soon if visible
+            document.getElementById('coming-soon-flight').classList.remove('active');
+            
+            // Show safari booking form card
+            document.getElementById('safari-booking-card').style.display = 'grid';
+            document.getElementById('step-1').classList.add('active');
+            
+            // Update sidebar navigation
+            document.querySelectorAll('.step-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('step-nav-1').classList.add('active');
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goBackToSelection() {
+        // Hide safari booking card
+        document.getElementById('safari-booking-card').style.display = 'none';
+        
+        // Hide coming soon and show step-0 (selection)
+        document.getElementById('coming-soon-flight').classList.remove('active');
+        document.getElementById('step-0').classList.add('active');
+        
+        // Show booking type selection card
+        document.getElementById('booking-type-card').style.display = 'block';
+        document.getElementById('booking_type').value = '';
+        
+        // Remove selected class from all cards
+        document.querySelectorAll('.booking-type-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     function nextStep(step) {
         // Simple validation for current step
         const currentStep = document.querySelector('.form-step.active');
+        if (!currentStep) return;
+        
         const inputs = currentStep.querySelectorAll('input[required], select[required]');
         let valid = true;
         
@@ -669,6 +1021,13 @@
     }
 
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        @if(isset($requiresLogin) && $requiresLogin)
+        e.preventDefault();
+        alert('Please sign in to complete your booking.');
+        window.location.href = '{{ route("signin") }}?redirect_after_login={{ urlencode(route("booking")) }}';
+        return false;
+        @endif
+
         const method = document.getElementById('selected_payment').value;
         let details = {};
         

@@ -8,21 +8,32 @@ use App\Models\PaymentSetting;
 use App\Services\ZenoPayService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
     public function index()
     {
+        // Check if user is authenticated - show message but allow viewing packages
+        $requiresLogin = !Auth::check();
+        
         $packages = SafariPackage::where('status', 'active')
             ->orderBy('sort_order', 'asc')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('booking', compact('packages'));
+        return view('booking', compact('packages', 'requiresLogin'));
     }
 
     public function store(Request $request)
     {
+        // Ensure user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('signin')
+                ->with('error', 'Please sign in to book a package.')
+                ->with('redirect_after_login', route('booking'));
+        }
+
         $validated = $request->validate([
             'full_name' => 'required|string|max:150',
             'email' => 'required|email|max:150',
@@ -88,5 +99,10 @@ class BookingController extends Controller
     {
         $ref = $request->query('ref');
         return view('booking-success', compact('ref'));
+    }
+
+    public function flightBooking()
+    {
+        return view('flight-booking-coming-soon');
     }
 }
