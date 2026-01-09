@@ -1180,6 +1180,63 @@
 @endsection
 
 @section('content')
+    <!-- PWA Install Banner -->
+    <div id="pwa-install-banner" style="display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; max-width: 600px; width: 90%; background: linear-gradient(135deg, #2c5530, #1a331d); color: #fff; padding: 20px 25px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); animation: slideDown 0.5s ease;">
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div style="width: 60px; height: 60px; background: rgba(212,163,115,0.2); border-radius: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <i class="fas fa-download" style="font-size: 28px; color: #d4a373;"></i>
+            </div>
+            <div style="flex: 1;">
+                <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 5px; font-family: 'Playfair Display', serif;">Install Tanzalian Safaris App</h3>
+                <p style="font-size: 13px; opacity: 0.9; margin: 0; line-height: 1.5;">Get instant access to safari bookings, packages, and gallery. Works offline too!</p>
+            </div>
+            <div style="display: flex; gap: 10px; flex-shrink: 0;">
+                <button onclick="installPWA()" style="background: var(--accent-color); color: #fff; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 15px rgba(255,107,53,0.4);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(255,107,53,0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(255,107,53,0.4)';">
+                    <i class="fas fa-download"></i> Install
+                </button>
+                <button onclick="hideInstallPrompt()" style="background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.3); padding: 10px 15px; border-radius: 25px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.1)';" onmouseout="this.style.background='transparent';">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <style>
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        @media (max-width: 768px) {
+            #pwa-install-banner {
+                top: 10px;
+                padding: 15px 20px;
+                border-radius: 15px;
+            }
+            #pwa-install-banner h3 {
+                font-size: 16px;
+            }
+            #pwa-install-banner p {
+                font-size: 12px;
+            }
+            #pwa-install-banner button {
+                padding: 8px 15px;
+                font-size: 13px;
+            }
+            #pwa-install-banner > div > div:first-child {
+                width: 50px;
+                height: 50px;
+            }
+            #pwa-install-banner > div > div:first-child i {
+                font-size: 22px;
+            }
+        }
+    </style>
+
     <!-- Hero Section with Slideshow -->
     <section class="hero hero--slideshow" id="home" aria-label="Welcome to Tanzalian Safaris hero">
         <!-- Background Slides -->
@@ -1499,5 +1556,66 @@
         // Navigate to the route
         window.location.href = url;
     }
+
+    // PWA Install Success Message
+    function showInstallSuccess() {
+        // Create success notification
+        const successMsg = document.createElement('div');
+        successMsg.id = 'pwa-install-success';
+        successMsg.style.cssText = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10001; background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 20px 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(16,185,129,0.4); animation: slideDown 0.5s ease; max-width: 500px; width: 90%;';
+        successMsg.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <i class="fas fa-check-circle" style="font-size: 24px;"></i>
+                </div>
+                <div style="flex: 1;">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 5px; font-family: "Playfair Display", serif;">App Installed Successfully! 🎉</h3>
+                    <p style="font-size: 13px; opacity: 0.95; margin: 0; line-height: 1.5;">Tanzalian Safaris app is now installed. Enjoy offline access and faster loading!</p>
+                </div>
+                <button onclick="this.parentElement.parentElement.remove()" style="background: transparent; color: #fff; border: none; padding: 5px 10px; cursor: pointer; font-size: 18px; opacity: 0.8; transition: opacity 0.3s;" onmouseover="this.style.opacity='1';" onmouseout="this.style.opacity='0.8';">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+        document.body.appendChild(successMsg);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if(successMsg && successMsg.parentElement) {
+                successMsg.style.animation = 'slideUp 0.5s ease';
+                setTimeout(() => successMsg.remove(), 500);
+            }
+        }, 5000);
+    }
+
+    // Show install prompt automatically on welcome page (after 3 seconds)
+    window.addEventListener('load', () => {
+        // Check if app is already installed
+        const isInstalled = window.matchMedia('(display-mode: standalone)').matches ||
+                           window.navigator.standalone === true ||
+                           document.referrer.includes('android-app://');
+        
+        if(!isInstalled) {
+            // Wait a bit then check if deferredPrompt is available
+            setTimeout(() => {
+                if(typeof deferredPrompt !== 'undefined' && deferredPrompt) {
+                    showInstallPrompt();
+                }
+            }, 3000);
+        }
+    });
 </script>
+
+<style>
+    @keyframes slideUp {
+        from {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px);
+        }
+    }
+</style>
 @endsection

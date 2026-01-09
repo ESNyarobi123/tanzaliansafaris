@@ -2,8 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#d4a373">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Tanzalian Safaris">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="Premier tour operator for authentic Tanzanian safari experiences. Book safaris, explore packages, and manage your bookings on the go.">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('assets/icons/icon-72x72.png') }}">
+    <link rel="apple-touch-icon" sizes="96x96" href="{{ asset('assets/icons/icon-96x96.png') }}">
+    <link rel="apple-touch-icon" sizes="128x128" href="{{ asset('assets/icons/icon-128x128.png') }}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('assets/icons/icon-144x144.png') }}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('assets/icons/icon-152x152.png') }}">
+    <link rel="apple-touch-icon" sizes="192x192" href="{{ asset('assets/icons/icon-192x192.png') }}">
+    <link rel="apple-touch-icon" sizes="384x384" href="{{ asset('assets/icons/icon-384x384.png') }}">
+    <link rel="apple-touch-icon" sizes="512x512" href="{{ asset('assets/icons/icon-512x512.png') }}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/icons/icon-96x96.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/icons/icon-72x72.png') }}">
+    
     <title>@yield('title', "Tanzalian Safari's - Your Gateway to Authentic Tanzanian Adventures")</title>
 
     <!-- AOS Animation Library -->
@@ -793,5 +817,109 @@
         });
     </script>
     @yield('scripts')
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('[PWA] Service Worker registered:', registration.scope);
+                        
+                        // Check for updates
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // New service worker available - show update notification
+                                    if (confirm('New version available! Reload to update?')) {
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch((error) => {
+                        console.log('[PWA] Service Worker registration failed:', error);
+                    });
+            });
+        }
+
+        // Handle beforeinstallprompt event (for install prompt)
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing on mobile
+            e.preventDefault();
+            // Stash the event so it can be triggered later
+            deferredPrompt = e;
+            // Show custom install button
+            showInstallPrompt();
+        });
+
+        // Track app installation
+        window.addEventListener('appinstalled', () => {
+            console.log('[PWA] App installed successfully');
+            hideInstallPrompt();
+            deferredPrompt = null;
+            // Show success message
+            if (typeof showInstallSuccess === 'function') {
+                showInstallSuccess();
+            }
+        });
+
+        // Function to show install prompt (called from beforeinstallprompt)
+        function showInstallPrompt() {
+            const installBanner = document.getElementById('pwa-install-banner');
+            if (installBanner) {
+                installBanner.style.display = 'flex';
+            }
+        }
+
+        // Function to hide install prompt
+        function hideInstallPrompt() {
+            const installBanner = document.getElementById('pwa-install-banner');
+            if (installBanner) {
+                installBanner.style.display = 'none';
+            }
+        }
+
+        // Install PWA function
+        async function installPWA() {
+            if (!deferredPrompt) {
+                // App may already be installed
+                alert('App is already installed or installation not available on this device.');
+                return;
+            }
+
+            // Show the install prompt
+            deferredPrompt.prompt();
+            
+            // Wait for the user to respond to the prompt
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+                console.log('[PWA] User accepted the install prompt');
+            } else {
+                console.log('[PWA] User dismissed the install prompt');
+            }
+            
+            // Clear the deferredPrompt
+            deferredPrompt = null;
+            hideInstallPrompt();
+        }
+
+        // Check if app is already installed
+        function isPWAInstalled() {
+            return window.matchMedia('(display-mode: standalone)').matches ||
+                   window.navigator.standalone === true ||
+                   document.referrer.includes('android-app://');
+        }
+
+        // Hide install prompt if already installed
+        if (isPWAInstalled()) {
+            hideInstallPrompt();
+        }
+    </script>
 </body>
 </html>
