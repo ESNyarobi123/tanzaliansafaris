@@ -657,9 +657,9 @@
                 <span><i class="fas fa-envelope"></i> info@tanzaliansafaris.com</span>
             </div>
             <div class="top-bar-right">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-whatsapp"></i></a>
+                <!-- <a href="#"><i class="fab fa-facebook"></i></a> -->
+                <a href="https://www.instagram.com/tanzaliansafaris?igsh=dzZodzZ3dmg0YjNp"><i class="fab fa-instagram"></i></a>
+                <a href="https://api.whatsapp.com/send/?phone=255691111111&text&type=phone_number&app_absent=0"><i class="fab fa-whatsapp"></i></a>
             </div>
         </div>
     </div>
@@ -728,10 +728,10 @@
                 <h3><i class="fas fa-tree"></i> Tanzalian Safari's</h3>
                 <p>Your premier gateway to authentic Tanzanian adventures. We specialize in crafting personalized journeys that showcase the breathtaking beauty and rich culture of East Africa.</p>
                 <div class="social-links">
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <!-- <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a> -->
                     <a href="https://www.instagram.com/tanzaliansafaris?igsh=dzZodzZ3dmg0YjNp" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     <a href="https://youtube.com/@tanzaliansafaris?si=s1uULkpmp5Iqwwcf" aria-label="youtube"><i class="fab fa-youtube"></i></a>
-                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://api.whatsapp.com/send/?phone=255691111111&text&type=phone_number&app_absent=0" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
             <div class="footer-column">
