@@ -729,8 +729,8 @@
                 <p>Your premier gateway to authentic Tanzanian adventures. We specialize in crafting personalized journeys that showcase the breathtaking beauty and rich culture of East Africa.</p>
                 <div class="social-links">
                     <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/tanzaliansafaris?igsh=dzZodzZ3dmg0YjNp" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://youtube.com/@tanzaliansafaris?si=s1uULkpmp5Iqwwcf" aria-label="youtube"><i class="fab fa-youtube"></i></a>
                     <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
