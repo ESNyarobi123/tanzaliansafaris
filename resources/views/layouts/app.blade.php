@@ -1351,7 +1351,7 @@
                     <a href="{{ route('dashboard') }}" class="btn btn-outline btn-sm">Dashboard</a>
                     <a href="{{ route('logout') }}" class="btn btn-secondary btn-sm">Logout</a>
                 @else
-                    <!-- <a href="{{ route('signin') }}" class="btn btn-outline btn-sm auth-btn">Sign In</a> -->
+                    <a href="{{ route('signin') }}" class="btn btn-outline btn-sm auth-btn">Sign In</a>
                     <a href="{{ route('signup') }}" class="btn btn-primary btn-sm">Get Started</a>
                 @endauth
                 <div class="menu-toggle" id="menuToggle">
