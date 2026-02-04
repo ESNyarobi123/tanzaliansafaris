@@ -16,6 +16,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Placeholder routes for other pages
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/packages', [PackageController::class, 'index'])->name('packages');
+Route::get('/packages/{id}', [PackageController::class, 'show'])->name('packages.show');
 Route::get('/services', function () { return view('services'); })->name('services');
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
 Route::get('/blog', function () { return view('blog'); })->name('blog');
@@ -26,10 +27,18 @@ Route::get('/terms', function () { return view('terms'); })->name('terms');
 Route::get('/travel-guide', function () { return view('travel-guide'); })->name('travel-guide');
 Route::get('/travel-tips', function () { return view('travel-tips'); })->name('travel-tips');
 Route::get('/testimonials', function () { return view('testimonials'); })->name('testimonials');
+Route::get('/guides', function () { return view('guides'); })->name('guides');
+Route::get('/packing-list', function () { return view('packing-list'); })->name('packing-list');
+Route::get('/packing-list/download', function () {
+    // For now, redirect to print view - PDF generation can be added later
+    return redirect()->route('packing-list');
+})->name('packing-list.download');
 Route::get('/booking', [BookingController::class, 'index'])->name('booking');
 Route::post('/booking', [BookingController::class, 'store'])->middleware('auth')->name('booking.store');
 Route::get('/booking/success', [BookingController::class, 'success'])->middleware('auth')->name('booking.success');
 Route::get('/booking/status/{ref}', [BookingController::class, 'checkPaymentStatus'])->middleware('auth')->name('booking.status');
+Route::get('/booking/availability', [BookingController::class, 'getAvailability'])->name('booking.availability');
+Route::get('/booking/next-available', [BookingController::class, 'getNextAvailableDates'])->name('booking.next-available');
 Route::get('/flight-booking', [BookingController::class, 'flightBooking'])->name('flight.booking');
 Route::get('/signin', [AuthController::class, 'showSignin'])->name('signin');
 Route::post('/signin', [AuthController::class, 'signin']);
@@ -64,6 +73,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/gallery/upload', [AdminController::class, 'uploadGalleryImage'])->name('gallery.upload');
     Route::post('/gallery/{image}/toggle', [AdminController::class, 'toggleGalleryStatus'])->name('gallery.toggle');
     Route::delete('/gallery/{image}', [AdminController::class, 'deleteGalleryImage'])->name('gallery.delete');
+    
+    // Team Members
+    Route::get('/team-members', [AdminController::class, 'teamMembers'])->name('team-members');
+    Route::get('/team-members/create', [AdminController::class, 'createTeamMember'])->name('team-members.create');
+    Route::post('/team-members/store', [AdminController::class, 'storeTeamMember'])->name('team-members.store');
+    Route::get('/team-members/{member}/edit', [AdminController::class, 'editTeamMember'])->name('team-members.edit');
+    Route::put('/team-members/{member}/update', [AdminController::class, 'updateTeamMember'])->name('team-members.update');
+    Route::delete('/team-members/{member}', [AdminController::class, 'deleteTeamMember'])->name('team-members.delete');
     
     // Pages
     Route::get('/pages', [AdminController::class, 'pages'])->name('pages');

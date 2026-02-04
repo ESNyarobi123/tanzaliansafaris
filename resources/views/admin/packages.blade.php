@@ -84,7 +84,7 @@
                     <td style="font-weight: 600;">{{ $package->name }}</td>
                     <td>${{ number_format($package->price_amount) }}{{ $package->price_suffix }}</td>
                     <td>
-                        <span class="badge" style="padding: 4px 10px; border-radius: 20px; font-size: 11px; background: {{ $package->status === 'active' ? '#dcfce7; color: #166534;' : '#f1f5f9; color: #475569;' }}">
+                        <span class="badge" style="padding: 4px 10px; border-radius: 20px; font-size: 11px; background: {{ $package->status === 'active' ? '#e3ebe6; color: #2B5238;' : '#F7F7F7; color: #555555;' }}">
                             {{ ucfirst($package->status) }}
                         </span>
                     </td>

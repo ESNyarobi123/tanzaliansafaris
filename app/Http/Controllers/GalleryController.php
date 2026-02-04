@@ -10,7 +10,7 @@ class GalleryController extends Controller
     public function index()
     {
         $galleryItems = Gallery::where('status', 'active')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->get();
 
         return view('gallery', compact('galleryItems'));

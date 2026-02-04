@@ -4,1618 +4,1671 @@
 
 @section('styles')
 <style>
-    /* =========================
-       HERO SLIDESHOW WITH ANIMATED TEXT
-       - Background slideshow with crossfade
-       - Per-letter wave animation on heading
-       - 9:16 aspect ratio support
-       - Responsive with quality preservation
-       ========================= */
-    
-    .hero{
+    /* ============================================
+       MODERN HERO SECTION
+    ============================================ */
+    .hero {
         position: relative;
         min-height: 100vh;
-        overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
-        text-align: center;
-        width: 100vw;
-        margin-left: calc(50% - 50vw);
-        margin-right: calc(50% - 50vw);
-        /* Fallback image */
-        background-image: url('{{ asset($homeContent['hero_image'] ?? 'assets/img/hero-bg.jpg') }}');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-color: #000;
-        /* Aspect ratio - Mobile first (9:16 portrait) */
-        aspect-ratio: 9/16;
-        max-height: 100vh;
+        overflow: hidden;
+        background: var(--gray-900);
     }
 
-    /* Tablet - landscape orientation */
-    @media (min-width: 768px) and (orientation: landscape) {
-        .hero {
-            aspect-ratio: 16/9;
-            min-height: 90vh;
-        }
-    }
-
-    /* Desktop - wider format */
-    @media (min-width: 1024px) {
-        .hero {
-            aspect-ratio: 21/9;
-            min-height: 90vh;
-        }
-    }
-
-    /* Large screens - maintain quality */
-    @media (min-width: 1920px) {
-        .hero {
-            aspect-ratio: 21/9;
-            min-height: 85vh;
-        }
-    }
-
-    /* Background slides */
-    .hero__bg{
+    .hero-bg {
         position: absolute;
         inset: 0;
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        opacity: 0;
         z-index: 0;
-        will-change: opacity;
-        animation-duration: 25s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-        animation-fill-mode: both;
-        /* Preserve quality with responsive cropping */
-        image-rendering: -webkit-optimize-contrast;
-        image-rendering: auto;
-        backface-visibility: hidden;
-        transform: translateZ(0);
-        -webkit-transform: translateZ(0);
     }
 
-    /* Responsive background sizing */
-    @media (max-width: 767px) {
-        .hero__bg {
-            background-size: cover;
-            background-position: center;
-            /* Better cropping for 9:16 on mobile */
-            object-position: center center;
-        }
-    }
-
-    @media (min-width: 768px) {
-        .hero__bg {
-            background-size: cover;
-            background-position: center;
-        }
-    }
-
-    @media (min-width: 1920px) {
-        .hero__bg {
-            background-size: cover;
-            background-position: center;
-            /* High DPI support */
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-        }
-    }
-
-    /* Force first slide visible immediately */
-    .hero__bg--1{ opacity: 1; }
-
-    .hero__bg--1{
-        background-image: url('{{ asset($homeContent['hero_image'] ?? 'assets/img/hero-bg.jpg') }}');
-        animation-name: slide1;
-    }
-    .hero__bg--2{
-        background-image: url('https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
-        animation-name: slide2;
-    }
-    .hero__bg--3{
-        background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
-        animation-name: slide3;
-    }
-    .hero__bg--4{
-        background-image: url('https://images.unsplash.com/photo-1523805009345-7448845a9e53?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
-        animation-name: slide4;
-    }
-    .hero__bg--5{
-        background-image: url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
-        animation-name: slide5;
-    }
-
-    /* Crossfade windows - Slower transitions for 20s cycle */
-    @keyframes slide1{ 0%,16%{opacity:1;} 20%,100%{opacity:0;} }
-    @keyframes slide2{ 0%,15%{opacity:0;} 19%,31%{opacity:1;} 35%,100%{opacity:0;} }
-    @keyframes slide3{ 0%,35%{opacity:0;} 39%,51%{opacity:1;} 55%,100%{opacity:0;} }
-    @keyframes slide4{ 0%,55%{opacity:0;} 59%,71%{opacity:1;} 75%,100%{opacity:0;} }
-    @keyframes slide5{ 0%,75%{opacity:0;} 79%,96%{opacity:1;} 100%{opacity:0;} }
-
-    /* Gradient overlay */
-    .hero::after{
-        content: "";
+    .hero-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
         position: absolute;
         inset: 0;
-        background: linear-gradient(rgba(0,0,0,.4), rgba(0,0,0,.5));
-        z-index: 1;
-        pointer-events: none;
+        transition: opacity 1.5s ease-in-out, transform 10s ease-out;
+        transform: scale(1.1);
     }
 
-    /* Content */
-    .hero-content{
+    .hero-bg img.active {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            135deg,
+            rgba(15, 23, 42, 0.85) 0%,
+            rgba(15, 23, 42, 0.6) 50%,
+            rgba(20, 83, 45, 0.4) 100%
+        );
+        z-index: 1;
+    }
+
+    .hero-content {
         position: relative;
         z-index: 2;
-        padding: 0 1rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        max-width: 1200px;
-        margin: 0 auto;
-        width: 100%;
+        text-align: center;
+        max-width: 900px;
+        padding: var(--space-8);
+        color: white;
     }
 
-    /* Animated Heading */
-    .headline{
-        margin: 0 0 1.5rem;
-        font-size: clamp(2rem, 4.5vw + 0.5rem, 5.5rem);
-        font-weight: 800;
-        line-height: 1.05;
-        color: #fff;
-        text-shadow: 0 4px 14px rgba(0,0,0,.45);
-        font-family: 'Playfair Display', serif;
-    }
-
-    /* Word spacing fix using flex + gap */
-    .flag-heading{
+    .hero-badge {
         display: inline-flex;
-        flex-wrap: wrap;
-        gap: 0.28em;
-        justify-content: center;
-        white-space: normal;
-        font-kerning: normal;
-        word-break: keep-all;
+        align-items: center;
+        gap: var(--space-2);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: var(--space-2) var(--space-4);
+        border-radius: var(--radius-full);
+        font-size: var(--text-sm);
+        font-weight: 500;
+        color: var(--accent-300);
+        margin-bottom: var(--space-6);
+        animation: fadeInDown 0.8s ease-out;
+    }
+
+    .hero-badge i {
+        color: var(--accent-400);
+    }
+
+    .hero h1 {
+        font-size: clamp(2.5rem, 6vw, 5rem);
         line-height: 1.1;
+        margin-bottom: var(--space-6);
+        animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    .hero h1 span {
+        display: block;
+        font-size: clamp(1rem, 2vw, 1.5rem);
+        font-family: var(--font-sans);
+        font-weight: 400;
+        color: var(--gray-300);
+        margin-top: var(--space-4);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    .hero-description {
+        font-size: clamp(1rem, 1.5vw, 1.25rem);
+        color: var(--gray-300);
+        max-width: 600px;
+        margin: 0 auto var(--space-8);
+        line-height: 1.8;
+        animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+
+    .hero-actions {
+        display: flex;
+        gap: var(--space-4);
+        justify-content: center;
+        flex-wrap: wrap;
+        animation: fadeInUp 0.8s ease-out 0.6s both;
+    }
+
+    .hero-stats {
+        position: absolute;
+        bottom: var(--space-12);
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+        display: flex;
+        gap: var(--space-12);
+        padding: var(--space-6) var(--space-10);
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius-2xl);
+        animation: fadeInUp 0.8s ease-out 0.8s both;
+    }
+
+    .hero-stat {
         text-align: center;
     }
 
-    .flag-heading .word{
-        display: inline-flex;
-        gap: 0.12em;
-        align-items: baseline;
-    }
-    
-    /* Larger gap after periods - using class */
-    .flag-heading .word.after-period{
-        margin-right: 0.45em;
-    }
-
-    .flag-heading .flag-char{
-        display: inline-block;
-        line-height: 1;
-        text-shadow: 0 4px 14px rgba(0,0,0,.65);
-        animation: blueWhiteWave 3s linear infinite;
-        transition: transform 0.1s ease;
-    }
-
-    .flag-heading .flag-char:hover{
-        transform: scale(1.1) translateY(-3px);
-    }
-
-    /* Wave animation - blue and white */
-    @keyframes blueWhiteWave{
-        0%, 40%{ color: #ffffff; text-shadow: 0 4px 14px rgba(0,0,0,.65), 0 0 20px rgba(255,255,255,0.3); }
-        50%, 90%{ color: #00A3DD; text-shadow: 0 4px 14px rgba(0,0,0,.65), 0 0 25px rgba(0,163,221,0.5); }
-        100%{ color: #ffffff; text-shadow: 0 4px 14px rgba(0,0,0,.65), 0 0 20px rgba(255,255,255,0.3); }
-    }
-
-    /* Stagger delays for each character (count all letters in heading) */
-    .flag-heading .flag-char:nth-child(1){animation-delay:0s;}
-    .flag-heading .flag-char:nth-child(2){animation-delay:.07s;}
-    .flag-heading .flag-char:nth-child(3){animation-delay:.14s;}
-    .flag-heading .flag-char:nth-child(4){animation-delay:.21s;}
-    .flag-heading .flag-char:nth-child(5){animation-delay:.28s;}
-    .flag-heading .flag-char:nth-child(6){animation-delay:.35s;}
-    .flag-heading .flag-char:nth-child(7){animation-delay:.42s;}
-    .flag-heading .flag-char:nth-child(8){animation-delay:.49s;}
-    .flag-heading .flag-char:nth-child(9){animation-delay:.56s;}
-    .flag-heading .flag-char:nth-child(10){animation-delay:.63s;}
-    .flag-heading .flag-char:nth-child(11){animation-delay:.70s;}
-    .flag-heading .flag-char:nth-child(12){animation-delay:.77s;}
-    .flag-heading .flag-char:nth-child(13){animation-delay:.84s;}
-    .flag-heading .flag-char:nth-child(14){animation-delay:.91s;}
-    .flag-heading .flag-char:nth-child(15){animation-delay:.98s;}
-    .flag-heading .flag-char:nth-child(16){animation-delay:1.05s;}
-    .flag-heading .flag-char:nth-child(17){animation-delay:1.12s;}
-    .flag-heading .flag-char:nth-child(18){animation-delay:1.19s;}
-    .flag-heading .flag-char:nth-child(19){animation-delay:1.26s;}
-    .flag-heading .flag-char:nth-child(20){animation-delay:1.33s;}
-    .flag-heading .flag-char:nth-child(21){animation-delay:1.40s;}
-    .flag-heading .flag-char:nth-child(22){animation-delay:1.47s;}
-    .flag-heading .flag-char:nth-child(23){animation-delay:1.54s;}
-    .flag-heading .flag-char:nth-child(24){animation-delay:1.61s;}
-    .flag-heading .flag-char:nth-child(25){animation-delay:1.68s;}
-    .flag-heading .flag-char:nth-child(26){animation-delay:1.75s;}
-    .flag-heading .flag-char:nth-child(27){animation-delay:1.82s;}
-    .flag-heading .flag-char:nth-child(28){animation-delay:1.89s;}
-    .flag-heading .flag-char:nth-child(29){animation-delay:1.96s;}
-    .flag-heading .flag-char:nth-child(30){animation-delay:2.03s;}
-    .flag-heading .flag-char:nth-child(31){animation-delay:2.10s;}
-    .flag-heading .flag-char:nth-child(32){animation-delay:2.17s;}
-    .flag-heading .flag-char:nth-child(33){animation-delay:2.24s;}
-    .flag-heading .flag-char:nth-child(34){animation-delay:2.31s;}
-    .flag-heading .flag-char:nth-child(35){animation-delay:2.38s;}
-    .flag-heading .flag-char:nth-child(36){animation-delay:2.45s;}
-    .flag-heading .flag-char:nth-child(37){animation-delay:2.52s;}
-    .flag-heading .flag-char:nth-child(38){animation-delay:2.59s;}
-    .flag-heading .flag-char:nth-child(39){animation-delay:2.66s;}
-    .flag-heading .flag-char:nth-child(40){animation-delay:2.73s;}
-
-    .subhead{
-        margin: 0 0 2rem;
-        color: #f4f7fb;
-        font-size: clamp(1rem, 1.2vw + 0.6rem, 1.5rem);
-        text-shadow: 0 3px 10px rgba(0,0,0,.4);
-        font-weight: 400;
-        line-height: 1.6;
-        max-width: 850px;
-        padding: 0 1rem;
-    }
-
-    /* Responsive text adjustments */
-    @media (max-width: 767px) {
-        .headline {
-            font-size: clamp(1.8rem, 6vw, 3rem);
-            margin-bottom: 1rem;
-        }
-        .subhead {
-            font-size: clamp(0.9rem, 3vw, 1.1rem);
-            margin-bottom: 1.5rem;
-        }
-        .hero-buttons {
-            flex-direction: column;
-            gap: 12px;
-            width: 100%;
-            max-width: 300px;
-        }
-        .hero-buttons a {
-            width: 100%;
-            text-align: center;
-        }
-    }
-
-    /* Reduced motion support */
-    @media (prefers-reduced-motion: reduce){
-        .hero__bg{animation:none;opacity:0;}
-        .hero__bg--1{opacity:1;}
-        .flag-char{animation:none;color:#fff !important;}
-    }
-
-    .hero-buttons{
-        display:flex;
-        gap:20px;
-        justify-content:center;
-        flex-wrap:wrap;
-    }
-
-    .btn-primary,.btn-secondary{
-        padding: clamp(12px, 2.2vh, 15px) clamp(22px, 4vw, 40px);
-        border-radius:30px;
-        text-decoration:none;
-        font-weight:600;
-        font-size: clamp(14px, 1.6vw, 16px);
-        transition:all .3s;
-        display:inline-block;
-    }
-
-    .btn-primary{
-        background:var(--accent-color);
-        color:#fff;
-        box-shadow:0 5px 20px rgba(255,107,53,.4);
-    }
-
-    .btn-secondary{
-        background: rgba(255,255,255,0.15);
-        color: #fff;
-        border: 2px solid #fff;
-        backdrop-filter: blur(5px);
-    }
-
-    .btn-secondary:hover{
-        background: #fff;
-        color: var(--secondary-color);
-    }
-
-    .scroll-down{
-        position: absolute;
-        bottom: clamp(20px, 4vh, 40px);
-        left: 50%;
-        transform: translateX(-50%);
-        animation: bounce 2s infinite;
-        z-index: 3;
+    .hero-stat-value {
+        font-family: var(--font-display);
+        font-size: var(--text-3xl);
         color: white;
-        font-size: 30px;
-        cursor: pointer;
-        transition: all 0.3s;
+        line-height: 1;
     }
 
-    .scroll-down:hover {
-        transform: translateX(-50%) translateY(5px);
-        color: var(--primary-color);
+    .hero-stat-label {
+        font-size: var(--text-xs);
+        color: var(--gray-400);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-top: var(--space-1);
     }
 
-    @keyframes bounce{
-        0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-        40% { transform: translateX(-50%) translateY(-15px); }
-        60% { transform: translateX(-50%) translateY(-8px); }
-    }
-
-    /* Fix for scroll-down positioning on mobile */
-    @media (max-width: 767px) {
-        .scroll-down {
-            bottom: 15px;
-            font-size: 24px;
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
     }
 
-    /* About Section Styles */
-    .about-v2{
-        background:#f2f2f2;
-        padding: 100px 0;
-    }
-    .about-v2 .container{
-        max-width: 1240px;
-        margin: 0 auto;
-        padding: 0 20px;
-        width: 100%;
-    }
-    .about-v2 .about-hero{
-        display:flex;
-        flex-wrap:wrap;
-        gap:50px;
-        align-items:center;
-        margin-bottom:70px;
-    }
-    .about-v2 .about-hero-main{
-        flex:1 1 500px;
-        min-width: 300px;
-    }
-    .about-text-bg{
-        padding-right:40px;
-    }
-    @media (max-width: 992px) {
-        .about-text-bg{
-            padding-right: 0;
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
         }
-    }
-    .about-v2 .kicker{
-        color:var(--primary-color);
-        font-weight:700;
-        text-transform:uppercase;
-        letter-spacing:2.5px;
-        font-size:14px;
-        margin-bottom:18px;
-        display:block;
-        position: relative;
-        padding-left: 15px;
-    }
-    .about-v2 .kicker::before{
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 4px;
-        height: 18px;
-        background: var(--primary-color);
-        border-radius: 2px;
-    }
-    .about-v2 .subtitle{
-        font-size:clamp(15px, 1.8vw, 18px);
-        color:var(--text-light);
-        margin-bottom:35px;
-        line-height:1.8;
-    }
-    .about-v2 .snapshot{
-        flex:1 1 400px;
-        background:#fff;
-        border-radius:20px;
-        padding:25px;
-        border:1px solid rgba(0,0,0,.08);
-        box-shadow:0 15px 40px rgba(0,0,0,0.08);
-        transition: all 0.4s;
-    }
-    .about-v2 .snapshot:hover{
-        transform: translateY(-5px);
-        box-shadow:0 20px 50px rgba(0,0,0,0.12);
-    }
-    .about-v2 .snapshot img{
-        width:100%;
-        height:300px;
-        object-fit:cover;
-        border-radius:15px;
-        margin-bottom:20px;
-        transition: transform 0.4s;
-    }
-    .about-v2 .snapshot:hover img{
-        transform: scale(1.02);
-    }
-    .snapshot-title{
-        font-weight:800;
-        font-size:14px;
-        text-transform:uppercase;
-        letter-spacing:1.5px;
-        color:var(--primary-color);
-        margin-bottom:20px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .snapshot-title::before{
-        content: '';
-        width: 30px;
-        height: 2px;
-        background: var(--primary-color);
-    }
-    .stat-grid{
-        display:grid;
-        grid-template-columns:repeat(2,1fr);
-        gap:18px;
-    }
-    .stat-item{
-        background:var(--light-color);
-        padding:20px 15px;
-        border-radius:15px;
-        text-align:center;
-        transition: all 0.3s;
-        border: 1px solid rgba(0,0,0,.05);
-    }
-    .stat-item:hover{
-        background: #fff;
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        border-color: var(--primary-color);
-    }
-    .stat-item strong{
-        display:block;
-        font-size:28px;
-        color:var(--secondary-color);
-        margin-bottom:8px;
-        font-weight: 900;
-        font-family: 'Playfair Display', serif;
-    }
-    .stat-item span{
-        font-size:12px;
-        color:var(--text-light);
-        line-height:1.5;
-        display:block;
-        font-weight: 500;
-    }
-    .about-v2 .layout{
-        display:grid;
-        grid-template-columns: 1.8fr 1.2fr;
-        gap:45px;
-        max-width: 1240px;
-        margin: 0 auto;
-        padding: 0 20px;
-        width: 100%;
-    }
-
-    @media (max-width: 992px) {
-        .about-v2 .layout {
-            grid-template-columns: 1fr;
-            gap: 30px;
-        }
-        .about-v2 .about-hero {
-            flex-direction: column;
-            gap: 30px;
-        }
-        .about-text-bg {
-            padding-right: 0;
-            margin-bottom: 30px;
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
     }
 
     @media (max-width: 768px) {
-        .hero h1 {
-            font-size: 36px;
+        .hero-stats {
+            gap: var(--space-6);
+            padding: var(--space-4) var(--space-6);
+            bottom: var(--space-8);
         }
-        .section-title {
-            font-size: clamp(28px, 6vw, 40px);
-        }
-        .section-header {
-            margin-bottom: 50px;
-        }
-        .about-v2 {
-            padding: 60px 0;
-        }
-        .about-v2 .title {
-            font-size: clamp(24px, 5vw, 32px);
-            line-height: 1.2;
-        }
-        .about-v2 .subtitle {
-            font-size: clamp(14px, 3vw, 16px);
-            margin-bottom: 25px;
-        }
-        .about-v2 .about-hero {
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-        .services-section,
-        #gallery,
-        .testimonials-section {
-            padding: 60px 0;
-        }
-        .cta-section {
-            padding: 80px 20px;
-        }
-        .service-card {
-            padding: 25px;
-        }
-        .service-icon {
-            font-size: 36px;
-            margin-bottom: 15px;
-        }
-        .about-v2 .snapshot {
-            padding: 15px;
+        
+        .hero-stat-value {
+            font-size: var(--text-2xl);
         }
     }
-    .about-v2 .card{
-        background:#ffffff;
-        border-radius:22px;
-        padding:35px 30px;
-        border:1px solid rgba(0,0,0,.08);
-        box-shadow:0 15px 40px rgba(0,0,0,.08);
-        transition: all 0.4s;
+
+    /* ============================================
+       FEATURES SECTION - Bento Grid
+    ============================================ */
+    .features-section {
+        padding: var(--space-24) 0;
+        background: var(--bg-secondary);
+    }
+
+    .section-header {
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto var(--space-16);
+    }
+
+    .section-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-size: var(--text-sm);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--primary-600);
+        margin-bottom: var(--space-4);
+    }
+
+    .section-title {
+        font-size: clamp(2rem, 4vw, 3rem);
+        margin-bottom: var(--space-4);
+    }
+
+    .section-subtitle {
+        font-size: var(--text-lg);
+        color: var(--text-secondary);
+        line-height: 1.7;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-6);
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: var(--radius-2xl);
+        padding: var(--space-8);
+        transition: all var(--transition-base);
+        border: 1px solid var(--gray-100);
         position: relative;
         overflow: hidden;
     }
-    .about-v2 .card::before{
+
+    .feature-card::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        background: linear-gradient(90deg, var(--primary-500), var(--accent-500));
         transform: scaleX(0);
-        transition: transform 0.4s;
+        transition: transform var(--transition-base);
     }
-    .about-v2 .card:hover::before{
+
+    .feature-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .feature-card:hover::before {
         transform: scaleX(1);
     }
-    .about-v2 .card:hover{
-        transform: translateY(-5px);
-        box-shadow: 0 20px 50px rgba(0,0,0,.12);
-        border-color: var(--primary-color);
+
+    .feature-card.featured {
+        grid-column: span 2;
+        grid-row: span 2;
+        background: linear-gradient(135deg, var(--secondary-800), var(--secondary-900));
+        color: white;
     }
-    .about-v2 .card + .card{
-        margin-top:25px;
+
+    .feature-card.featured .feature-icon {
+        background: rgba(255,255,255,0.1);
+        color: var(--accent-300);
     }
-    .about-v2 .card-title{
-        font-family: 'Playfair Display', serif;
-        font-size:22px;
-        font-weight:900;
-        color:var(--secondary-color);
-        margin-bottom: 20px;
+
+    .feature-card.featured h3 {
+        color: white;
     }
-    .about-v2 .pill-row{
-        display:flex;
-        flex-wrap:wrap;
-        gap:10px;
-        margin-top:15px;
+
+    .feature-card.featured p {
+        color: var(--gray-300);
     }
-    .about-v2 .pill{
-        padding:10px 18px;
-        border-radius:999px;
-        font-size:13px;
-        border:2px solid var(--primary-color);
-        background:var(--light-color);
-        color:var(--secondary-color);
-        font-weight:600;
-        cursor:pointer;
-        transition:all .3s cubic-bezier(0.4, 0, 0.2, 1);
-        text-decoration:none;
-        display:inline-flex;
-        align-items:center;
-        gap:6px;
-        position:relative;
-        overflow:hidden;
-    }
-    .about-v2 .pill::before{
-        content:'';
-        position:absolute;
-        top:0;
-        left:-100%;
-        width:100%;
-        height:100%;
-        background:linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-        transition:left .5s;
-    }
-    .about-v2 .pill:hover::before{
-        left:100%;
-    }
-    .about-v2 .pill:hover{
-        background:var(--primary-color);
-        color:#fff;
-        transform:translateY(-3px);
-        box-shadow:0 8px 20px rgba(212,163,115,0.4);
-        border-color:var(--primary-color);
-    }
-    .about-v2 .pill:active{
-        transform:translateY(-1px);
-    }
-    .about-v2 .pill i{
-        font-size:12px;
-        transition:transform .3s;
-    }
-    .about-v2 .pill:hover i{
-        transform:translateX(3px);
-    }
-    .about-v2 .why-title-wrap-about{
-        margin-bottom: 30px;
-    }
-    .about-v2 .why-subtitle-about{
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        color: var(--primary-color);
-        font-weight: 700;
-        margin-bottom: 12px;
-    }
-    .about-v2 .why-title-about{
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(26px, 4vw, 36px);
-        color: var(--secondary-color);
-        font-weight: 900;
-        margin: 0;
-    }
-    .about-v2 .why-grid{
-        margin-top:25px;
-        display:grid;
-        grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-        gap:20px;
-    }
-    .about-v2 .why-card{
-        background:var(--light-color);
-        border:2px solid rgba(0,0,0,.06);
-        border-radius:18px;
-        padding:25px 20px;
-        transition: all 0.4s;
-        position: relative;
-        overflow: hidden;
-    }
-    .about-v2 .why-card::before{
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        height: 100%;
-        background: var(--accent-color);
-        transform: scaleY(0);
-        transition: transform 0.4s;
-    }
-    .about-v2 .why-card:hover::before{
-        transform: scaleY(1);
-    }
-    .about-v2 .why-card:hover{
-        background: #fff;
-        border-color: var(--primary-color);
-        transform: translateY(-8px);
-        box-shadow: 0 12px 35px rgba(0,0,0,.12);
-    }
-    .about-v2 .why-card h4{
-        font-size:16px;
-        margin-bottom:10px;
-        display:flex;
-        align-items:center;
-        gap:10px;
-        color:var(--secondary-color);
-        font-weight:800;
-        position: relative;
-        z-index: 1;
-    }
-    .about-v2 .why-card h4 i{
-        color:var(--accent-color);
-        font-size: 20px;
-        transition: transform 0.3s;
-    }
-    .about-v2 .why-card:hover h4 i{
-        transform: scale(1.2) rotate(10deg);
-    }
-    .about-v2 .why-card p{
-        font-size:14px;
-        color:var(--text-light);
-        line-height:1.7;
-        margin:0;
-        position: relative;
-        z-index: 1;
-    }
-    .about-v2 .side-section-title-about{
-        font-size:13px;
-        text-transform:uppercase;
-        letter-spacing:2px;
-        color:var(--primary-color);
-        margin-bottom:20px;
-        font-weight:700;
-        display: block;
-        position: relative;
-        padding-left: 15px;
-    }
-    .about-v2 .side-section-title-about::before{
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 4px;
-        height: 18px;
-        background: var(--primary-color);
-        border-radius: 2px;
-    }
-    .about-v2 .values-list{
-        list-style:none;
-        margin:0 0 25px 0;
-        padding:0;
-    }
-    .about-v2 .values-list li{
-        display:flex;
-        gap:12px;
-        padding:16px 0;
-        border-bottom:1px dashed rgba(0,0,0,.12);
-        color:var(--text-light);
-        font-size:14px;
-        line-height:1.7;
-        transition: all 0.3s;
-        position: relative;
-    }
-    .about-v2 .values-list li:last-child{
-        border-bottom: none;
-    }
-    .about-v2 .values-list li:hover{
-        padding-left: 8px;
-        color: var(--secondary-color);
-    }
-    .about-v2 .values-list li:hover i{
-        transform: scale(1.2);
-    }
-    .about-v2 .values-list i{
-        color:var(--accent-color);
-        margin-top:4px;
-        font-size:16px;
-        transition: all 0.3s;
-        flex-shrink: 0;
-    }
-    .about-v2 .mission-box{
-        margin-top:25px;
-        padding:25px;
-        border-radius:18px;
-        border:2px dashed rgba(212,163,115,.5);
-        background:linear-gradient(135deg, rgba(212,163,115,.08), rgba(255,107,53,.05));
-        transition: all 0.4s;
-        position: relative;
-    }
-    .about-v2 .mission-box:hover{
-        border-color: var(--primary-color);
-        background:linear-gradient(135deg, rgba(212,163,115,.15), rgba(255,107,53,.08));
-        transform: translateY(-3px);
-        box-shadow: 0 10px 30px rgba(212,163,115,0.2);
-    }
-    .about-v2 .mission-box h4{
-        font-size:18px;
-        color:var(--secondary-color);
-        margin-bottom:12px;
-        font-weight:900;
+
+    .feature-icon {
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+        border-radius: var(--radius-xl);
         display: flex;
         align-items: center;
-        gap: 10px;
-        font-family: 'Playfair Display', serif;
-    }
-    .about-v2 .mission-box h4 i{
-        color:var(--accent-color);
-        font-size: 22px;
-    }
-    .about-v2 .mission-box p{
-        margin:0;
-        color:var(--text-light);
-        font-size:15px;
-        line-height:1.8;
+        justify-content: center;
+        font-size: var(--text-2xl);
+        color: var(--primary-600);
+        margin-bottom: var(--space-5);
+        transition: all var(--transition-base);
     }
 
-    /* Services Section */
-    .services-section{
-        background:var(--light-color);
-        padding: 100px 0;
-    }
-    .services-section .container{
-        max-width: 1240px;
-        margin: 0 auto;
-        padding: 0 20px;
-        width: 100%;
-    }
-    .services-grid{
-        display:grid;
-        grid-template-columns:repeat(auto-fit, minmax(300px,1fr));
-        gap:30px;
-        margin-top:60px;
-    }
-    .service-card{
-        background:#fff;
-        padding:45px 35px;
-        border-radius:25px;
-        text-align:center;
-        transition:all .4s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow:0 5px 20px rgba(0,0,0,.08);
-        border: 1px solid rgba(0,0,0,.05);
-        position: relative;
-        overflow: hidden;
-    }
-    .service-card::before{
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-        transform: scaleX(0);
-        transition: transform 0.4s;
-    }
-    .service-card:hover::before{
-        transform: scaleX(1);
-    }
-    .service-card:hover{
-        transform:translateY(-12px);
-        box-shadow:0 20px 50px rgba(0,0,0,.15);
-        border-color: var(--primary-color);
-    }
-    .service-icon{
-        font-size:56px;
-        color:var(--primary-color);
-        margin-bottom:25px;
-        display: inline-block;
-        transition: transform 0.3s;
-    }
-    .service-card:hover .service-icon{
+    .feature-card:hover .feature-icon {
         transform: scale(1.1) rotate(5deg);
     }
-    .service-card h3{
-        font-family: 'Playfair Display', serif;
-        font-size:26px;
-        margin-bottom:18px;
-        color:var(--secondary-color);
-        font-weight: 900;
-    }
-    .service-card p{
-        color:var(--text-light);
-        line-height:1.8;
-        font-size: 15px;
-        margin-bottom: 0;
-    }
-    .service-card .btn-primary{
-        margin-top:20px;
-        padding:12px 30px;
-        font-size:14px;
-        border-radius:30px;
-        text-decoration:none;
-        display:inline-block;
-        transition:all .3s;
-    }
-    .service-card .btn-primary:hover{
-        transform:translateY(-2px);
-        box-shadow:0 8px 25px rgba(255,107,53,0.4);
+
+    .feature-card h3 {
+        font-size: var(--text-xl);
+        margin-bottom: var(--space-3);
+        color: var(--text-primary);
     }
 
-    /* Gallery Section */
-    #gallery{
-        padding: 100px 0;
-        background: #fff;
-    }
-    #gallery .container{
-        max-width: 1240px;
-        margin: 0 auto;
-        padding: 0 20px;
-        width: 100%;
-    }
-    .gallery-grid{
-        display:grid;
-        grid-template-columns:repeat(auto-fit, minmax(320px,1fr));
-        gap:25px;
-        margin-top: 50px;
-    }
-    .gallery-item{
-        position:relative;
-        overflow:hidden;
-        border-radius:20px;
-        height:420px;
-        cursor:pointer;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        transition: all 0.4s;
-    }
-    .gallery-item:hover{
-        box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-        transform: translateY(-5px);
-    }
-    .gallery-item img{
-        width:100%;
-        height:100%;
-        object-fit:cover;
-        transition:transform .6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .gallery-item:hover img{
-        transform:scale(1.15);
-    }
-    .gallery-overlay{
-        position:absolute;
-        bottom:0;
-        left:0;
-        right:0;
-        background:linear-gradient(transparent 0%, rgba(0,0,0,.4) 50%, rgba(0,0,0,.9) 100%);
-        color:#fff;
-        padding:35px 30px;
-        transform:translateY(100%);
-        transition:transform .4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .gallery-item:hover .gallery-overlay{
-        transform:translateY(0);
-    }
-    .gallery-overlay h3{
-        font-family: 'Playfair Display', serif;
-        font-size: 24px;
-        margin-bottom: 10px;
-        font-weight: 900;
-    }
-    .gallery-overlay p{
-        font-size: 14px;
-        opacity: 0.9;
-        margin-bottom: 15px;
-        line-height: 1.6;
-    }
-    .gallery-book-btn{
-        margin-top:12px;
-        display:inline-block;
-        padding:10px 22px;
-        border-radius:30px;
-        background:var(--accent-color);
-        color:#fff;
-        font-size:14px;
-        font-weight:600;
-        text-decoration:none;
-        box-shadow:0 4px 14px rgba(0,0,0,.45);
-        transition:all .25s;
+    .feature-card p {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        line-height: 1.7;
     }
 
-    /* Testimonials */
-    .testimonials-section{
-        background:var(--secondary-color); 
-        color:#fff;
-        padding: 100px 0;
+    @media (max-width: 1024px) {
+        .features-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .feature-card.featured {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+        .feature-card.featured {
+            grid-column: span 1;
+        }
+    }
+
+    /* ============================================
+       ABOUT SECTION - Modern Split
+    ============================================ */
+    .about-section {
+        padding: var(--space-24) 0;
+        background: white;
         position: relative;
         overflow: hidden;
     }
-    .testimonials-section::before{
+
+    .about-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, var(--primary-100) 0%, transparent 70%);
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-16);
+        align-items: center;
+    }
+
+    .about-images {
+        position: relative;
+    }
+
+    .about-image-main {
+        border-radius: var(--radius-3xl);
+        overflow: hidden;
+        box-shadow: var(--shadow-2xl);
+        position: relative;
+        z-index: 1;
+    }
+
+    .about-image-main img {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        transition: transform var(--transition-slow);
+    }
+
+    .about-image-main:hover img {
+        transform: scale(1.05);
+    }
+
+    .about-image-float {
+        position: absolute;
+        bottom: -30px;
+        right: -30px;
+        width: 250px;
+        height: 180px;
+        border-radius: var(--radius-2xl);
+        overflow: hidden;
+        box-shadow: var(--shadow-xl);
+        border: 4px solid white;
+        z-index: 2;
+    }
+
+    .about-image-float img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .about-experience {
+        position: absolute;
+        top: 30px;
+        left: -30px;
+        background: white;
+        padding: var(--space-6);
+        border-radius: var(--radius-2xl);
+        box-shadow: var(--shadow-xl);
+        z-index: 2;
+        text-align: center;
+        min-width: 140px;
+    }
+
+    .about-experience-value {
+        font-family: var(--font-display);
+        font-size: var(--text-4xl);
+        color: var(--primary-600);
+        line-height: 1;
+    }
+
+    .about-experience-label {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        margin-top: var(--space-1);
+    }
+
+    .about-content h2 {
+        font-size: clamp(2rem, 4vw, 3rem);
+        margin-bottom: var(--space-6);
+    }
+
+    .about-content > p {
+        font-size: var(--text-lg);
+        color: var(--text-secondary);
+        line-height: 1.8;
+        margin-bottom: var(--space-8);
+    }
+
+    .about-features {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-5);
+        margin-bottom: var(--space-8);
+    }
+
+    .about-feature {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--space-3);
+    }
+
+    .about-feature i {
+        width: 24px;
+        height: 24px;
+        background: var(--primary-100);
+        color: var(--primary-600);
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--text-xs);
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .about-feature span {
+        font-size: var(--text-sm);
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    @media (max-width: 1024px) {
+        .about-grid {
+            grid-template-columns: 1fr;
+            gap: var(--space-12);
+        }
+        .about-images {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .about-image-float {
+            width: 180px;
+            height: 130px;
+            right: -10px;
+            bottom: -20px;
+        }
+        .about-experience {
+            left: -10px;
+            padding: var(--space-4);
+        }
+        .about-experience-value {
+            font-size: var(--text-3xl);
+        }
+    }
+
+    /* ============================================
+       PACKAGES SECTION - Modern Cards
+    ============================================ */
+    .packages-section {
+        padding: var(--space-24) 0;
+        background: linear-gradient(180deg, var(--bg-secondary) 0%, white 100%);
+    }
+
+    .packages-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-8);
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .package-card {
+        background: white;
+        border-radius: var(--radius-3xl);
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        transition: all var(--transition-base);
+        border: 1px solid var(--gray-100);
+        position: relative;
+    }
+
+    .package-card:hover {
+        transform: translateY(-12px);
+        box-shadow: var(--shadow-2xl);
+    }
+
+    .package-badge {
+        position: absolute;
+        top: var(--space-4);
+        left: var(--space-4);
+        background: linear-gradient(135deg, var(--accent-500), var(--accent-600));
+        color: white;
+        padding: var(--space-1) var(--space-3);
+        border-radius: var(--radius-full);
+        font-size: var(--text-xs);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        z-index: 2;
+    }
+
+    .package-image {
+        position: relative;
+        height: 240px;
+        overflow: hidden;
+    }
+
+    .package-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform var(--transition-slow);
+    }
+
+    .package-card:hover .package-image img {
+        transform: scale(1.1);
+    }
+
+    .package-duration {
+        position: absolute;
+        bottom: var(--space-4);
+        right: var(--space-4);
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(10px);
+        color: white;
+        padding: var(--space-2) var(--space-3);
+        border-radius: var(--radius-lg);
+        font-size: var(--text-xs);
+        font-weight: 500;
+    }
+
+    .package-content {
+        padding: var(--space-6);
+    }
+
+    .package-title {
+        font-size: var(--text-xl);
+        margin-bottom: var(--space-2);
+    }
+
+    .package-description {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: var(--space-4);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .package-features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+        margin-bottom: var(--space-5);
+    }
+
+    .package-feature {
+        font-size: var(--text-xs);
+        color: var(--text-secondary);
+        background: var(--gray-100);
+        padding: var(--space-1) var(--space-2);
+        border-radius: var(--radius-md);
+    }
+
+    .package-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: var(--space-4);
+        border-top: 1px solid var(--gray-100);
+    }
+
+    .package-price {
+        display: flex;
+        align-items: baseline;
+        gap: var(--space-1);
+    }
+
+    .package-price-value {
+        font-family: var(--font-display);
+        font-size: var(--text-2xl);
+        color: var(--primary-600);
+    }
+
+    .package-price-suffix {
+        font-size: var(--text-sm);
+        color: var(--text-muted);
+    }
+
+    .package-cta {
+        width: 40px;
+        height: 40px;
+        background: var(--primary-50);
+        color: var(--primary-600);
+        border-radius: var(--radius-full);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all var(--transition-base);
+    }
+
+    .package-cta:hover {
+        background: var(--primary-600);
+        color: white;
+        transform: translateX(4px);
+    }
+
+    @media (max-width: 1024px) {
+        .packages-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 640px) {
+        .packages-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* ============================================
+       DESTINATIONS SECTION
+    ============================================ */
+    .destinations-section {
+        padding: var(--space-24) 0;
+        background: var(--gray-900);
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .destinations-section::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover;
-        opacity: 0.15;
-        z-index: 0;
-    }
-    .testimonials-section .container{
-        position: relative;
-        z-index: 1;
-        max-width: 1240px;
-        margin: 0 auto;
-        padding: 0 20px;
-        width: 100%;
-    }
-    .testimonials-grid{
-        display:grid;
-        grid-template-columns:repeat(auto-fit, minmax(320px,1fr));
-        gap:30px;
-        margin-top:60px;
-    }
-    .testimonial-card{
-        background:rgba(255,255,255,.12);
-        padding:45px;
-        border-radius:25px;
-        backdrop-filter:blur(15px);
-        border: 1px solid rgba(255,255,255,.2);
-        transition: all 0.4s;
-        position: relative;
-        overflow: hidden;
-    }
-    .testimonial-card::before{
-        content: '"';
-        position: absolute;
-        top: -10px;
-        left: 20px;
-        font-size: 120px;
-        font-family: 'Playfair Display', serif;
-        opacity: 0.15;
-        line-height: 1;
-    }
-    .testimonial-card:hover{
-        background:rgba(255,255,255,.18);
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    }
-    .stars{
-        color:#ffd700;
-        font-size:22px;
-        margin-bottom:25px;
-        display: flex;
-        gap: 3px;
-    }
-    .testimonial-text{
-        font-style:italic;
-        margin-bottom:25px;
-        line-height:1.8;
-        font-size: 16px;
-        position: relative;
-        z-index: 1;
-    }
-    .testimonial-author{
-        display:flex;
-        align-items:center;
-        gap:18px;
-        position: relative;
-        z-index: 1;
-    }
-    .author-avatar{
-        width:55px;
-        height:55px;
-        border-radius:50%;
-        background:var(--primary-color);
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-weight:700;
-        font-size:22px;
-        box-shadow: 0 5px 15px rgba(212, 163, 115, 0.4);
-    }
-    .author-info h4{
-        font-size: 18px;
-        margin-bottom: 3px;
-        font-weight: 700;
-    }
-    .author-info p{
-        font-size: 14px;
-        opacity: 0.8;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.03)"/></svg>');
+        background-size: 50px 50px;
+        pointer-events: none;
     }
 
-    /* CTA Section */
-    .cta-section{
-        background:linear-gradient(rgba(44,85,48,.92), rgba(44,85,48,.92)),
-            url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover;
-        color:#fff;
-        text-align:center;
-        padding: 120px 20px;
-        position: relative;
-        overflow: hidden;
+    .destinations-section .section-kicker {
+        color: var(--accent-400);
     }
-    .cta-section::before{
-        content: '';
+
+    .destinations-section .section-title {
+        color: white;
+    }
+
+    .destinations-section .section-subtitle {
+        color: var(--gray-400);
+    }
+
+    .destinations-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-6);
+    }
+
+    .destination-card {
+        position: relative;
+        border-radius: var(--radius-2xl);
+        overflow: hidden;
+        aspect-ratio: 3/4;
+        cursor: pointer;
+        group: destination;
+    }
+
+    .destination-card.large {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+
+    .destination-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform var(--transition-slow);
+    }
+
+    .destination-card:hover img {
+        transform: scale(1.1);
+    }
+
+    .destination-overlay {
         position: absolute;
         inset: 0;
-        background: radial-gradient(circle at center, transparent, rgba(0,0,0,0.3));
-        z-index: 0;
-    }
-    .cta-section .container{
-        position: relative;
-        z-index: 1;
-        max-width: 900px;
-        margin: 0 auto;
-    }
-    .cta-section h2{
-        font-family:'Playfair Display',serif;
-        font-size: clamp(36px, 6vw, 64px);
-        margin-bottom:25px;
-        font-weight: 900;
-        text-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
-    .cta-section p{
-        font-size:clamp(16px, 1.8vw, 22px);
-        margin-bottom:45px;
-        line-height: 1.7;
-        opacity: 0.95;
-        max-width: 750px;
-        margin-left: auto;
-        margin-right: auto;
+        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: var(--space-6);
+        transition: all var(--transition-base);
     }
 
-    .section-header{
-        text-align:center;
-        margin-bottom:70px;
-        padding: 0 20px;
+    .destination-card:hover .destination-overlay {
+        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 100%);
     }
-    .section-subtitle{
-        color:var(--primary-color);
-        font-weight:700;
-        font-size:15px;
-        text-transform:uppercase;
-        letter-spacing:2.5px;
-        margin-bottom:15px;
-        display: inline-block;
+
+    .destination-name {
+        font-size: var(--text-xl);
+        color: white;
+        margin-bottom: var(--space-1);
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all var(--transition-base);
+    }
+
+    .destination-card:hover .destination-name {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .destination-location {
+        font-size: var(--text-sm);
+        color: var(--gray-300);
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all var(--transition-base) 0.1s;
+    }
+
+    .destination-card:hover .destination-location {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    @media (max-width: 1024px) {
+        .destinations-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .destination-card.large {
+            grid-column: span 2;
+            grid-row: span 1;
+            aspect-ratio: 16/9;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .destinations-grid {
+            grid-template-columns: 1fr;
+        }
+        .destination-card.large {
+            grid-column: span 1;
+        }
+    }
+
+    /* ============================================
+       TESTIMONIALS SECTION
+    ============================================ */
+    .testimonials-section {
+        padding: var(--space-24) 0;
+        background: white;
+    }
+
+    .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-8);
+    }
+
+    .testimonial-card {
+        background: var(--gray-50);
+        border-radius: var(--radius-2xl);
+        padding: var(--space-8);
         position: relative;
-        padding-bottom: 10px;
+        transition: all var(--transition-base);
     }
-    .section-subtitle::after{
+
+    .testimonial-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .testimonial-card.featured {
+        background: linear-gradient(135deg, var(--secondary-800), var(--secondary-900));
+        color: white;
+    }
+
+    .testimonial-card.featured .testimonial-text {
+        color: var(--gray-200);
+    }
+
+    .testimonial-card.featured .testimonial-author-name {
+        color: white;
+    }
+
+    .testimonial-quote {
+        font-size: var(--text-4xl);
+        color: var(--primary-300);
+        line-height: 1;
+        margin-bottom: var(--space-4);
+        font-family: Georgia, serif;
+    }
+
+    .testimonial-text {
+        font-size: var(--text-base);
+        color: var(--text-secondary);
+        line-height: 1.8;
+        margin-bottom: var(--space-6);
+        font-style: italic;
+    }
+
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+    }
+
+    .testimonial-author-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius-full);
+        object-fit: cover;
+        border: 2px solid white;
+        box-shadow: var(--shadow-md);
+    }
+
+    .testimonial-author-info {
+        flex: 1;
+    }
+
+    .testimonial-author-name {
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: var(--space-1);
+    }
+
+    .testimonial-author-location {
+        font-size: var(--text-sm);
+        color: var(--text-muted);
+    }
+
+    .testimonial-rating {
+        color: var(--accent-400);
+        font-size: var(--text-sm);
+    }
+
+    @media (max-width: 1024px) {
+        .testimonials-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 640px) {
+        .testimonials-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* ============================================
+       CTA SECTION
+    ============================================ */
+    .cta-section {
+        padding: var(--space-24) 0;
+        background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-section::before {
         content: '';
         position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 50px;
-        height: 3px;
-        background: var(--primary-color);
-        border-radius: 2px;
+        top: -50%;
+        right: -20%;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        pointer-events: none;
     }
-    .section-title{
-        font-family:'Playfair Display',serif;
-        font-size: clamp(32px, 5.5vw, 52px);
-        font-weight:900;
-        color:var(--secondary-color);
-        margin-bottom:25px;
-        line-height: 1.2;
+
+    .cta-section::after {
+        content: '';
+        position: absolute;
+        bottom: -50%;
+        left: -20%;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+        pointer-events: none;
     }
-    .section-description{
-        font-size:clamp(16px, 1.8vw, 19px);
-        color:var(--text-light);
-        max-width:750px;
-        margin:0 auto;
+
+    .cta-content {
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+        color: white;
+    }
+
+    .cta-content h2 {
+        font-size: clamp(2rem, 4vw, 3rem);
+        margin-bottom: var(--space-6);
+    }
+
+    .cta-content p {
+        font-size: var(--text-lg);
+        color: rgba(255,255,255,0.9);
+        margin-bottom: var(--space-8);
         line-height: 1.8;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: var(--space-4);
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-white {
+        background: white;
+        color: var(--primary-700);
+        padding: var(--space-4) var(--space-8);
+        border-radius: var(--radius-full);
+        font-weight: 600;
+        text-decoration: none;
+        transition: all var(--transition-base);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .btn-white:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .btn-outline-white-2 {
+        background: transparent;
+        color: white;
+        padding: var(--space-4) var(--space-8);
+        border-radius: var(--radius-full);
+        font-weight: 600;
+        text-decoration: none;
+        border: 2px solid rgba(255,255,255,0.3);
+        transition: all var(--transition-base);
+    }
+
+    .btn-outline-white-2:hover {
+        background: rgba(255,255,255,0.1);
+        border-color: rgba(255,255,255,0.5);
+    }
+
+    /* ============================================
+       NEWSLETTER SECTION
+    ============================================ */
+    .newsletter-section {
+        padding: var(--space-16) 0;
+        background: var(--gray-100);
+    }
+
+    .newsletter-box {
+        background: white;
+        border-radius: var(--radius-3xl);
+        padding: var(--space-12) var(--space-8);
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .newsletter-box h3 {
+        font-size: var(--text-2xl);
+        margin-bottom: var(--space-3);
+    }
+
+    .newsletter-box p {
+        color: var(--text-secondary);
+        margin-bottom: var(--space-6);
+    }
+
+    .newsletter-form-inline {
+        display: flex;
+        gap: var(--space-3);
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .newsletter-form-inline input {
+        flex: 1;
+        padding: var(--space-4) var(--space-5);
+        border: 2px solid var(--gray-200);
+        border-radius: var(--radius-full);
+        font-size: var(--text-base);
+        outline: none;
+        transition: all var(--transition-fast);
+    }
+
+    .newsletter-form-inline input:focus {
+        border-color: var(--primary-500);
+        box-shadow: 0 0 0 4px rgba(196, 81, 47, 0.1);
+    }
+
+    @media (max-width: 640px) {
+        .newsletter-form-inline {
+            flex-direction: column;
+        }
+    }
+
+    /* Trust Indicators */
+    .trust-indicators {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-8);
+        margin-top: var(--space-16);
+        padding: var(--space-6) var(--space-8);
+        background: white;
+        border-radius: var(--radius-2xl);
+        box-shadow: var(--shadow-lg);
+        flex-wrap: wrap;
+    }
+
+    .trust-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        color: var(--text-secondary);
+        font-size: var(--text-sm);
+    }
+
+    .trust-item i {
+        font-size: var(--text-xl);
+        color: var(--primary-600);
+    }
+
+    .trust-item strong {
+        color: var(--text-primary);
+    }
+
+    .trust-divider {
+        width: 1px;
+        height: 30px;
+        background: var(--gray-200);
+    }
+
+    @media (max-width: 768px) {
+        .trust-indicators {
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+        .trust-divider {
+            width: 100%;
+            height: 1px;
+        }
     }
 </style>
 @endsection
 
 @section('content')
-    <!-- PWA Install Banner -->
-    <div id="pwa-install-banner" style="display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000; max-width: 600px; width: 90%; background: linear-gradient(135deg, #2c5530, #1a331d); color: #fff; padding: 20px 25px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); animation: slideDown 0.5s ease;">
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <div style="width: 60px; height: 60px; background: rgba(212,163,115,0.2); border-radius: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <i class="fas fa-download" style="font-size: 28px; color: #d4a373;"></i>
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-bg">
+        <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="active" alt="Serengeti">
+        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Elephants">
+        <img src="https://images.unsplash.com/photo-1523805009345-7448845a9e53?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Lion">
+        <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Zanzibar">
+    </div>
+    <div class="hero-overlay"></div>
+    
+    <div class="hero-content">
+        <div class="hero-badge">
+            <i class="fas fa-award"></i>
+            Tanzania's Leading Safari Operator
+        </div>
+        <h1>
+            Discover the Wild Heart of Africa
+            <span>Unforgettable Safari Adventures Await</span>
+        </h1>
+        <p class="hero-description">
+            Experience the breathtaking beauty of Tanzania's national parks, witness the Great Migration, 
+            and create memories that will last a lifetime with our expert-guided safaris.
+        </p>
+        <div class="hero-actions">
+            <a href="{{ route('packages') }}" class="btn btn-accent btn-lg">
+                Explore Packages <i class="fas fa-arrow-right"></i>
+            </a>
+            <a href="{{ route('about') }}" class="btn btn-outline-white btn-lg">
+                <i class="fas fa-play"></i> Watch Video
+            </a>
+        </div>
+    </div>
+
+    <div class="hero-stats">
+        <div class="hero-stat">
+            <div class="hero-stat-value">15+</div>
+            <div class="hero-stat-label">Years Experience</div>
+        </div>
+        <div class="hero-stat">
+            <div class="hero-stat-value">10k+</div>
+            <div class="hero-stat-label">Happy Travelers</div>
+        </div>
+        <div class="hero-stat">
+            <div class="hero-stat-value">50+</div>
+            <div class="hero-stat-label">Safari Packages</div>
+        </div>
+        <div class="hero-stat">
+            <div class="hero-stat-value">4.9</div>
+            <div class="hero-stat-label">Rating</div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section - Bento Grid -->
+<section class="features-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-kicker">
+                <i class="fas fa-star"></i> Why Choose Us
             </div>
-            <div style="flex: 1;">
-                <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 5px; font-family: 'Playfair Display', serif;">Install Tanzalian Safaris App</h3>
-                <p style="font-size: 13px; opacity: 0.9; margin: 0; line-height: 1.5;">Get instant access to safari bookings, packages, and gallery. Works offline too!</p>
+            <h2 class="section-title">The Ultimate Safari Experience</h2>
+            <p class="section-subtitle">
+                We combine local expertise with world-class service to deliver unforgettable 
+                adventures that exceed your expectations.
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card featured" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon">
+                    <i class="fas fa-compass"></i>
+                </div>
+                <h3>Expert Local Guides</h3>
+                <p>Our certified guides have over 10 years of experience navigating Tanzania's wilderness. They know every corner of the national parks and can spot wildlife others miss.</p>
             </div>
-            <div style="display: flex; gap: 10px; flex-shrink: 0;">
-                <button onclick="installPWA()" style="background: var(--accent-color); color: #fff; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 15px rgba(255,107,53,0.4);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(255,107,53,0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 5px 15px rgba(255,107,53,0.4)';">
-                    <i class="fas fa-download"></i> Install
-                </button>
-                <button onclick="hideInstallPrompt()" style="background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.3); padding: 10px 15px; border-radius: 25px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.1)';" onmouseout="this.style.background='transparent';">
-                    <i class="fas fa-times"></i>
-                </button>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Safety First</h3>
+                <p>Your safety is our priority. All our vehicles are equipped with modern safety features and communication systems.</p>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-icon">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <h3>Luxury Accommodations</h3>
+                <p>From boutique lodges to luxury tented camps, we partner with the finest properties in Tanzania.</p>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="feature-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3>Eco-Friendly Tours</h3>
+                <p>We're committed to sustainable tourism practices that protect wildlife and support local communities.</p>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="feature-icon">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <h3>Photography Focus</h3>
+                <p>Specialized photography safaris with expert tips and prime positioning for the perfect shot.</p>
             </div>
         </div>
     </div>
-    <style>
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-        }
-        @media (max-width: 768px) {
-            #pwa-install-banner {
-                top: 10px;
-                padding: 15px 20px;
-                border-radius: 15px;
-            }
-            #pwa-install-banner h3 {
-                font-size: 16px;
-            }
-            #pwa-install-banner p {
-                font-size: 12px;
-            }
-            #pwa-install-banner button {
-                padding: 8px 15px;
-                font-size: 13px;
-            }
-            #pwa-install-banner > div > div:first-child {
-                width: 50px;
-                height: 50px;
-            }
-            #pwa-install-banner > div > div:first-child i {
-                font-size: 22px;
-            }
-        }
-    </style>
+</section>
 
-    <!-- Hero Section with Slideshow -->
-    <section class="hero hero--slideshow" id="home" aria-label="Welcome to Tanzalian Safaris hero">
-        <!-- Background Slides -->
-        <div class="hero__bg hero__bg--1" aria-hidden="true"></div>
-        <div class="hero__bg hero__bg--2" aria-hidden="true"></div>
-        <div class="hero__bg hero__bg--3" aria-hidden="true"></div>
-        <div class="hero__bg hero__bg--4" aria-hidden="true"></div>
-        <div class="hero__bg hero__bg--5" aria-hidden="true"></div>
+<!-- About Section -->
+<section class="about-section">
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-images" data-aos="fade-right">
+                <div class="about-image-main">
+                    <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Safari Adventure">
+                </div>
+                <div class="about-image-float" data-aos="fade-up" data-aos-delay="200">
+                    <img src="https://images.unsplash.com/photo-1534177616072-ef7dc12044f2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tanzania Landscape">
+                </div>
+                <div class="about-experience" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="about-experience-value">15+</div>
+                    <div class="about-experience-label">Years of Excellence</div>
+                </div>
+            </div>
 
-        <div class="hero-content" data-aos="fade-up" data-aos-duration="1000">
-            <h1 class="headline flag-heading" aria-label="Welcome to Tanzalian Safaris Discover Tanzania Experience the Wild Travel in Style">
-                <span class="word">
-                    <span class="flag-char">W</span><span class="flag-char">e</span><span class="flag-char">l</span><span class="flag-char">c</span><span class="flag-char">o</span><span class="flag-char">m</span><span class="flag-char">e</span>
-                </span>
-                <span class="word">
-                    <span class="flag-char">t</span><span class="flag-char">o</span>
-                </span>
-                <span class="word">
-                    <span class="flag-char">T</span><span class="flag-char">a</span><span class="flag-char">n</span><span class="flag-char">z</span><span class="flag-char">a</span><span class="flag-char">l</span><span class="flag-char">i</span><span class="flag-char">a</span><span class="flag-char">n</span>
-                </span>
-                <span class="word">
-                    <span class="flag-char">S</span><span class="flag-char">a</span><span class="flag-char">f</span><span class="flag-char">a</span><span class="flag-char">r</span><span class="flag-char">i</span><span class="flag-char">s</span>
-                </span>
-                <span class="word">
-                    <span class="flag-char">D</span><span class="flag-char">i</span><span class="flag-char">s</span><span class="flag-char">c</span><span class="flag-char">o</span><span class="flag-char">v</span><span class="flag-char">e</span><span class="flag-char">r</span>
-                </span>
-                <span class="word after-period">
-                    <span class="flag-char">T</span><span class="flag-char">a</span><span class="flag-char">n</span><span class="flag-char">z</span><span class="flag-char">a</span><span class="flag-char">n</span><span class="flag-char">i</span><span class="flag-char">a</span><span class="flag-char">.</span>
-                </span>
-                <span class="word">
-                    <span class="flag-char">E</span><span class="flag-char">x</span><span class="flag-char">p</span><span class="flag-char">e</span><span class="flag-char">r</span><span class="flag-char">i</span><span class="flag-char">e</span><span class="flag-char">n</span><span class="flag-char">c</span><span class="flag-char">e</span>
-                </span>
-                <span class="word">
-                    <span class="flag-char">t</span><span class="flag-char">h</span><span class="flag-char">e</span>
-                </span>
-                <span class="word after-period">
-                    <span class="flag-char">W</span><span class="flag-char">i</span><span class="flag-char">l</span><span class="flag-char">d</span><span class="flag-char">.</span>
-                </span>
-                <span class="word">
-                    <span class="flag-char">T</span><span class="flag-char">r</span><span class="flag-char">a</span><span class="flag-char">v</span><span class="flag-char">e</span><span class="flag-char">l</span>
-                </span>
-                <span class="word">
-                    <span class="flag-char">i</span><span class="flag-char">n</span>
-                </span>
-                <span class="word after-period">
-                    <span class="flag-char">S</span><span class="flag-char">t</span><span class="flag-char">y</span><span class="flag-char">l</span><span class="flag-char">e</span><span class="flag-char">.</span>
-                </span>
-            </h1>
-            <p class="subhead">Tanzalian Safaris is a premier tour operator dedicated to delivering unforgettable African experiences. From the vast plains of the Serengeti to the white-sand beaches of Zanzibar, we design trips that match your budget and vibrant culture of Tanzania.</p>
-            <div class="hero-buttons">
-                <a href="{{ route('booking') }}" class="btn-primary">
-                    <i class="fas fa-calendar-check"></i> Book Now
-                </a>
-                <a href="{{ route('gallery') }}" class="btn-secondary">
-                    <i class="fas fa-images"></i> Gallery Items
-                </a>
-                <a href="#about" class="btn-secondary">
-                    <i class="fas fa-play-circle"></i> Browse Video
+            <div class="about-content" data-aos="fade-left">
+                <div class="section-kicker">
+                    <i class="fas fa-info-circle"></i> About Us
+                </div>
+                <h2>Crafting Unforgettable Safari Experiences Since 2009</h2>
+                <p>
+                    Tanzalian Safari's is more than just a tour operator – we're your gateway to the 
+                    authentic heart of Africa. With deep roots in Tanzania and a passion for wildlife, 
+                    we create personalized journeys that connect you with nature in its purest form.
+                </p>
+
+                <div class="about-features">
+                    <div class="about-feature">
+                        <i class="fas fa-check"></i>
+                        <span>Certified Safari Guides</span>
+                    </div>
+                    <div class="about-feature">
+                        <i class="fas fa-check"></i>
+                        <span>Customized Itineraries</span>
+                    </div>
+                    <div class="about-feature">
+                        <i class="fas fa-check"></i>
+                        <span>24/7 Support</span>
+                    </div>
+                    <div class="about-feature">
+                        <i class="fas fa-check"></i>
+                        <span>Best Price Guarantee</span>
+                    </div>
+                </div>
+
+                <a href="{{ route('about') }}" class="btn btn-primary">
+                    Learn Our Story <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
-        <div class="scroll-down">
-            <i class="fas fa-chevron-down" style="color:white;font-size:30px;"></i>
-        </div>
-    </section>
+    </div>
+</section>
 
-    <!-- About Section -->
-    <section id="about" class="about-v2">
-        <div class="container">
-            <div class="about-hero" data-aos="fade-up" data-aos-duration="1000">
-                <div class="about-hero-main">
-                    <div class="about-text-bg">
-                        <div class="kicker">{{ $aboutPageContent['about_kicker'] ?? "About Why Travel with Tanzalian Safari's" }}</div>
-                        <h2 class="title">{{ $aboutPageContent['about_title'] ?? "About Why Travel with Tanzalian Safari's" }}</h2>
-                        <p class="subtitle">
-                            {{ $aboutPageContent['about_subtitle'] ?? ($aboutPageContent['about_paragraph1'] ?? 'We are a proudly Tanzanian-owned travel company dedicated to crafting memorable journeys across our beautiful country.') }}
-                        </p>
-                        <a href="{{ route('booking') }}" class="btn-primary">
-                            <i class="fas fa-calendar-check"></i> {{ $aboutPageContent['about_button_text'] ?? 'Book Now' }}
+<!-- Featured Packages Section -->
+<section class="packages-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-kicker">
+                <i class="fas fa-suitcase"></i> Popular Packages
+            </div>
+            <h2 class="section-title">Curated Safari Experiences</h2>
+            <p class="section-subtitle">
+                Choose from our handpicked selection of safari packages designed to showcase 
+                the best of Tanzania's wildlife and landscapes.
+            </p>
+        </div>
+
+        <div class="packages-grid">
+            @forelse($featuredPackages->take(3) as $package)
+            <div class="package-card" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
+                @if($loop->first)
+                    <div class="package-badge">Most Popular</div>
+                @endif
+                <div class="package-image">
+                    <img src="{{ $package->image_path ?? 'https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' }}" alt="{{ $package->name }}">
+                    <div class="package-duration">
+                        <i class="fas fa-clock"></i> {{ $package->duration_label }}
+                    </div>
+                </div>
+                <div class="package-content">
+                    <h3 class="package-title">{{ $package->name }}</h3>
+                    <p class="package-description">{{ $package->short_description }}</p>
+                    <div class="package-features">
+                        <span class="package-feature"><i class="fas fa-user"></i> 2-6 People</span>
+                        <span class="package-feature"><i class="fas fa-car"></i> 4x4 Vehicle</span>
+                        <span class="package-feature"><i class="fas fa-utensils"></i> Meals</span>
+                    </div>
+                    <div class="package-footer">
+                        <div class="package-price">
+                            <span class="package-price-value">${{ number_format($package->price_amount) }}</span>
+                            <span class="package-price-suffix">/ person</span>
+                        </div>
+                        <a href="{{ route('packages.show', $package->id) }}" class="package-cta" title="View Details">
+                            <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
-
-                <aside class="snapshot" data-aos="fade-left" data-aos-duration="1000">
-                    <img src="{{ asset($aboutPageContent['about_image'] ?? 'assets/img/about-bg.jpg') }}" alt="About image">
-                    <div class="snapshot-title">{{ $aboutPageContent['about_snapshot_title'] ?? 'Quick Snapshot' }}</div>
-                    <div class="stat-grid">
-                        <div class="stat-item">
-                            <strong>{{ $aboutPageContent['about_stat_1_value'] ?? '10+' }}</strong>
-                            <span>{{ $aboutPageContent['about_stat_1_label'] ?? 'National parks & reserves covered' }}</span>
-                        </div>
-                        <div class="stat-item">
-                            <strong>{{ $aboutPageContent['about_stat_2_value'] ?? '5★' }}</strong>
-                            <span>{{ $aboutPageContent['about_stat_2_label'] ?? 'Personalized, guest-first service' }}</span>
-                        </div>
-                        <div class="stat-item">
-                            <strong>{{ $aboutPageContent['about_stat_3_value'] ?? '24/7' }}</strong>
-                            <span>{{ $aboutPageContent['about_stat_3_label'] ?? 'On-ground support in Tanzania' }}</span>
-                        </div>
-                        <div class="stat-item">
-                            <strong>{{ $aboutPageContent['about_stat_4_value'] ?? '100%' }}</strong>
-                            <span>{{ $aboutPageContent['about_stat_4_label'] ?? 'Tailor-made itineraries' }}</span>
-                        </div>
+            </div>
+            @empty
+            <!-- Fallback packages when none in database -->
+            <div class="package-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="package-badge">Most Popular</div>
+                <div class="package-image">
+                    <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Serengeti Safari">
+                    <div class="package-duration"><i class="fas fa-clock"></i> 5 Days</div>
+                </div>
+                <div class="package-content">
+                    <h3 class="package-title">Classic Serengeti Safari</h3>
+                    <p class="package-description">Witness the incredible wildlife of Serengeti and Ngorongoro Crater on this unforgettable journey.</p>
+                    <div class="package-features">
+                        <span class="package-feature"><i class="fas fa-user"></i> 2-6 People</span>
+                        <span class="package-feature"><i class="fas fa-car"></i> 4x4 Vehicle</span>
+                        <span class="package-feature"><i class="fas fa-utensils"></i> Meals</span>
                     </div>
-                </aside>
-            </div>
-
-            <div class="layout">
-                <div>
-                    <article class="card" data-aos="fade-up" data-aos-delay="100">
-                        <h3 class="card-title">{{ $aboutPageContent['about_who_title'] ?? 'Who We Are' }}</h3>
-                        <p style="margin-bottom: 18px; line-height: 1.8; color: var(--text-light); font-size: 15px;">{{ $aboutPageContent['about_paragraph1'] ?? "Tanzalian Safari's is a Tanzania-based tour operator that specializes in authentic African experiences." }}</p>
-                        <p style="margin-bottom: 20px; line-height: 1.8; color: var(--text-light); font-size: 15px;">{{ $aboutPageContent['about_paragraph2'] ?? "From the vast plains of the Serengeti to the white-sand beaches of Zanzibar, we design trips that match your budget." }}</p>
-                        <div class="pill-row">
-                            @foreach ($pills as $pill)
-                                @php
-                                    $route = '';
-                                    $icon = 'fas fa-chevron-right';
-                                    if(stripos($pill, 'private safari') !== false) {
-                                        $route = route('packages') . '?type=private';
-                                        $icon = 'fas fa-user-friends';
-                                    } elseif(stripos($pill, 'group') !== false || stripos($pill, 'family') !== false) {
-                                        $route = route('packages') . '?type=group';
-                                        $icon = 'fas fa-users';
-                                    } elseif(stripos($pill, 'zanzibar') !== false) {
-                                        $route = route('packages') . '?type=zanzibar';
-                                        $icon = 'fas fa-umbrella-beach';
-                                    } elseif(stripos($pill, 'car hire') !== false || stripos($pill, 'transfer') !== false) {
-                                        $route = route('services');
-                                        $icon = 'fas fa-car';
-                                    } else {
-                                        $route = route('packages');
-                                    }
-                                @endphp
-                                <a href="{{ $route }}" class="pill" onclick="handlePillClick(event, '{{ $pill }}')">
-                                    <span>{{ $pill }}</span>
-                                    <i class="{{ $icon }}"></i>
-                                </a>
-                            @endforeach
+                    <div class="package-footer">
+                        <div class="package-price">
+                            <span class="package-price-value">$2,450</span>
+                            <span class="package-price-suffix">/ person</span>
                         </div>
-                    </article>
-
-                    <article class="card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="why-title-wrap-about">
-                            <div class="why-subtitle-about">Why Choose Us</div>
-                            <h3 class="why-title-about">{{ $aboutPageContent['about_why_title'] ?? 'What Makes Us Special' }}</h3>
-                        </div>
-                        <div class="why-grid">
-                            <div class="why-card">
-                                <h4><i class="fa-solid fa-user-check"></i> {{ $aboutPageContent['about_why_1_title'] ?? 'Local Expertise' }}</h4>
-                                <p>{{ $aboutPageContent['about_why_1_text'] ?? 'Our guides know the parks by heart.' }}</p>
-                            </div>
-                            <div class="why-card">
-                                <h4><i class="fa-solid fa-shield-heart"></i> {{ $aboutPageContent['about_why_2_title'] ?? 'Safe & Reliable' }}</h4>
-                                <p>{{ $aboutPageContent['about_why_2_text'] ?? 'We prioritize safety with well-maintained vehicles.' }}</p>
-                            </div>
-                            <div class="why-card">
-                                <h4><i class="fa-solid fa-leaf"></i> {{ $aboutPageContent['about_why_3_title'] ?? 'Responsible Travel' }}</h4>
-                                <p>{{ $aboutPageContent['about_why_3_text'] ?? 'We work with locally-owned lodges and support community initiatives.' }}</p>
-                            </div>
-                            <div class="why-card">
-                                <h4><i class="fa-solid fa-handshake-angle"></i> {{ $aboutPageContent['about_why_4_title'] ?? 'Personal Support' }}</h4>
-                                <p>{{ $aboutPageContent['about_why_4_text'] ?? 'Our team is always reachable for questions and support.' }}</p>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-
-                <aside>
-                    <article class="card" data-aos="fade-up" data-aos-delay="300">
-                        <div class="side-section-title-about">Our Core Values</div>
-                        <ul class="values-list">
-                            <li>
-                                <i class="fa-solid fa-compass"></i>
-                                <span><strong>Authenticity:</strong> We showcase real Tanzania – its nature, people, and stories.</span>
-                            </li>
-                            <li>
-                                <i class="fa-solid fa-people-roof"></i>
-                                <span><strong>Hospitality:</strong> Guests are welcomed as friends and leave as family.</span>
-                            </li>
-                            <li>
-                                <i class="fa-solid fa-earth-africa"></i>
-                                <span><strong>Respect:</strong> For wildlife, local communities, and the environment.</span>
-                            </li>
-                            <li>
-                                <i class="fa-solid fa-star"></i>
-                                <span><strong>Excellence:</strong> We constantly refine our services based on feedback.</span>
-                            </li>
-                        </ul>
-                        <div class="mission-box">
-                            <h4><i class="fa-solid fa-bullseye"></i> {{ $aboutPageContent['about_mission_title'] ?? 'Our Mission' }}</h4>
-                            <p>{{ $aboutPageContent['mission_text'] ?? "To provide safe, reliable, and inspiring travel experiences that celebrate Tanzania's wildlife, cultures, and landscapes – while empowering local communities." }}</p>
-                        </div>
-                    </article>
-                </aside>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section class="services-section" id="services">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <p class="section-subtitle">Our Services</p>
-                <h2 class="section-title">What We Offer</h2>
-            </div>
-            <div class="services-grid">
-                <div class="service-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="service-icon"><i class="fas fa-binoculars"></i></div>
-                    <h3>Safari Tours</h3>
-                    <p>Experience the Big Five in Serengeti, Ngorongoro Crater, and more.</p>
-                </div>
-                <div class="service-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="service-icon"><i class="fas fa-car"></i></div>
-                    <h3>Car Rentals</h3>
-                    <p>4x4 vehicles and professional guided drivers.</p>
-                </div>
-                <div class="service-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="service-icon"><i class="fas fa-hotel"></i></div>
-                    <h3>Hotel & Lodge Bookings</h3>
-                    <p>Luxury lodges and boutique hotels across Tanzania.</p>
-                </div>
-                <div class="service-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="service-icon"><i class="fas fa-plane-arrival"></i></div>
-                    <h3>Airport Transfers</h3>
-                    <p>Reliable and prompt airport pickup and drop-off services.</p>
-                </div>
-                <div class="service-card" data-aos="fade-up" data-aos-delay="500">
-                    <div class="service-icon"><i class="fas fa-map-marked-alt"></i></div>
-                    <h3>Custom Packages</h3>
-                    <p>Personalized itineraries tailored to your interests and budget.</p>
-                </div>
-                <div class="service-card" data-aos="fade-up" data-aos-delay="600">
-                    <div class="service-icon"><i class="fas fa-users"></i></div>
-                    <h3>Cultural Tours</h3>
-                    <p>Authentic experiences with local tribes and communities.</p>
-                </div>
-                <div class="service-card" data-aos="fade-up" data-aos-delay="700">
-                    <div class="service-icon"><i class="fas fa-plane"></i></div>
-                    <h3>Flight Booking</h3>
-                    <p>Domestic and international flight bookings to make your journey seamless.</p>
-                    <a href="{{ route('flight.booking') }}" class="btn-primary" style="margin-top: 20px; display: inline-block;">
-                        <i class="fas fa-calendar-check"></i> Book Now (Coming Soon)
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Gallery Section -->
-    <section id="gallery">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <p class="section-subtitle">Gallery</p>
-                <h2 class="section-title">Discover Tanzania</h2>
-            </div>
-            <div class="gallery-grid">
-                @foreach ($galleryItems as $item)
-                    <div class="gallery-item" data-aos="zoom-in" data-aos-delay="{{ $loop->iteration * 100 }}">
-                        <img src="{{ asset('uploads/gallery/' . $item->image_path) }}" alt="{{ $item->title }}">
-                        <div class="gallery-overlay">
-                            <h3>{{ $item->title }}</h3>
-                            <p>{{ $item->subtitle }}</p>
-                            <a href="{{ route('booking') }}" class="gallery-book-btn">Book Now</a>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials-section" id="testimonials">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <p class="section-subtitle">Testimonials</p>
-                <h2 class="section-title">What Our Travelers Say</h2>
-            </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="stars">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">Our Tanzania safari was absolutely incredible! Highly recommended!</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">JD</div>
-                        <div class="author-info"><h4>John Doe</h4><p>USA</p></div>
+                        <a href="{{ route('packages') }}" class="package-cta" title="View All Packages"><i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section" id="destinations">
-        <div class="container" data-aos="zoom-in">
-            <p class="section-subtitle">{{ $pageContent['cta_subtitle'] ?? 'Ready for Adventure?' }}</p>
-            <h2>{{ $pageContent['cta_title'] ?? 'Start Your Tanzanian Journey Today' }}</h2>
-            <p>{{ $pageContent['cta_text'] ?? 'Let us create an unforgettable experience tailored just for you' }}</p>
-            <a href="{{ route('booking') }}" class="btn-primary">Book Your Trip</a>
+            <div class="package-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="package-image">
+                    <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Zanzibar Beach">
+                    <div class="package-duration"><i class="fas fa-clock"></i> 7 Days</div>
+                </div>
+                <div class="package-content">
+                    <h3 class="package-title">Safari & Zanzibar Beach</h3>
+                    <p class="package-description">Combine thrilling game drives with relaxing days on Zanzibar's pristine white sand beaches.</p>
+                    <div class="package-features">
+                        <span class="package-feature"><i class="fas fa-user"></i> 2-6 People</span>
+                        <span class="package-feature"><i class="fas fa-plane"></i> Flight</span>
+                        <span class="package-feature"><i class="fas fa-hotel"></i> Resort</span>
+                    </div>
+                    <div class="package-footer">
+                        <div class="package-price">
+                            <span class="package-price-value">$3,890</span>
+                            <span class="package-price-suffix">/ person</span>
+                        </div>
+                        <a href="{{ route('packages') }}" class="package-cta" title="View All Packages"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="package-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="package-image">
+                    <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Migration Safari">
+                    <div class="package-duration"><i class="fas fa-clock"></i> 8 Days</div>
+                </div>
+                <div class="package-content">
+                    <h3 class="package-title">Great Migration Experience</h3>
+                    <p class="package-description">Follow the world-famous wildebeest migration across the Serengeti plains.</p>
+                    <div class="package-features">
+                        <span class="package-feature"><i class="fas fa-user"></i> 2-6 People</span>
+                        <span class="package-feature"><i class="fas fa-campground"></i> Luxury Camp</span>
+                        <span class="package-feature"><i class="fas fa-binoculars"></i> Game Drives</span>
+                    </div>
+                    <div class="package-footer">
+                        <div class="package-price">
+                            <span class="package-price-value">$4,650</span>
+                            <span class="package-price-suffix">/ person</span>
+                        </div>
+                        <a href="{{ route('packages') }}" class="package-cta" title="View All Packages"><i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            @endforelse
         </div>
-    </section>
+
+        <div style="text-align: center; margin-top: var(--space-12);" data-aos="fade-up">
+            <a href="{{ route('packages') }}" class="btn btn-outline btn-lg">
+                View All Packages <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <!-- Trust Indicators -->
+        <div class="trust-indicators" data-aos="fade-up" data-aos-delay="200">
+            <div class="trust-item">
+                <i class="fas fa-shield-check"></i>
+                <span><strong>100% Secure</strong> Bookings</span>
+            </div>
+            <div class="trust-divider"></div>
+            <div class="trust-item">
+                <i class="fas fa-undo"></i>
+                <span><strong>Free Cancellation</strong> up to 30 days</span>
+            </div>
+            <div class="trust-divider"></div>
+            <div class="trust-item">
+                <i class="fas fa-headset"></i>
+                <span><strong>24/7 Support</strong> during your trip</span>
+            </div>
+            <div class="trust-divider"></div>
+            <div class="trust-item">
+                <i class="fas fa-medal"></i>
+                <span><strong>Best Price</strong> Guarantee</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Destinations Section -->
+<section class="destinations-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-kicker">
+                <i class="fas fa-map-marker-alt"></i> Destinations
+            </div>
+            <h2 class="section-title">Explore Tanzania's Treasures</h2>
+            <p class="section-subtitle">
+                From the endless plains of the Serengeti to the pristine beaches of Zanzibar, 
+                discover Tanzania's most iconic destinations.
+            </p>
+        </div>
+
+        <div class="destinations-grid">
+            <div class="destination-card large" data-aos="fade-up" data-aos-delay="100">
+                <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Serengeti">
+                <div class="destination-overlay">
+                    <h3 class="destination-name">Serengeti National Park</h3>
+                    <p class="destination-location"><i class="fas fa-map-pin"></i> Northern Tanzania</p>
+                </div>
+            </div>
+
+            <div class="destination-card" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://images.unsplash.com/photo-1587595431973-160d0d94add1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Ngorongoro">
+                <div class="destination-overlay">
+                    <h3 class="destination-name">Ngorongoro Crater</h3>
+                    <p class="destination-location"><i class="fas fa-map-pin"></i> Crater Highlands</p>
+                </div>
+            </div>
+
+            <div class="destination-card" data-aos="fade-up" data-aos-delay="300">
+                <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Zanzibar">
+                <div class="destination-overlay">
+                    <h3 class="destination-name">Zanzibar</h3>
+                    <p class="destination-location"><i class="fas fa-map-pin"></i> Spice Islands</p>
+                </div>
+            </div>
+
+            <div class="destination-card" data-aos="fade-up" data-aos-delay="400">
+                <img src="https://images.unsplash.com/photo-1551009175-8a68da93d5f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Kilimanjaro">
+                <div class="destination-overlay">
+                    <h3 class="destination-name">Mt. Kilimanjaro</h3>
+                    <p class="destination-location"><i class="fas fa-map-pin"></i> Northern Tanzania</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-kicker">
+                <i class="fas fa-heart"></i> Testimonials
+            </div>
+            <h2 class="section-title">What Our Travelers Say</h2>
+            <p class="section-subtitle">
+                Don't just take our word for it – hear from the thousands of travelers 
+                who've experienced the magic of Tanzania with us.
+            </p>
+        </div>
+
+        <div class="testimonials-grid">
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="testimonial-quote">"</div>
+                <p class="testimonial-text">
+                    Absolutely incredible experience! Our guide was so knowledgeable and we saw the Big Five 
+                    within the first two days. The accommodations were top-notch.
+                </p>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Johnson" class="testimonial-author-avatar">
+                    <div class="testimonial-author-info">
+                        <div class="testimonial-author-name">Sarah Johnson</div>
+                        <div class="testimonial-author-location">United Kingdom</div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i> 5.0
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card featured" data-aos="fade-up" data-aos-delay="200">
+                <div class="testimonial-quote">"</div>
+                <p class="testimonial-text">
+                    The Great Migration safari exceeded all my expectations. Witnessing thousands of 
+                    wildebeest crossing the Mara River was a life-changing moment. Tanzalian Safari's 
+                    handled every detail perfectly.
+                </p>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael Chen" class="testimonial-author-avatar">
+                    <div class="testimonial-author-info">
+                        <div class="testimonial-author-name">Michael Chen</div>
+                        <div class="testimonial-author-location">Singapore</div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i> 5.0
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="testimonial-quote">"</div>
+                <p class="testimonial-text">
+                    We took our family of 5 on safari and it was the best vacation we've ever had. 
+                    The kids loved every moment and learned so much about wildlife and conservation.
+                </p>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emma Schmidt" class="testimonial-author-avatar">
+                    <div class="testimonial-author-info">
+                        <div class="testimonial-author-name">Emma Schmidt</div>
+                        <div class="testimonial-author-location">Germany</div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i> 5.0
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Meet Our Guides Section -->
+<section class="section-padding" style="background: var(--bg-secondary);">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-kicker">
+                <i class="fas fa-users"></i> Expert Team
+            </div>
+            <h2 class="section-title">Meet Your Safari Guides</h2>
+            <p class="section-subtitle">
+                Our certified professional guides are passionate about wildlife and dedicated to making your safari unforgettable.
+            </p>
+        </div>
+
+        <div class="guides-preview-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 40px;">
+            @forelse($teamMembers as $index => $member)
+            <div class="guide-preview-card" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}" style="background: white; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-md); text-align: center;">
+                <div style="height: 200px; overflow: hidden;">
+                    <img src="{{ $member->image_url }}" alt="{{ $member->name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div style="padding: 20px;">
+                    <h4 style="font-size: 18px; margin-bottom: 4px;">{{ $member->name }}</h4>
+                    <p style="font-size: 13px; color: var(--primary-600); font-weight: 600; margin-bottom: 8px;">{{ $member->position }}</p>
+                    @if($member->experience_years > 0)
+                        <p style="font-size: 12px; color: var(--text-secondary);">{{ $member->experience_years }} Years Experience</p>
+                    @endif
+                </div>
+            </div>
+            @empty
+            <!-- Default guide cards if no team members added -->
+            <div class="guide-preview-card" data-aos="fade-up" data-aos-delay="100" style="background: white; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-md); text-align: center;">
+                <div style="height: 200px; overflow: hidden;">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Guide" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div style="padding: 20px;">
+                    <h4 style="font-size: 18px; margin-bottom: 4px;">Expert Guide</h4>
+                    <p style="font-size: 13px; color: var(--primary-600); font-weight: 600; margin-bottom: 8px;">Senior Guide</p>
+                    <p style="font-size: 12px; color: var(--text-secondary);">10+ Years Experience</p>
+                </div>
+            </div>
+            @endforelse
+        </div>
+
+        <div style="text-align: center;" data-aos="fade-up">
+            <a href="{{ route('guides') }}" class="btn btn-outline btn-lg">
+                Meet All Our Guides <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content" data-aos="fade-up">
+            <h2>Ready to Start Your Adventure?</h2>
+            <p>
+                Let us craft your perfect safari experience. Our travel experts are ready to 
+                design a personalized itinerary that matches your dreams and budget.
+            </p>
+            <div class="cta-buttons">
+                <a href="{{ route('booking') }}" class="btn-white">
+                    <i class="fas fa-calendar-check"></i> Book Now
+                </a>
+                <a href="https://wa.me/255691111111" class="btn-outline-white-2">
+                    <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="newsletter-section">
+    <div class="container">
+        <div class="newsletter-box" data-aos="fade-up">
+            <h3>Get Travel Inspiration</h3>
+            <p>Subscribe to our newsletter for exclusive deals, travel tips, and safari inspiration.</p>
+            <form class="newsletter-form-inline" action="{{ route('newsletter.subscribe') }}" method="POST">
+                @csrf
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+            </form>
+        </div>
+    </div>
+</section>
 @endsection
 
 @section('scripts')
 <script>
-    function handlePillClick(event, pillName) {
-        event.preventDefault();
-        const url = event.currentTarget.href;
-        
-        // Store selected service type in sessionStorage if available
-        if(url.includes('type=')) {
-            const typeParam = url.split('type=')[1].split('&')[0];
-            sessionStorage.setItem('selectedServiceType', typeParam);
-        }
-        
-        // Navigate to the route
-        window.location.href = url;
+    // Hero Slideshow with Ken Burns effect
+    const heroImages = document.querySelectorAll('.hero-bg img');
+    let currentImage = 0;
+
+    function rotateHeroImages() {
+        heroImages[currentImage].classList.remove('active');
+        currentImage = (currentImage + 1) % heroImages.length;
+        heroImages[currentImage].classList.add('active');
     }
 
-    // PWA Install Success Message
-    function showInstallSuccess() {
-        // Create success notification
-        const successMsg = document.createElement('div');
-        successMsg.id = 'pwa-install-success';
-        successMsg.style.cssText = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10001; background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 20px 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(16,185,129,0.4); animation: slideDown 0.5s ease; max-width: 500px; width: 90%;';
-        successMsg.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <i class="fas fa-check-circle" style="font-size: 24px;"></i>
-                </div>
-                <div style="flex: 1;">
-                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 5px; font-family: "Playfair Display", serif;">App Installed Successfully! 🎉</h3>
-                    <p style="font-size: 13px; opacity: 0.95; margin: 0; line-height: 1.5;">Tanzalian Safaris app is now installed. Enjoy offline access and faster loading!</p>
-                </div>
-                <button onclick="this.parentElement.parentElement.remove()" style="background: transparent; color: #fff; border: none; padding: 5px 10px; cursor: pointer; font-size: 18px; opacity: 0.8; transition: opacity 0.3s;" onmouseover="this.style.opacity='1';" onmouseout="this.style.opacity='0.8';">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        `;
-        document.body.appendChild(successMsg);
-        
-        // Auto remove after 5 seconds
-        setTimeout(() => {
-            if(successMsg && successMsg.parentElement) {
-                successMsg.style.animation = 'slideUp 0.5s ease';
-                setTimeout(() => successMsg.remove(), 500);
+    setInterval(rotateHeroImages, 6000);
+
+    // Animate hero stats counter
+    const stats = document.querySelectorAll('.hero-stat-value');
+    
+    const animateCounter = (element, target) => {
+        let current = 0;
+        const increment = target / 50;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                element.textContent = target + (element.textContent.includes('+') ? '+' : '');
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(current) + (element.textContent.includes('+') ? '+' : '');
             }
-        }, 5000);
-    }
+        }, 30);
+    };
 
-    // Show install prompt automatically on welcome page (after 3 seconds)
-    window.addEventListener('load', () => {
-        // Check if app is already installed
-        const isInstalled = window.matchMedia('(display-mode: standalone)').matches ||
-                           window.navigator.standalone === true ||
-                           document.referrer.includes('android-app://');
-        
-        if(!isInstalled) {
-            // Wait a bit then check if deferredPrompt is available
-            setTimeout(() => {
-                if(typeof deferredPrompt !== 'undefined' && deferredPrompt) {
-                    showInstallPrompt();
+    // Intersection Observer for stats animation
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const value = entry.target.textContent;
+                const numericValue = parseInt(value);
+                if (!isNaN(numericValue)) {
+                    animateCounter(entry.target, numericValue);
                 }
-            }, 3000);
-        }
-    });
-</script>
+                statsObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
 
-<style>
-    @keyframes slideUp {
-        from {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-        to {
-            opacity: 0;
-            transform: translateX(-50%) translateY(-20px);
-        }
-    }
-</style>
+    stats.forEach(stat => statsObserver.observe(stat));
+</script>
 @endsection

@@ -85,10 +85,10 @@
 </div>
 
 <div class="card" style="background: #f0fdf4; border-color: #bbf7d0;">
-    <h3 style="color: #166534; margin-bottom: 15px;"><i class="fas fa-info-circle"></i> Note on Email Settings</h3>
-    <p style="color: #166534; font-size: 14px;">
+    <h3 style="color: #2B5238; margin-bottom: 15px;"><i class="fas fa-info-circle"></i> Note on Email Settings</h3>
+    <p style="color: #2B5238; font-size: 14px;">
         These settings will be used across the entire platform for:
-        <ul style="margin-left: 20px; margin-top: 10px; color: #166534; font-size: 14px;">
+        <ul style="margin-left: 20px; margin-top: 10px; color: #2B5238; font-size: 14px;">
             <li>Sending OTPs for password resets</li>
             <li>Welcome emails for new registrations</li>
             <li>Newsletter announcements and updates</li>

@@ -46,7 +46,7 @@
     }
     .rating-stars-page {
         font-size: 36px;
-        color: #f59e0b;
+        color: #F1B434;
         margin-bottom: 15px;
     }
     .rating-count-page {
@@ -110,7 +110,7 @@
         font-family: 'Playfair Display', serif;
     }
     .testimonial-info-page .stars {
-        color: #f59e0b;
+        color: #F1B434;
         font-size: 18px;
         margin-bottom: 5px;
     }
@@ -136,6 +136,58 @@
         letter-spacing: 1px;
     }
 
+    /* External Review Links */
+    .external-reviews {
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .external-reviews p {
+        font-size: 14px;
+        color: #64748b;
+        margin-bottom: 15px;
+    }
+
+    .review-links {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .review-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .review-link.google {
+        background: #4285f4;
+        color: white;
+    }
+
+    .review-link.tripadvisor {
+        background: #00af87;
+        color: white;
+    }
+
+    .review-link.trustpilot {
+        background: #00b67a;
+        color: white;
+    }
+
+    .review-link:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
     @media (max-width: 768px) {
         .page-header-testimonials h1 {
             font-size: 40px;
@@ -147,6 +199,10 @@
             flex-direction: column;
             align-items: flex-start;
             gap: 15px;
+        }
+        .review-links {
+            flex-direction: column;
+            align-items: center;
         }
     }
 </style>
@@ -173,6 +229,25 @@
                 <i class="fas fa-star"></i>
             </div>
             <div class="rating-count-page">Based on 500+ verified customer reviews</div>
+            
+            <!-- External Review Links -->
+            <div class="external-reviews">
+                <p>Also find us on:</p>
+                <div class="review-links">
+                    <a href="https://www.google.com/search?q=tanzalian+Safari's+reviews" target="_blank" class="review-link google">
+                        <i class="fab fa-google"></i>
+                        <span>Google Reviews</span>
+                    </a>
+                    <a href="https://www.tripadvisor.com" target="_blank" class="review-link tripadvisor">
+                        <i class="fab fa-tripadvisor"></i>
+                        <span>TripAdvisor</span>
+                    </a>
+                    <a href="https://www.trustpilot.com" target="_blank" class="review-link trustpilot">
+                        <i class="fas fa-star"></i>
+                        <span>Trustpilot</span>
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div class="testimonials-grid-page">

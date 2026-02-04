@@ -144,7 +144,7 @@
     }
 
     .icon-bookings { background: var(--primary-gradient); }
-    .icon-pending { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .icon-pending { background: linear-gradient(135deg, #F1B434, #d99a1e); }
     .icon-confirmed { background: linear-gradient(135deg, #10b981, #059669); }
     .icon-spent { background: linear-gradient(135deg, #3b82f6, #2563eb); }
 
@@ -316,7 +316,7 @@
     .status-pending { 
         background: linear-gradient(135deg, #fef3c7, #fde68a); 
         color: #d97706;
-        border: 1px solid #fbbf24;
+        border: 1px solid #F1B434;
     }
     .status-confirmed { 
         background: linear-gradient(135deg, #d1fae5, #a7f3d0); 

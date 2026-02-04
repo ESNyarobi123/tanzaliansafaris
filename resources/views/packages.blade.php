@@ -288,13 +288,13 @@
                                 <span>{{ $pkg->price_suffix }}</span>
                             @endif
                         @else
-                            <span>Contact us for price</span>
+                            <span>Contact us</span>
                         @endif
                     </div>
                     <div class="pkg-cta-packages">
-                        <a class="btn-pill-packages btn-book-packages" href="{{ route('booking') }}">
-                            <i class="fa-solid fa-calendar-check"></i>
-                            Book now
+                        <a class="btn-pill-packages btn-book-packages" href="{{ route('packages.show', $pkg->id) }}">
+                            <i class="fa-solid fa-eye"></i>
+                            View Details
                         </a>
                         <a class="btn-pill-packages btn-wa-packages"
                            href="https://wa.me/255691111111?text={{ urlencode('Hello, I am interested in the package: ' . $pkg->name) }}"

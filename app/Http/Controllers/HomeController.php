@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PageContent;
 use App\Models\Gallery;
 use App\Models\SafariPackage;
+use App\Models\TeamMember;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -13,7 +14,7 @@ class HomeController extends Controller
     {
         // Fetch gallery items
         $galleryItems = Gallery::where('status', 'active')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->limit(6)
             ->get();
 
@@ -44,7 +45,13 @@ class HomeController extends Controller
             ->orderBy('sort_order', 'asc')
             ->get();
 
-        return view('home', compact('galleryItems', 'homeContent', 'aboutPageContent', 'pageContent', 'featuredPackages', 'pills'));
+        // Fetch team members for homepage
+        $teamMembers = TeamMember::active()
+            ->ordered()
+            ->take(4)
+            ->get();
+
+        return view('home', compact('galleryItems', 'homeContent', 'aboutPageContent', 'pageContent', 'featuredPackages', 'pills', 'teamMembers'));
     }
 
     public function about()

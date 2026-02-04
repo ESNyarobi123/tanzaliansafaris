@@ -33,7 +33,7 @@
                         <div style="font-size: 11px; color: var(--text-light);">{{ $booking->nights }} Nights</div>
                     </td>
                     <td>
-                        <span class="badge" style="padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; background: {{ $booking->status === 'approved' ? '#dcfce7; color: #166534;' : ($booking->status === 'pending' ? '#fff7ed; color: #9a3412;' : '#f1f5f9; color: #475569;') }}">
+                        <span class="badge" style="padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; background: {{ $booking->status === 'approved' ? '#e3ebe6; color: #2B5238;' : ($booking->status === 'pending' ? '#fdf6e3; color: #b67f18;' : '#F7F7F7; color: #555555;') }}">
                             {{ strtoupper($booking->status) }}
                         </span>
                     </td>

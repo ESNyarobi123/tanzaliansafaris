@@ -12,7 +12,7 @@ class PackageController extends Controller
     {
         $packages = SafariPackage::where('status', 'active')
             ->orderBy('sort_order', 'asc')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->get();
 
         $pageIntro = PageContent::where('page_slug', 'packages.php')
@@ -20,5 +20,12 @@ class PackageController extends Controller
             ->first();
 
         return view('packages', compact('packages', 'pageIntro'));
+    }
+
+    public function show($id)
+    {
+        $package = SafariPackage::findOrFail($id);
+        
+        return view('package-detail', compact('package'));
     }
 }

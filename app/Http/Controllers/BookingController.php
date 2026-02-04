@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\SafariPackage;
 use App\Models\PaymentSetting;
+use App\Models\Availability;
 use App\Services\ZenoPayService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class BookingController extends Controller
 {
@@ -19,7 +21,7 @@ class BookingController extends Controller
         
         $packages = SafariPackage::where('status', 'active')
             ->orderBy('sort_order', 'asc')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->get();
 
         return view('booking', compact('packages', 'requiresLogin'));
@@ -104,5 +106,98 @@ class BookingController extends Controller
     public function flightBooking()
     {
         return view('flight-booking-coming-soon');
+    }
+
+    /**
+     * Get availability for a package (AJAX endpoint)
+     */
+    public function getAvailability(Request $request)
+    {
+        $packageId = $request->input('package_id');
+        $month = $request->input('month', Carbon::now()->month);
+        $year = $request->input('year', Carbon::now()->year);
+
+        $startDate = Carbon::create($year, $month, 1)->startOfMonth();
+        $endDate = $startDate->copy()->endOfMonth();
+
+        // Get or generate availability for the month
+        $availabilities = Availability::forPackage($packageId)
+            ->forDateRange($startDate, $endDate)
+            ->get()
+            ->keyBy(function ($item) {
+                return $item->date->format('Y-m-d');
+            });
+
+        // Generate default availability for dates not in database
+        $calendar = [];
+        $currentDate = $startDate->copy();
+
+        while ($currentDate <= $endDate) {
+            $dateKey = $currentDate->format('Y-m-d');
+            
+            if ($availabilities->has($dateKey)) {
+                $availability = $availabilities[$dateKey];
+            } else {
+                // Create default availability
+                $availability = new Availability([
+                    'package_id' => $packageId,
+                    'date' => $currentDate->copy(),
+                    'status' => 'available',
+                    'spots_total' => 6,
+                    'spots_booked' => 0,
+                    'spots_remaining' => 6,
+                ]);
+            }
+
+            $calendar[] = [
+                'date' => $dateKey,
+                'day' => $currentDate->day,
+                'status' => $availability->status,
+                'status_label' => $availability->status_label,
+                'status_color' => $availability->status_color,
+                'spots_remaining' => $availability->spots_remaining,
+                'is_available' => $availability->is_available,
+                'is_past' => $currentDate->isPast(),
+            ];
+
+            $currentDate->addDay();
+        }
+
+        return response()->json([
+            'success' => true,
+            'month' => $month,
+            'year' => $year,
+            'month_name' => $startDate->format('F Y'),
+            'calendar' => $calendar,
+        ]);
+    }
+
+    /**
+     * Get next available dates for a package
+     */
+    public function getNextAvailableDates(Request $request)
+    {
+        $packageId = $request->input('package_id');
+        $limit = $request->input('limit', 5);
+
+        $availabilities = Availability::forPackage($packageId)
+            ->available()
+            ->where('date', '>=', Carbon::today())
+            ->orderBy('date')
+            ->limit($limit)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'dates' => $availabilities->map(function ($avail) {
+                return [
+                    'date' => $avail->date->format('Y-m-d'),
+                    'formatted' => $avail->date->format('M d, Y'),
+                    'day_name' => $avail->date->format('l'),
+                    'spots_remaining' => $avail->spots_remaining,
+                    'status' => $avail->status,
+                ];
+            }),
+        ]);
     }
 }

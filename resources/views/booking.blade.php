@@ -20,7 +20,7 @@
         background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
         background-size: cover;
         background-position: center;
-        padding: 100px 0;
+        padding: 100px 0 80px;
         text-align: center;
         color: white;
     }
@@ -29,6 +29,408 @@
         font-family: 'Playfair Display', serif;
         font-size: clamp(32px, 5vw, 56px);
         margin-bottom: 20px;
+    }
+
+    /* Trust Badges on Booking Page */
+    .booking-trust-badges {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 40px;
+        flex-wrap: wrap;
+    }
+
+    .booking-trust-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+        padding: 12px 20px;
+        border-radius: 50px;
+        border: 1px solid rgba(255,255,255,0.2);
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .booking-trust-item:hover {
+        background: rgba(255,255,255,0.2);
+        transform: translateY(-2px);
+    }
+
+    .booking-trust-item i {
+        color: #10b981;
+        font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+        .booking-trust-badges {
+            gap: 15px;
+        }
+        .booking-trust-item {
+            padding: 10px 15px;
+            font-size: 12px;
+        }
+    }
+
+    /* Availability Calendar Styles */
+    .availability-calendar-container {
+        background: white;
+        border: 2px solid #f1f5f9;
+        border-radius: 20px;
+        padding: 24px;
+        margin-bottom: 20px;
+    }
+
+    .calendar-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .calendar-header h4 {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--booking-dark);
+        margin: 0;
+    }
+
+    .calendar-nav {
+        width: 40px;
+        height: 40px;
+        background: #f1f5f9;
+        border: none;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        color: #64748b;
+    }
+
+    .calendar-nav:hover {
+        background: var(--booking-primary);
+        color: white;
+    }
+
+    .calendar-legend {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #64748b;
+    }
+
+    .legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+    }
+
+    .legend-dot.available { background: #10b981; }
+    .legend-dot.limited { background: #F1B434; }
+    .legend-dot.booked { background: #ef4444; }
+
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 8px;
+    }
+
+    .calendar-day-header {
+        text-align: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: #94a3b8;
+        padding: 10px 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .calendar-day {
+        aspect-ratio: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+        border: 2px solid transparent;
+        background: #f8fafc;
+    }
+
+    .calendar-day:hover:not(.disabled):not(.booked) {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .calendar-day-number {
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+    }
+
+    .calendar-day-status {
+        font-size: 10px;
+        margin-top: 2px;
+        font-weight: 500;
+    }
+
+    .calendar-day.available {
+        background: #ecfdf5;
+        border-color: #a7f3d0;
+    }
+
+    .calendar-day.available .calendar-day-number {
+        color: #065f46;
+    }
+
+    .calendar-day.limited {
+        background: #fffbeb;
+        border-color: #fcd34d;
+    }
+
+    .calendar-day.limited .calendar-day-number {
+        color: #92400e;
+    }
+
+    .calendar-day.booked {
+        background: #fef2f2;
+        border-color: #fecaca;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    .calendar-day.booked .calendar-day-number {
+        color: #991b1b;
+        text-decoration: line-through;
+    }
+
+    .calendar-day.selected {
+        background: linear-gradient(135deg, var(--booking-primary), #e65a2b);
+        border-color: var(--booking-primary);
+        box-shadow: 0 4px 15px rgba(212, 163, 115, 0.4);
+    }
+
+    .calendar-day.selected .calendar-day-number {
+        color: white;
+    }
+
+    .calendar-day.selected .calendar-day-status {
+        color: rgba(255,255,255,0.9);
+    }
+
+    .calendar-day.disabled {
+        background: #f1f5f9;
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .calendar-day.disabled .calendar-day-number {
+        color: #94a3b8;
+    }
+
+    .calendar-day.today {
+        border: 2px solid var(--booking-primary);
+    }
+
+    .calendar-selected {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+        padding: 16px 20px;
+        background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+        border-radius: 12px;
+        color: #065f46;
+        font-size: 15px;
+    }
+
+    .calendar-selected i {
+        font-size: 20px;
+    }
+
+    .calendar-urgency {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 12px;
+        padding: 12px 16px;
+        background: linear-gradient(135deg, #fffbeb, #fef3c7);
+        border-radius: 10px;
+        color: #92400e;
+        font-size: 14px;
+        animation: pulse-urgency 2s infinite;
+    }
+
+    @keyframes pulse-urgency {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.8; }
+    }
+
+    .calendar-urgency i {
+        color: #F1B434;
+    }
+
+    /* Next Dates Grid */
+    .next-dates-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .next-date-card {
+        background: white;
+        border: 2px solid #f1f5f9;
+        border-radius: 16px;
+        padding: 16px 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .next-date-card:hover {
+        border-color: var(--booking-primary);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .next-date-day {
+        font-size: 12px;
+        color: #94a3b8;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    .next-date-number {
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--booking-dark);
+        line-height: 1;
+        margin: 4px 0;
+    }
+
+    .next-date-month {
+        font-size: 12px;
+        color: #64748b;
+        margin-bottom: 8px;
+    }
+
+    .next-date-status {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .next-date-status.available {
+        background: #ecfdf5;
+        color: #065f46;
+    }
+
+    .next-date-status.limited {
+        background: #fffbeb;
+        color: #92400e;
+    }
+
+    .calendar-note {
+        text-align: center;
+        font-size: 13px;
+        color: #94a3b8;
+        margin: 0;
+    }
+
+    .calendar-note i {
+        margin-right: 6px;
+    }
+
+    @media (max-width: 640px) {
+        .calendar-grid {
+            gap: 4px;
+        }
+        .calendar-day {
+            border-radius: 8px;
+        }
+        .calendar-day-number {
+            font-size: 12px;
+        }
+        .calendar-day-status {
+            font-size: 8px;
+        }
+        .next-dates-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .calendar-legend {
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+    }
+
+    /* Security Notice */
+    .security-notice {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+        border: 1px solid #a7f3d0;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+
+    .security-icon {
+        width: 48px;
+        height: 48px;
+        background: #10b981;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: white;
+        flex-shrink: 0;
+    }
+
+    .security-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .security-content strong {
+        font-size: 16px;
+        font-weight: 700;
+        color: #065f46;
+        margin-bottom: 4px;
+    }
+
+    .security-content span {
+        font-size: 14px;
+        color: #047857;
+        line-height: 1.5;
+    }
+
+    @media (max-width: 640px) {
+        .security-notice {
+            flex-direction: column;
+            text-align: center;
+        }
     }
 
     .booking-wrapper {
@@ -548,6 +950,26 @@
     <div class="container">
         <h1 data-aos="fade-up">Start Your Journey</h1>
         <p data-aos="fade-up" data-aos-delay="100">Tell us about your dream safari and we'll make it a reality.</p>
+        
+        <!-- Trust Badges on Booking Page -->
+        <div class="booking-trust-badges" data-aos="fade-up" data-aos-delay="200">
+            <div class="booking-trust-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>Secure Booking</span>
+            </div>
+            <div class="booking-trust-item">
+                <i class="fas fa-lock"></i>
+                <span>256-bit SSL</span>
+            </div>
+            <div class="booking-trust-item">
+                <i class="fas fa-certificate"></i>
+                <span>TALA Licensed</span>
+            </div>
+            <div class="booking-trust-item">
+                <i class="fas fa-star"></i>
+                <span>4.9/5 Rating</span>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -698,7 +1120,7 @@
                             <label>Select Your Package *</label>
                             <div class="package-grid">
                                 @foreach ($packages as $p)
-                                <div class="package-option {{ old('safari_package') == $p->id ? 'selected' : '' }}" onclick="selectPackage(this, '{{ $p->id }}')">
+                                <div class="package-option {{ old('safari_package') == $p->id ? 'selected' : '' }}" onclick="selectPackage(this, '{{ $p->id }}')" data-package-id="{{ $p->id }}">
                                     <div class="package-info">
                                         <h4>{{ $p->name }}</h4>
                                         <p>{{ $p->duration_label }}</p>
@@ -708,6 +1130,91 @@
                                 @endforeach
                             </div>
                             <input type="hidden" name="safari_package" id="selected_package" required value="{{ old('safari_package') }}">
+                        </div>
+
+                        <!-- Availability Calendar Section -->
+                        <div class="input-group" id="calendar-section" style="display: none;">
+                            <label>Select Your Start Date *</label>
+                            <div class="availability-calendar-container">
+                                <div class="calendar-header">
+                                    <button type="button" class="calendar-nav" id="prevMonth">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <h4 id="calendarMonth">February 2026</h4>
+                                    <button type="button" class="calendar-nav" id="nextMonth">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                                <div class="calendar-legend">
+                                    <div class="legend-item">
+                                        <span class="legend-dot available"></span>
+                                        <span>Available</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-dot limited"></span>
+                                        <span>Limited</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-dot booked"></span>
+                                        <span>Booked</span>
+                                    </div>
+                                </div>
+                                <div class="calendar-grid" id="calendarGrid">
+                                    <!-- Calendar will be populated by JavaScript -->
+                                </div>
+                                <div class="calendar-selected" id="calendarSelected" style="display: none;">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <span>Selected: <strong id="selectedDateDisplay"></strong></span>
+                                </div>
+                                <div class="calendar-urgency" id="calendarUrgency" style="display: none;">
+                                    <i class="fas fa-fire"></i>
+                                    <span>Only <strong id="spotsRemaining">2</strong> spots left on this date!</span>
+                                </div>
+                            </div>
+                            <input type="hidden" name="start_date" id="start_date" required value="{{ old('start_date') }}">
+                        </div>
+
+                        <!-- Next Available Dates (shown when no package selected) -->
+                        <div class="input-group" id="next-available-section">
+                            <label>Popular Upcoming Dates</label>
+                            <div class="next-dates-grid" id="nextDatesGrid">
+                                <div class="next-date-card">
+                                    <div class="next-date-day">Mon</div>
+                                    <div class="next-date-number">15</div>
+                                    <div class="next-date-month">Feb</div>
+                                    <span class="next-date-status available">Available</span>
+                                </div>
+                                <div class="next-date-card">
+                                    <div class="next-date-day">Thu</div>
+                                    <div class="next-date-number">18</div>
+                                    <div class="next-date-month">Feb</div>
+                                    <span class="next-date-status limited">Limited</span>
+                                </div>
+                                <div class="next-date-card">
+                                    <div class="next-date-day">Sat</div>
+                                    <div class="next-date-number">20</div>
+                                    <div class="next-date-month">Feb</div>
+                                    <span class="next-date-status available">Available</span>
+                                </div>
+                                <div class="next-date-card">
+                                    <div class="next-date-day">Wed</div>
+                                    <div class="next-date-number">24</div>
+                                    <div class="next-date-month">Feb</div>
+                                    <span class="next-date-status available">Available</span>
+                                </div>
+                            </div>
+                            <p class="calendar-note"><i class="fas fa-info-circle"></i> Select a package above to see full availability calendar</p>
+                        </div>
+
+                        <!-- Packing List Reminder -->
+                        <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); border: 1px solid #fcd34d; border-radius: 16px; padding: 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 16px;">
+                            <div style="width: 48px; height: 48px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0;">
+                                🎒
+                            </div>
+                            <div style="flex: 1;">
+                                <h4 style="font-size: 16px; color: #92400e; margin-bottom: 4px;">Going on Safari?</h4>
+                                <p style="font-size: 14px; color: #78350f; margin: 0;">Check our <a href="{{ route('packing-list') }}" target="_blank" style="color: #d97706; font-weight: 700; text-decoration: underline;">Packing List</a> to make sure you bring everything you need!</p>
+                            </div>
                         </div>
 
                         <div class="form-grid">
@@ -720,10 +1227,6 @@
                                     <option value="Budget Camps" {{ old('accommodation') === 'Budget Camps' ? 'selected' : '' }}>Budget Camps</option>
                                     <option value="Camping Only" {{ old('accommodation') === 'Camping Only' ? 'selected' : '' }}>Camping Only</option>
                                 </select>
-                            </div>
-                            <div class="input-group">
-                                <label>Start Date *</label>
-                                <input type="date" name="start_date" id="start_date" required value="{{ old('start_date') }}">
                             </div>
                             <div class="input-group">
                                 <label>Nights *</label>
@@ -748,6 +1251,17 @@
                     <!-- Step 3: Payment & Review -->
                     <div class="form-step" id="step-3">
                         <h2 class="step-title">Payment & Review</h2>
+                        
+                        <!-- Security Notice -->
+                        <div class="security-notice">
+                            <div class="security-icon">
+                                <i class="fas fa-shield-check"></i>
+                            </div>
+                            <div class="security-content">
+                                <strong>Secure Payment</strong>
+                                <span>Your payment information is encrypted with 256-bit SSL security. We never store your card details.</span>
+                            </div>
+                        </div>
                         
                         <div class="input-group">
                             <label>Preferred Payment Method *</label>
@@ -962,7 +1476,146 @@
         document.querySelectorAll('.package-option').forEach(opt => opt.classList.remove('selected'));
         el.classList.add('selected');
         document.getElementById('selected_package').value = id;
+        
+        // Show calendar section and load availability
+        document.getElementById('calendar-section').style.display = 'block';
+        document.getElementById('next-available-section').style.display = 'none';
+        
+        // Load calendar for selected package
+        availabilityCalendar.loadForPackage(id);
     }
+
+    // Availability Calendar Class
+    class AvailabilityCalendar {
+        constructor() {
+            this.currentDate = new Date();
+            this.selectedDate = null;
+            this.packageId = null;
+            this.calendarData = [];
+            
+            this.init();
+        }
+        
+        init() {
+            // Bind navigation buttons
+            document.getElementById('prevMonth').addEventListener('click', () => this.prevMonth());
+            document.getElementById('nextMonth').addEventListener('click', () => this.nextMonth());
+            
+            // Generate initial empty calendar
+            this.renderCalendar([]);
+        }
+        
+        loadForPackage(packageId) {
+            this.packageId = packageId;
+            this.fetchAvailability();
+        }
+        
+        async fetchAvailability() {
+            const month = this.currentDate.getMonth() + 1;
+            const year = this.currentDate.getFullYear();
+            
+            try {
+                const response = await fetch(`/booking/availability?package_id=${this.packageId}&month=${month}&year=${year}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    this.calendarData = data.calendar;
+                    document.getElementById('calendarMonth').textContent = data.month_name;
+                    this.renderCalendar(this.calendarData);
+                }
+            } catch (error) {
+                console.error('Error fetching availability:', error);
+            }
+        }
+        
+        renderCalendar(calendarData) {
+            const grid = document.getElementById('calendarGrid');
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            
+            let html = '';
+            
+            // Day headers
+            dayNames.forEach(day => {
+                html += `<div class="calendar-day-header">${day}</div>`;
+            });
+            
+            // Calendar days
+            calendarData.forEach(day => {
+                const date = new Date(day.date);
+                const isToday = this.isToday(date);
+                const isSelected = this.selectedDate === day.date;
+                
+                let classes = ['calendar-day', day.status];
+                if (isToday) classes.push('today');
+                if (isSelected) classes.push('selected');
+                if (day.is_past || !day.is_available) classes.push('disabled');
+                
+                html += `
+                    <div class="${classes.join(' ')}" 
+                         onclick="availabilityCalendar.selectDate('${day.date}', ${day.is_available})"
+                         title="${day.status_label}">
+                        <span class="calendar-day-number">${day.day}</span>
+                        ${day.status === 'limited' ? '<span class="calendar-day-status">Limited</span>' : ''}
+                    </div>
+                `;
+            });
+            
+            grid.innerHTML = html;
+        }
+        
+        selectDate(dateStr, isAvailable) {
+            if (!isAvailable) return;
+            
+            this.selectedDate = dateStr;
+            document.getElementById('start_date').value = dateStr;
+            
+            // Update UI
+            document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            
+            // Show selected date
+            const selectedDay = this.calendarData.find(d => d.date === dateStr);
+            document.getElementById('selectedDateDisplay').textContent = new Date(dateStr).toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            document.getElementById('calendarSelected').style.display = 'flex';
+            
+            // Show urgency if limited spots
+            if (selectedDay && selectedDay.status === 'limited') {
+                document.getElementById('spotsRemaining').textContent = selectedDay.spots_remaining;
+                document.getElementById('calendarUrgency').style.display = 'flex';
+            } else {
+                document.getElementById('calendarUrgency').style.display = 'none';
+            }
+        }
+        
+        prevMonth() {
+            this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+            if (this.packageId) {
+                this.fetchAvailability();
+            }
+        }
+        
+        nextMonth() {
+            this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+            if (this.packageId) {
+                this.fetchAvailability();
+            }
+        }
+        
+        isToday(date) {
+            const today = new Date();
+            return date.getDate() === today.getDate() &&
+                   date.getMonth() === today.getMonth() &&
+                   date.getFullYear() === today.getFullYear();
+        }
+    }
+    
+    // Initialize calendar
+    const availabilityCalendar = new AvailabilityCalendar();
 
     function selectPayment(el, method) {
         document.querySelectorAll('.payment-method-card').forEach(opt => opt.classList.remove('selected'));

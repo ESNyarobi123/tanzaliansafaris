@@ -11,6 +11,7 @@ use App\Models\PaymentSetting;
 use App\Models\SiteSetting;
 use App\Models\Newsletter;
 use App\Models\BroadcastHistory;
+use App\Models\TeamMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -75,7 +76,7 @@ class AdminController extends Controller
 
     public function gallery()
     {
-        $images = Gallery::orderBy('created_at', 'desc')->get();
+        $images = Gallery::orderBy('id', 'desc')->get();
         return view('admin.gallery', compact('images'));
     }
 
@@ -404,5 +405,114 @@ class AdminController extends Controller
         ]);
 
         return back()->with('success', "Announcement sent successfully to $sentCount recipients" . ($failedCount > 0 ? " ($failedCount failed)." : "."));
+    }
+
+    // ==================== TEAM MEMBERS ====================
+    
+    public function teamMembers()
+    {
+        $members = TeamMember::ordered()->get();
+        return view('admin.team-members', compact('members'));
+    }
+
+    public function createTeamMember()
+    {
+        return view('admin.team-members-create');
+    }
+
+    public function storeTeamMember(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
+            'role' => 'nullable|string|max:255',
+            'experience_years' => 'nullable|integer|min:0',
+            'bio' => 'nullable|string',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:50',
+            'specialties' => 'nullable|string',
+            'languages' => 'nullable|string',
+            'sort_order' => 'nullable|integer',
+            'status' => 'required|in:active,inactive',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
+        // Handle specialties and languages as arrays
+        if (!empty($validated['specialties'])) {
+            $validated['specialties'] = array_map('trim', explode(',', $validated['specialties']));
+        }
+        if (!empty($validated['languages'])) {
+            $validated['languages'] = array_map('trim', explode(',', $validated['languages']));
+        }
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('team', 'public');
+            $validated['image_path'] = $path;
+        }
+
+        TeamMember::create($validated);
+
+        return redirect()->route('admin.team-members')->with('success', 'Team member added successfully.');
+    }
+
+    public function editTeamMember(TeamMember $member)
+    {
+        return view('admin.team-members-edit', compact('member'));
+    }
+
+    public function updateTeamMember(Request $request, TeamMember $member)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
+            'role' => 'nullable|string|max:255',
+            'experience_years' => 'nullable|integer|min:0',
+            'bio' => 'nullable|string',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:50',
+            'specialties' => 'nullable|string',
+            'languages' => 'nullable|string',
+            'sort_order' => 'nullable|integer',
+            'status' => 'required|in:active,inactive',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
+        // Handle specialties and languages as arrays
+        if (!empty($validated['specialties'])) {
+            $validated['specialties'] = array_map('trim', explode(',', $validated['specialties']));
+        } else {
+            $validated['specialties'] = null;
+        }
+        if (!empty($validated['languages'])) {
+            $validated['languages'] = array_map('trim', explode(',', $validated['languages']));
+        } else {
+            $validated['languages'] = null;
+        }
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($member->image_path) {
+                Storage::disk('public')->delete($member->image_path);
+            }
+            $path = $request->file('image')->store('team', 'public');
+            $validated['image_path'] = $path;
+        }
+
+        $member->update($validated);
+
+        return redirect()->route('admin.team-members')->with('success', 'Team member updated successfully.');
+    }
+
+    public function deleteTeamMember(TeamMember $member)
+    {
+        // Delete image
+        if ($member->image_path) {
+            Storage::disk('public')->delete($member->image_path);
+        }
+        
+        $member->delete();
+        return back()->with('success', 'Team member deleted successfully.');
     }
 }

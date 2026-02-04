@@ -109,13 +109,13 @@
                         <td>{{ $item->created_at->format('M d, Y H:i') }}</td>
                         <td><span style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-size: 12px; text-transform: capitalize;">{{ $item->target }}</span></td>
                         <td>{{ $item->subject }}</td>
-                        <td style="color: #166534; font-weight: 600;">{{ $item->sent_count }}</td>
+                        <td style="color: #2B5238; font-weight: 600;">{{ $item->sent_count }}</td>
                         <td style="color: #991b1b; font-weight: 600;">{{ $item->failed_count }}</td>
                         <td>
                             @if($item->failed_count == 0)
-                                <span style="color: #166534;"><i class="fas fa-check-circle"></i> Success</span>
+                                <span style="color: #2B5238;"><i class="fas fa-check-circle"></i> Success</span>
                             @else
-                                <span style="color: #f59e0b;"><i class="fas fa-exclamation-triangle"></i> Partial</span>
+                                <span style="color: #F1B434;"><i class="fas fa-exclamation-triangle"></i> Partial</span>
                             @endif
                         </td>
                     </tr>

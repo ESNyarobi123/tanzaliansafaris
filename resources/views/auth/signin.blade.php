@@ -189,7 +189,7 @@
             </div>
 
             @if (session('success'))
-                <div class="alert" style="background: #dcfce7; color: #166534; border: 1px solid #bbf7d0;">
+                <div class="alert" style="background: #e3ebe6; color: #2B5238; border: 1px solid #c5d6cb;">
                     <i class="fas fa-check-circle"></i> {{ session('success') }}
                 </div>
             @endif
