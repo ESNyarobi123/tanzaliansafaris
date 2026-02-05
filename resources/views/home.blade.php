@@ -132,39 +132,10 @@
     }
 
     .hero-stats {
-        position: absolute;
-        bottom: var(--space-12);
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 2;
-        display: flex;
-        gap: var(--space-12);
-        padding: var(--space-6) var(--space-10);
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: var(--radius-2xl);
-        animation: fadeInUp 0.8s ease-out 0.8s both;
+        display: none;
     }
 
-    .hero-stat {
-        text-align: center;
-    }
-
-    .hero-stat-value {
-        font-family: var(--font-display);
-        font-size: var(--text-3xl);
-        color: white;
-        line-height: 1;
-    }
-
-    .hero-stat-label {
-        font-size: var(--text-xs);
-        color: var(--gray-400);
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        margin-top: var(--space-1);
-    }
+    /* Hide old hero-stats, replaced by standalone stats-section */
 
     
     /* Hero Dots */
@@ -371,6 +342,79 @@
     }
 
     /* ============================================
+       STATS SECTION - Standalone
+    ============================================ */
+    .stats-section {
+        padding: var(--space-16) 0;
+        background: linear-gradient(135deg, #F1B434, #d99a1e);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stats-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(0,0,0,0.03)"/></svg>');
+        background-size: 50px 50px;
+        pointer-events: none;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-8);
+        position: relative;
+        z-index: 1;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: var(--space-6);
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: var(--radius-2xl);
+        transition: all var(--transition-base);
+    }
+
+    .stat-item:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-5px);
+    }
+
+    .stat-value {
+        font-family: var(--font-display);
+        font-size: var(--text-4xl);
+        font-weight: 700;
+        color: #333333;
+        line-height: 1;
+        margin-bottom: var(--space-2);
+    }
+
+    .stat-label {
+        font-size: var(--text-sm);
+        color: #555555;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-4);
+        }
+
+        .stat-value {
+            font-size: var(--text-3xl);
+        }
+    }
+
+    /* ============================================
        FEATURES SECTION - Bento Grid
     ============================================ */
     .features-section {
@@ -449,21 +493,21 @@
     .feature-card.featured {
         grid-column: span 2;
         grid-row: span 2;
-        background: linear-gradient(135deg, var(--secondary-800), var(--secondary-900));
-        color: white;
+        background: linear-gradient(135deg, #F1B434, #d99a1e);
+        color: #333333;
     }
 
     .feature-card.featured .feature-icon {
-        background: rgba(255,255,255,0.1);
-        color: var(--accent-300);
+        background: rgba(255,255,255,0.3);
+        color: #333333;
     }
 
     .feature-card.featured h3 {
-        color: white;
+        color: #333333;
     }
 
     .feature-card.featured p {
-        color: var(--gray-300);
+        color: #555555;
     }
 
     .feature-icon {
@@ -983,6 +1027,123 @@
     }
 
     /* ============================================
+       GALLERY SECTION
+    ============================================ */
+    .gallery-section {
+        padding: var(--space-24) 0;
+        background: linear-gradient(180deg, var(--bg-secondary) 0%, white 100%);
+    }
+
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-6);
+    }
+
+    .gallery-item {
+        position: relative;
+        border-radius: var(--radius-2xl);
+        overflow: hidden;
+        aspect-ratio: 4/3;
+        cursor: pointer;
+    }
+
+    .gallery-image-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .gallery-image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform var(--transition-slow);
+    }
+
+    .gallery-item:hover .gallery-image-wrapper img {
+        transform: scale(1.1);
+    }
+
+    .gallery-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: var(--space-6);
+        opacity: 0;
+        transition: all var(--transition-base);
+    }
+
+    .gallery-item:hover .gallery-overlay {
+        opacity: 1;
+    }
+
+    .gallery-content h4 {
+        font-size: var(--text-xl);
+        color: white;
+        margin-bottom: var(--space-1);
+        transform: translateY(20px);
+        transition: transform var(--transition-base) 0.1s;
+    }
+
+    .gallery-content p {
+        font-size: var(--text-sm);
+        color: var(--gray-300);
+        transform: translateY(20px);
+        transition: transform var(--transition-base) 0.15s;
+    }
+
+    .gallery-item:hover .gallery-content h4,
+    .gallery-item:hover .gallery-content p {
+        transform: translateY(0);
+    }
+
+    .gallery-lightbox {
+        position: absolute;
+        top: var(--space-4);
+        right: var(--space-4);
+        width: 44px;
+        height: 44px;
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(10px);
+        border-radius: var(--radius-full);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transform: translateY(-20px);
+        opacity: 0;
+        transition: all var(--transition-base);
+    }
+
+    .gallery-item:hover .gallery-lightbox {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .gallery-lightbox:hover {
+        background: var(--primary-500);
+        transform: scale(1.1);
+    }
+
+    @media (max-width: 1024px) {
+        .gallery-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 640px) {
+        .gallery-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* ============================================
        TESTIMONIALS SECTION
     ============================================ */
     .testimonials-section {
@@ -1082,6 +1243,200 @@
     @media (max-width: 640px) {
         .testimonials-grid {
             grid-template-columns: 1fr;
+        }
+    }
+
+    /* ============================================
+       TEAM SECTION
+    ============================================ */
+    .team-section {
+        padding: var(--space-24) 0;
+        background: linear-gradient(135deg, var(--bg-secondary) 0%, white 100%);
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-8);
+        margin-bottom: var(--space-12);
+    }
+
+    .team-card {
+        text-align: center;
+        transition: all var(--transition-base);
+    }
+
+    .team-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .team-image-wrapper {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        margin: 0 auto var(--space-6);
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid white;
+        box-shadow: var(--shadow-xl);
+        transition: all var(--transition-base);
+    }
+
+    .team-card:hover .team-image-wrapper {
+        box-shadow: var(--shadow-2xl);
+        border-color: var(--primary-200);
+    }
+
+    .team-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform var(--transition-slow);
+    }
+
+    .team-card:hover .team-image {
+        transform: scale(1.1);
+    }
+
+    .team-social {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: var(--space-2);
+        padding: var(--space-3);
+        background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all var(--transition-base);
+    }
+
+    .team-card:hover .team-social {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .team-social a {
+        width: 36px;
+        height: 36px;
+        background: rgba(255,255,255,0.9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-600);
+        text-decoration: none;
+        transition: all var(--transition-fast);
+        font-size: var(--text-sm);
+    }
+
+    .team-social a:hover {
+        background: var(--primary-500);
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .team-info {
+        padding: 0 var(--space-4);
+    }
+
+    .team-name {
+        font-size: var(--text-xl);
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: var(--space-1);
+    }
+
+    .team-position {
+        font-size: var(--text-sm);
+        color: var(--primary-600);
+        font-weight: 600;
+        margin-bottom: var(--space-3);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .team-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-size: var(--text-xs);
+        color: var(--text-secondary);
+        background: var(--gray-100);
+        padding: var(--space-2) var(--space-3);
+        border-radius: var(--radius-full);
+    }
+
+    .team-badge i {
+        color: var(--accent-500);
+    }
+
+    .team-cta {
+        text-align: center;
+    }
+
+    /* Tablet Responsive */
+    @media (max-width: 1024px) {
+        .team-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-6);
+        }
+
+        .team-image-wrapper {
+            width: 180px;
+            height: 180px;
+        }
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 640px) {
+        .team-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-4);
+        }
+
+        .team-image-wrapper {
+            width: 140px;
+            height: 140px;
+            border-width: 3px;
+        }
+
+        .team-name {
+            font-size: var(--text-lg);
+        }
+
+        .team-position {
+            font-size: var(--text-xs);
+        }
+
+        .team-badge {
+            font-size: 10px;
+            padding: var(--space-1) var(--space-2);
+        }
+
+        .team-social a {
+            width: 32px;
+            height: 32px;
+            font-size: 12px;
+        }
+    }
+
+    /* Small Mobile */
+    @media (max-width: 480px) {
+        .team-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3);
+        }
+
+        .team-image-wrapper {
+            width: 120px;
+            height: 120px;
+        }
+
+        .team-info {
+            padding: 0 var(--space-2);
         }
     }
 
@@ -1343,22 +1698,28 @@
         </div>
     </div>
 
-    <div class="hero-stats">
-        <div class="hero-stat">
-            <div class="hero-stat-value" data-count="15">0</div>
-            <div class="hero-stat-label">Years Experience</div>
-        </div>
-        <div class="hero-stat">
-            <div class="hero-stat-value" data-count="10000" data-suffix="k+">0</div>
-            <div class="hero-stat-label">Happy Travelers</div>
-        </div>
-        <div class="hero-stat">
-            <div class="hero-stat-value" data-count="50">0</div>
-            <div class="hero-stat-label">Safari Packages</div>
-        </div>
-        <div class="hero-stat">
-            <div class="hero-stat-value" data-count="4.9" data-decimal="true">0</div>
-            <div class="hero-stat-label">Rating</div>
+</section>
+
+<!-- Stats Section - Standalone -->
+<section class="stats-section">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-value" data-count="15">0</div>
+                <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" data-count="10000" data-suffix="k+">0</div>
+                <div class="stat-label">Happy Travelers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" data-count="50">0</div>
+                <div class="stat-label">Safari Packages</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" data-count="4.9" data-decimal="true">0</div>
+                <div class="stat-label">Rating</div>
+            </div>
         </div>
     </div>
 </section>
@@ -1676,6 +2037,139 @@
     </div>
 </section>
 
+<!-- Gallery Section -->
+<section class="gallery-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <div class="section-kicker">
+                <i class="fas fa-images"></i> Gallery
+            </div>
+            <h2 class="section-title">Safari Moments Captured</h2>
+            <p class="section-subtitle">
+                Explore breathtaking moments from our safari adventures across Tanzania's most iconic landscapes.
+            </p>
+        </div>
+
+        <div class="gallery-grid">
+            @forelse($galleryItems as $index => $item)
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
+                <div class="gallery-image-wrapper">
+                    <img src="{{ asset($item->image_path) }}" alt="{{ $item->title }}" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-content">
+                            <h4>{{ $item->title }}</h4>
+                            @if($item->subtitle)
+                                <p>{{ $item->subtitle }}</p>
+                            @endif
+                        </div>
+                        <a href="{{ asset($item->image_path) }}" class="gallery-lightbox" data-fancybox="gallery" data-caption="{{ $item->title }}">
+                            <i class="fas fa-expand"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @empty
+            <!-- Default gallery items if no gallery items added -->
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="gallery-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Serengeti Sunset" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-content">
+                            <h4>Serengeti Sunset</h4>
+                            <p>Golden hour in the endless plains</p>
+                        </div>
+                        <a href="https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="gallery-lightbox" data-fancybox="gallery" data-caption="Serengeti Sunset">
+                            <i class="fas fa-expand"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="gallery-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Elephant Family" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-content">
+                            <h4>Elephant Family</h4>
+                            <p>Majestic giants of Tarangire</p>
+                        </div>
+                        <a href="https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="gallery-lightbox" data-fancybox="gallery" data-caption="Elephant Family">
+                            <i class="fas fa-expand"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="300">
+                <div class="gallery-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1523805009345-7448845a9e53?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Lion King" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-content">
+                            <h4>Lion King</h4>
+                            <p>The ruler of Serengeti</p>
+                        </div>
+                        <a href="https://images.unsplash.com/photo-1523805009345-7448845a9e53?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="gallery-lightbox" data-fancybox="gallery" data-caption="Lion King">
+                            <i class="fas fa-expand"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="400">
+                <div class="gallery-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Zanzibar Beach" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-content">
+                            <h4>Zanzibar Beach</h4>
+                            <p>Paradise on earth</p>
+                        </div>
+                        <a href="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="gallery-lightbox" data-fancybox="gallery" data-caption="Zanzibar Beach">
+                            <i class="fas fa-expand"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="500">
+                <div class="gallery-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Giraffe Portrait" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-content">
+                            <h4>Giraffe Portrait</h4>
+                            <p>Graceful beauty of the savanna</p>
+                        </div>
+                        <a href="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="gallery-lightbox" data-fancybox="gallery" data-caption="Giraffe Portrait">
+                            <i class="fas fa-expand"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="600">
+                <div class="gallery-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1551009175-8a68da93d5f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mount Kilimanjaro" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-content">
+                            <h4>Mount Kilimanjaro</h4>
+                            <p>Africa's rooftop</p>
+                        </div>
+                        <a href="https://images.unsplash.com/photo-1551009175-8a68da93d5f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="gallery-lightbox" data-fancybox="gallery" data-caption="Mount Kilimanjaro">
+                            <i class="fas fa-expand"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @endforelse
+        </div>
+
+        <div style="text-align: center; margin-top: var(--space-12);" data-aos="fade-up">
+            <a href="{{ route('gallery') }}" class="btn btn-outline btn-lg">
+                View Full Gallery <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
 <!-- Testimonials Section -->
 <section class="testimonials-section">
     <div class="container">
@@ -1750,7 +2244,7 @@
 </section>
 
 <!-- Meet Our Guides Section -->
-<section class="section-padding" style="background: var(--bg-secondary);">
+<section class="team-section">
     <div class="container">
         <div class="section-header" data-aos="fade-up">
             <div class="section-kicker">
@@ -1762,36 +2256,94 @@
             </p>
         </div>
 
-        <div class="guides-preview-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 40px;">
+        <div class="team-grid">
             @forelse($teamMembers as $index => $member)
-            <div class="guide-preview-card" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}" style="background: white; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-md); text-align: center;">
-                <div style="height: 200px; overflow: hidden;">
-                    <img src="{{ $member->image_url }}" alt="{{ $member->name }}" style="width: 100%; height: 100%; object-fit: cover;">
+            <div class="team-card" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
+                <div class="team-image-wrapper">
+                    <img src="{{ $member->image_url }}" alt="{{ $member->name }}" class="team-image">
+                    <div class="team-social">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
                 </div>
-                <div style="padding: 20px;">
-                    <h4 style="font-size: 18px; margin-bottom: 4px;">{{ $member->name }}</h4>
-                    <p style="font-size: 13px; color: var(--primary-600); font-weight: 600; margin-bottom: 8px;">{{ $member->position }}</p>
+                <div class="team-info">
+                    <h4 class="team-name">{{ $member->name }}</h4>
+                    <p class="team-position">{{ $member->position }}</p>
                     @if($member->experience_years > 0)
-                        <p style="font-size: 12px; color: var(--text-secondary);">{{ $member->experience_years }} Years Experience</p>
+                        <span class="team-badge"><i class="fas fa-award"></i> {{ $member->experience_years }} Years Experience</span>
                     @endif
                 </div>
             </div>
             @empty
-            <!-- Default guide cards if no team members added -->
-            <div class="guide-preview-card" data-aos="fade-up" data-aos-delay="100" style="background: white; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-md); text-align: center;">
-                <div style="height: 200px; overflow: hidden;">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Guide" style="width: 100%; height: 100%; object-fit: cover;">
+            <!-- Default team cards if no team members added -->
+            <div class="team-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="team-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Expert Guide" class="team-image">
+                    <div class="team-social">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
                 </div>
-                <div style="padding: 20px;">
-                    <h4 style="font-size: 18px; margin-bottom: 4px;">Expert Guide</h4>
-                    <p style="font-size: 13px; color: var(--primary-600); font-weight: 600; margin-bottom: 8px;">Senior Guide</p>
-                    <p style="font-size: 12px; color: var(--text-secondary);">10+ Years Experience</p>
+                <div class="team-info">
+                    <h4 class="team-name">John Mwangi</h4>
+                    <p class="team-position">Senior Safari Guide</p>
+                    <span class="team-badge"><i class="fas fa-award"></i> 15 Years Experience</span>
+                </div>
+            </div>
+
+            <div class="team-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="team-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Expert Guide" class="team-image">
+                    <div class="team-social">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="team-info">
+                    <h4 class="team-name">David Kibacha</h4>
+                    <p class="team-position">Wildlife Expert</p>
+                    <span class="team-badge"><i class="fas fa-award"></i> 12 Years Experience</span>
+                </div>
+            </div>
+
+            <div class="team-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="team-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Expert Guide" class="team-image">
+                    <div class="team-social">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="team-info">
+                    <h4 class="team-name">Emmanuel Joseph</h4>
+                    <p class="team-position">Mountain Guide</p>
+                    <span class="team-badge"><i class="fas fa-award"></i> 10 Years Experience</span>
+                </div>
+            </div>
+
+            <div class="team-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="team-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Expert Guide" class="team-image">
+                    <div class="team-social">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="team-info">
+                    <h4 class="team-name">Michael Lema</h4>
+                    <p class="team-position">Cultural Guide</p>
+                    <span class="team-badge"><i class="fas fa-award"></i> 8 Years Experience</span>
                 </div>
             </div>
             @endforelse
         </div>
 
-        <div style="text-align: center;" data-aos="fade-up">
+        <div class="team-cta" data-aos="fade-up">
             <a href="{{ route('guides') }}" class="btn btn-outline btn-lg">
                 Meet All Our Guides <i class="fas fa-arrow-right"></i>
             </a>
@@ -2074,7 +2626,7 @@
     }
     
     // Initialize counters with Intersection Observer
-    const statElements = document.querySelectorAll('.hero-stat-value[data-count]');
+    const statElements = document.querySelectorAll('.stat-value[data-count]');
     const counters = Array.from(statElements).map(el => new AnimatedCounter(el));
     
     const counterObserver = new IntersectionObserver((entries) => {
@@ -2092,7 +2644,6 @@
     // PARALLAX EFFECT ON SCROLL
     // ============================================
     const heroContent = document.querySelector('.hero-content');
-    const heroStats = document.querySelector('.hero-stats');
     
     window.addEventListener('scroll', () => {
         const scrollY = window.scrollY;
@@ -2103,9 +2654,6 @@
             if (heroContent) {
                 heroContent.style.transform = `translateY(${parallaxValue}px)`;
                 heroContent.style.opacity = 1 - (scrollY / heroHeight) * 0.5;
-            }
-            if (heroStats) {
-                heroStats.style.transform = `translateX(-50%) translateY(${parallaxValue * 0.5}px)`;
             }
         }
     }, { passive: true });

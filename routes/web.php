@@ -41,6 +41,7 @@ Route::get('/booking/availability', [BookingController::class, 'getAvailability'
 Route::get('/booking/next-available', [BookingController::class, 'getNextAvailableDates'])->name('booking.next-available');
 Route::get('/flight-booking', [BookingController::class, 'flightBooking'])->name('flight.booking');
 Route::get('/signin', [AuthController::class, 'showSignin'])->name('signin');
+Route::get('/login', [AuthController::class, 'showSignin'])->name('login');
 Route::post('/signin', [AuthController::class, 'signin']);
 Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
 Route::post('/signup', [AuthController::class, 'signup']);

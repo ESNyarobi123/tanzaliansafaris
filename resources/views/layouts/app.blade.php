@@ -744,58 +744,6 @@
         }
 
         /* ============================================
-           WHATSAPP FLOAT - Modern Design
-        ============================================ */
-        .whatsapp-float {
-            position: fixed;
-            bottom: var(--space-6);
-            right: var(--space-6);
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #25d366, #128c7e);
-            border-radius: var(--radius-full);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
-            z-index: 1000;
-            transition: all var(--transition-base);
-            animation: pulse-whatsapp 2s infinite;
-            text-decoration: none;
-        }
-
-        .whatsapp-float:hover {
-            transform: scale(1.1) translateY(-5px);
-            box-shadow: 0 12px 40px rgba(37, 211, 102, 0.5);
-        }
-
-        .whatsapp-float i {
-            color: white;
-            font-size: 28px;
-        }
-
-        @keyframes pulse-whatsapp {
-            0%, 100% {
-                box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
-            }
-            50% {
-                box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4), 0 0 0 15px rgba(37, 211, 102, 0.1);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .whatsapp-float {
-                bottom: var(--space-4);
-                right: var(--space-4);
-                width: 55px;
-                height: 55px;
-            }
-            .whatsapp-float i {
-                font-size: 24px;
-            }
-        }
-
-        /* ============================================
            MODERN FOOTER
         ============================================ */
         footer {
@@ -1382,17 +1330,12 @@
         @yield('content')
     </main>
 
-    <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/255691111111" target="_blank" class="whatsapp-float" aria-label="Contact us on WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
     <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-about">
                 <h3>
-                    <img src="{{ asset('assets/img/tanzalogo.jpg') }}" alt="Tanzalian Safari's" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 10px;">
+                    <img src="{{ asset('assets/img/tanzalogo.jpg') }}" alt="Tanzalian Safari's" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 10px;">
                     Tanzalian Safari's
                 </h3>
                 <p>Your premier gateway to authentic Tanzanian adventures. We specialize in crafting personalized journeys that showcase the breathtaking beauty and rich culture of East Africa.</p>
