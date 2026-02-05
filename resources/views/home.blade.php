@@ -2054,7 +2054,7 @@
             @forelse($galleryItems as $index => $item)
             <div class="gallery-item" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
                 <div class="gallery-image-wrapper">
-                    <img src="{{ asset($item->image_path) }}" alt="{{ $item->title }}" loading="lazy">
+                    <img src="{{ $item->image_url }}" alt="{{ $item->title }}" loading="lazy">
                     <div class="gallery-overlay">
                         <div class="gallery-content">
                             <h4>{{ $item->title }}</h4>
@@ -2062,7 +2062,7 @@
                                 <p>{{ $item->subtitle }}</p>
                             @endif
                         </div>
-                        <a href="{{ asset($item->image_path) }}" class="gallery-lightbox" data-fancybox="gallery" data-caption="{{ $item->title }}">
+                        <a href="{{ $item->image_url }}" class="gallery-lightbox" data-fancybox="gallery" data-caption="{{ $item->title }}">
                             <i class="fas fa-expand"></i>
                         </a>
                     </div>
