@@ -6,6 +6,7 @@ use App\Models\PageContent;
 use App\Models\Gallery;
 use App\Models\SafariPackage;
 use App\Models\TeamMember;
+use App\Models\HeroImage;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -51,7 +52,12 @@ class HomeController extends Controller
             ->take(4)
             ->get();
 
-        return view('home', compact('galleryItems', 'homeContent', 'aboutPageContent', 'pageContent', 'featuredPackages', 'pills', 'teamMembers'));
+        // Fetch hero images for slider
+        $heroImages = HeroImage::active()
+            ->ordered()
+            ->get();
+
+        return view('home', compact('galleryItems', 'homeContent', 'aboutPageContent', 'pageContent', 'featuredPackages', 'pills', 'teamMembers', 'heroImages'));
     }
 
     public function about()

@@ -71,7 +71,7 @@
                 </div>
                 <div class="form-group">
                     <label>Office Address</label>
-                    <input type="text" name="office_address" value="{{ $settings['general'] ?? '' ? $settings['general']->where('key', 'office_address')->first()->value ?? 'Arusha, Tanzania' : 'Arusha, Tanzania' }}">
+                    <input type="text" name="office_address" value="{{ $settings['general'] ?? '' ? $settings['general']->where('key', 'office_address')->first()->value ?? 'Dar es salaam, Tanzania' : 'Dar es salaam, Tanzania' }}">
                 </div>
             </div>
         </div>

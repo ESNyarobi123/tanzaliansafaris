@@ -1321,7 +1321,7 @@
                 <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Home</a></li>
                 <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">About</a></li>
                 <li><a href="{{ route('packages') }}" class="{{ request()->routeIs('packages*') ? 'active' : '' }}">Packages</a></li>
-                <li><a href="{{ route('guides') }}" class="{{ request()->routeIs('guides') ? 'active' : '' }}">Guides</a></li>
+                <li><a href="{{ route('services') }}" class="{{ request()->routeIs('services') ? 'active' : '' }}">Services</a></li>
                 <li><a href="{{ route('booking') }}" class="{{ request()->routeIs('booking') ? 'active' : '' }}">Booking</a></li>
                 <li><a href="{{ route('packing-list') }}" class="{{ request()->routeIs('packing-list') ? 'active' : '' }}">Packing List</a></li>
                 <li><a href="{{ route('gallery') }}" class="{{ request()->routeIs('gallery') ? 'active' : '' }}">Gallery</a></li>
@@ -1337,9 +1337,6 @@
                             <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Logout
                         </a>
                     @else
-                        <a href="{{ route('signin') }}" style="background: var(--primary-50); color: var(--primary-600); margin-bottom: 8px;">
-                            <i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i> Sign In
-                        </a>
                         <a href="{{ route('signup') }}" style="background: linear-gradient(135deg, var(--primary-500), var(--primary-600)); color: white;">
                             <i class="fas fa-user-plus" style="margin-right: 8px;"></i> Get Started
                         </a>
@@ -1351,7 +1348,6 @@
                     <a href="{{ route('dashboard') }}" class="btn btn-outline btn-sm">Dashboard</a>
                     <a href="{{ route('logout') }}" class="btn btn-secondary btn-sm">Logout</a>
                 @else
-                    <a href="{{ route('signin') }}" class="btn btn-outline btn-sm auth-btn">Sign In</a>
                     <a href="{{ route('signup') }}" class="btn btn-primary btn-sm">Get Started</a>
                 @endauth
                 <div class="menu-toggle" id="menuToggle">
@@ -1414,7 +1410,7 @@
                     <li><a href="{{ route('packages') }}">Safari Packages</a></li>
                     <li><a href="{{ route('guides') }}">Our Guides</a></li>
                     <li><a href="{{ route('services') }}">Our Services</a></li>
-                    <li><a href="{{ route('privacy') }}">Privacy Policy</a></li>
+                    <li><a href="{{ route('signin') }}"><i class="fas fa-sign-in-alt"></i> Sign In</a></li>
                 </ul>
             </div>
             <div class="footer-column">
@@ -1443,73 +1439,6 @@
                 </div>
             </div>
         </div>
-        <!-- Trust Badges Section -->
-        <div class="trust-badges-section">
-            <div class="trust-badges-container">
-                <div class="trust-badge-item" data-aos="fade-up" data-aos-delay="100">
-                    <div class="trust-badge-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <div class="trust-badge-content">
-                        <strong>SSL Secured</strong>
-                        <span>256-bit Encryption</span>
-                    </div>
-                </div>
-                
-                <div class="trust-badge-item" data-aos="fade-up" data-aos-delay="150">
-                    <div class="trust-badge-icon">
-                        <i class="fas fa-certificate"></i>
-                    </div>
-                    <div class="trust-badge-content">
-                        <strong>TALA Licensed</strong>
-                        <span>Regulated Operator</span>
-                    </div>
-                </div>
-                
-                <div class="trust-badge-item" data-aos="fade-up" data-aos-delay="200">
-                    <div class="trust-badge-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <div class="trust-badge-content">
-                        <strong>4.9/5 Rating</strong>
-                        <span>500+ Reviews</span>
-                    </div>
-                </div>
-                
-                <div class="trust-badge-item" data-aos="fade-up" data-aos-delay="250">
-                    <div class="trust-badge-icon">
-                        <i class="fas fa-leaf"></i>
-                    </div>
-                    <div class="trust-badge-content">
-                        <strong>Eco Certified</strong>
-                        <span>Sustainable Tourism</span>
-                    </div>
-                </div>
-                
-                <div class="trust-badge-item" data-aos="fade-up" data-aos-delay="300">
-                    <div class="trust-badge-icon">
-                        <i class="fas fa-award"></i>
-                    </div>
-                    <div class="trust-badge-content">
-                        <strong>15+ Years</strong>
-                        <span>Experience</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Payment Methods -->
-            <div class="payment-badges" data-aos="fade-up" data-aos-delay="350">
-                <span class="payment-label">Secure Payment Methods:</span>
-                <div class="payment-icons">
-                    <i class="fab fa-cc-visa" title="Visa"></i>
-                    <i class="fab fa-cc-mastercard" title="Mastercard"></i>
-                    <i class="fab fa-cc-paypal" title="PayPal"></i>
-                    <i class="fas fa-mobile-alt" title="M-Pesa"></i>
-                    <i class="fab fa-bitcoin" title="USDT/Crypto"></i>
-                    <i class="fas fa-university" title="Bank Transfer"></i>
-                </div>
-            </div>
-        </div>
 
         <!-- Contact Bar (Moved from Top) -->
         <div class="footer-contact-bar">
@@ -1525,7 +1454,7 @@
                     </a>
                     <span class="footer-contact-item location">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span>Arusha, Tanzania</span>
+                        <span>Dar es salaam, Tanzania</span>
                     </span>
                 </div>
                 <div class="footer-social-links">

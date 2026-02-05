@@ -121,7 +121,7 @@
         <p>If you have any questions regarding these terms, please contact us:</p>
         <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; border-left: 5px solid var(--primary-color);">
             <p><strong>Tanzalian Safari's Limited</strong><br>
-            Arusha, Tanzania<br>
+            Dar es salaam, Tanzania<br>
             <i class="fas fa-phone"></i> Phone: +255 691 111 111<br>
             <i class="fas fa-envelope"></i> Email: info@tanzaliansafaris.com</p>
         </div>

@@ -315,7 +315,7 @@
                     </li>
                     <li>
                         <i class="fa-solid fa-plane-departure"></i>
-                        <span><strong>Arrive a day early</strong> in Arusha or Mwanza to rest before safari begins.</span>
+                        <span><strong>Arrive a day early</strong> in Dar es salaam or Mwanza to rest before safari begins.</span>
                     </li>
                     <li>
                         <i class="fa-solid fa-comments"></i>

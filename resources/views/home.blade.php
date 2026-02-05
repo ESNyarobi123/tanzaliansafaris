@@ -27,16 +27,32 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        object-position: center;
         opacity: 0;
         position: absolute;
         inset: 0;
-        transition: opacity 1.5s ease-in-out, transform 10s ease-out;
-        transform: scale(1.1);
+        transition: opacity 0.8s ease-in-out, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: translateY(100%);
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        will-change: transform, opacity;
     }
 
     .hero-bg img.active {
         opacity: 1;
-        transform: scale(1);
+        transform: translateY(0);
+    }
+
+    .hero-bg img.slide-up {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+
+    .hero-bg img.slide-down {
+        opacity: 0;
+        transform: translateY(100%);
     }
 
     .hero-overlay {
@@ -148,6 +164,176 @@
         text-transform: uppercase;
         letter-spacing: 0.1em;
         margin-top: var(--space-1);
+    }
+
+    
+    /* Hero Dots */
+    .hero-dots {
+        position: absolute;
+        bottom: 180px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        display: flex;
+        gap: 12px;
+    }
+
+    .hero-dot {
+        width: 12px;
+        height: 12px;
+        background: rgba(255, 255, 255, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 0;
+    }
+
+    .hero-dot:hover {
+        background: rgba(255, 255, 255, 0.5);
+        transform: scale(1.2);
+    }
+
+    .hero-dot.active {
+        background: var(--accent-500);
+        border-color: var(--accent-500);
+        transform: scale(1.3);
+        box-shadow: 0 0 20px rgba(241, 180, 52, 0.5);
+    }
+
+    /* Hero Progress Bar */
+    .hero-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        z-index: 10;
+    }
+
+    .hero-progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent-500), var(--accent-400));
+        width: 0%;
+        transition: width 0.1s linear;
+        box-shadow: 0 0 10px rgba(241, 180, 52, 0.5);
+    }
+
+    /* Hero Title Animation */
+    .hero-title-animated {
+        font-size: clamp(2.5rem, 6vw, 5rem);
+        line-height: 1.1;
+        margin-bottom: var(--space-6);
+    }
+
+    .hero-title-main {
+        display: block;
+        animation: heroTitleIn 1s ease-out both;
+        background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .hero-title-sub {
+        display: block;
+        font-size: clamp(1rem, 2vw, 1.5rem);
+        font-family: var(--font-sans);
+        font-weight: 400;
+        color: var(--gray-300);
+        margin-top: var(--space-4);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        animation: heroSubtitleIn 1s ease-out 0.3s both;
+        -webkit-text-fill-color: initial;
+        background: none;
+    }
+
+    @keyframes heroTitleIn {
+        0% {
+            opacity: 0;
+            transform: translateY(40px) rotateX(-15deg);
+            filter: blur(10px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) rotateX(0);
+            filter: blur(0);
+        }
+    }
+
+    @keyframes heroSubtitleIn {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+            letter-spacing: 0.3em;
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+            letter-spacing: 0.1em;
+        }
+    }
+
+    /* Slide transition effects */
+    .hero-bg img {
+        animation: none;
+    }
+
+    .hero-bg img.active {
+        animation: kenBurns 8s ease-out forwards;
+    }
+
+    .hero-bg img.slide-out {
+        animation: slideOut 1.5s ease-in-out forwards;
+    }
+
+    @keyframes kenBurns {
+        0% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    @keyframes slideOut {
+        0% {
+            opacity: 1;
+            transform: scale(1);
+        }
+        100% {
+            opacity: 0;
+            transform: scale(1.05);
+        }
+    }
+
+    /* Parallax effect on scroll */
+    .hero-content {
+        transition: transform 0.1s ease-out;
+    }
+
+    @media (max-width: 768px) {
+        .hero-nav {
+            padding: 0 var(--space-3);
+        }
+        
+        .hero-nav-btn {
+            width: 44px;
+            height: 44px;
+            font-size: 14px;
+        }
+        
+        .hero-dots {
+            bottom: 140px;
+            gap: 8px;
+        }
+        
+        .hero-dot {
+            width: 10px;
+            height: 10px;
+        }
     }
 
     @keyframes fadeInDown {
@@ -1101,21 +1287,47 @@
 <!-- Hero Section -->
 <section class="hero">
     <div class="hero-bg">
-        <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="active" alt="Serengeti">
-        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Elephants">
-        <img src="https://images.unsplash.com/photo-1523805009345-7448845a9e53?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Lion">
-        <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Zanzibar">
+        @if(isset($heroImages) && $heroImages->count() > 0)
+            @foreach($heroImages as $index => $heroImage)
+                <img src="{{ $heroImage->image_url }}" class="{{ $index === 0 ? 'active' : '' }}" alt="{{ $heroImage->title ?? 'Safari Adventure' }}" data-title="{{ $heroImage->title }}" data-subtitle="{{ $heroImage->subtitle }}">
+            @endforeach
+        @else
+            <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" class="active" alt="Serengeti">
+            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Elephants">
+            <img src="https://images.unsplash.com/photo-1523805009345-7448845a9e53?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Lion">
+            <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="Zanzibar">
+        @endif
     </div>
     <div class="hero-overlay"></div>
+    
+    
+    <!-- Hero Slider Dots -->
+    <div class="hero-dots">
+        @if(isset($heroImages) && $heroImages->count() > 0)
+            @foreach($heroImages as $index => $heroImage)
+                <button class="hero-dot {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}" aria-label="Go to slide {{ $index + 1 }}"></button>
+            @endforeach
+        @else
+            <button class="hero-dot active" data-index="0"></button>
+            <button class="hero-dot" data-index="1"></button>
+            <button class="hero-dot" data-index="2"></button>
+            <button class="hero-dot" data-index="3"></button>
+        @endif
+    </div>
+
+    <!-- Hero Progress Bar -->
+    <div class="hero-progress">
+        <div class="hero-progress-bar"></div>
+    </div>
     
     <div class="hero-content">
         <div class="hero-badge">
             <i class="fas fa-award"></i>
             Tanzania's Leading Safari Operator
         </div>
-        <h1>
-            Discover the Wild Heart of Africa
-            <span>Unforgettable Safari Adventures Await</span>
+        <h1 class="hero-title-animated">
+            <span class="hero-title-main">Discover the Wild Heart of Africa</span>
+            <span class="hero-title-sub">Unforgettable Safari Adventures Await</span>
         </h1>
         <p class="hero-description">
             Experience the breathtaking beauty of Tanzania's national parks, witness the Great Migration, 
@@ -1133,19 +1345,19 @@
 
     <div class="hero-stats">
         <div class="hero-stat">
-            <div class="hero-stat-value">15+</div>
+            <div class="hero-stat-value" data-count="15">0</div>
             <div class="hero-stat-label">Years Experience</div>
         </div>
         <div class="hero-stat">
-            <div class="hero-stat-value">10k+</div>
+            <div class="hero-stat-value" data-count="10000" data-suffix="k+">0</div>
             <div class="hero-stat-label">Happy Travelers</div>
         </div>
         <div class="hero-stat">
-            <div class="hero-stat-value">50+</div>
+            <div class="hero-stat-value" data-count="50">0</div>
             <div class="hero-stat-label">Safari Packages</div>
         </div>
         <div class="hero-stat">
-            <div class="hero-stat-value">4.9</div>
+            <div class="hero-stat-value" data-count="4.9" data-decimal="true">0</div>
             <div class="hero-stat-label">Rating</div>
         </div>
     </div>
@@ -1544,7 +1756,7 @@
             <div class="section-kicker">
                 <i class="fas fa-users"></i> Expert Team
             </div>
-            <h2 class="section-title">Meet Your Safari Guides</h2>
+            <h2 class="section-title">Meet Your Safari Team</h2>
             <p class="section-subtitle">
                 Our certified professional guides are passionate about wildlife and dedicated to making your safari unforgettable.
             </p>
@@ -1626,49 +1838,276 @@
 
 @section('scripts')
 <script>
-    // Hero Slideshow with Ken Burns effect
-    const heroImages = document.querySelectorAll('.hero-bg img');
-    let currentImage = 0;
-
-    function rotateHeroImages() {
-        heroImages[currentImage].classList.remove('active');
-        currentImage = (currentImage + 1) % heroImages.length;
-        heroImages[currentImage].classList.add('active');
-    }
-
-    setInterval(rotateHeroImages, 6000);
-
-    // Animate hero stats counter
-    const stats = document.querySelectorAll('.hero-stat-value');
-    
-    const animateCounter = (element, target) => {
-        let current = 0;
-        const increment = target / 50;
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                element.textContent = target + (element.textContent.includes('+') ? '+' : '');
-                clearInterval(timer);
-            } else {
-                element.textContent = Math.floor(current) + (element.textContent.includes('+') ? '+' : '');
+    // ============================================
+    // HERO SLIDER - Advanced Implementation
+    // ============================================
+    class HeroSlider {
+        constructor() {
+            this.images = document.querySelectorAll('.hero-bg img');
+            this.dots = document.querySelectorAll('.hero-dot');
+            this.prevBtn = document.querySelector('.hero-prev');
+            this.nextBtn = document.querySelector('.hero-next');
+            this.progressBar = document.querySelector('.hero-progress-bar');
+            
+            this.currentIndex = 0;
+            this.slideInterval = null;
+            this.progressInterval = null;
+            this.slideDuration = 7000; // 7 seconds per slide
+            this.isAnimating = false;
+            
+            this.init();
+        }
+        
+        init() {
+            if (this.images.length === 0) return;
+            
+            // Start autoplay
+            this.startAutoplay();
+            
+            // Event listeners
+            if (this.prevBtn) {
+                this.prevBtn.addEventListener('click', () => this.prev());
             }
-        }, 30);
-    };
+            if (this.nextBtn) {
+                this.nextBtn.addEventListener('click', () => this.next());
+            }
+            
+            this.dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => this.goTo(index));
+            });
+            
+            // Pause on hover
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.addEventListener('mouseenter', () => this.pause());
+                hero.addEventListener('mouseleave', () => this.resume());
+            }
+            
+            // Keyboard navigation - Vertical (Up/Down arrows)
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowUp') this.prev();
+                if (e.key === 'ArrowDown') this.next();
+            });
+            
+            // Touch/Swipe support - Vertical
+            this.initTouchEvents();
+        }
+        
+        initTouchEvents() {
+            const hero = document.querySelector('.hero');
+            if (!hero) return;
+            
+            let touchStartY = 0;
+            let touchEndY = 0;
+            
+            hero.addEventListener('touchstart', (e) => {
+                touchStartY = e.changedTouches[0].screenY;
+            }, { passive: true });
+            
+            hero.addEventListener('touchend', (e) => {
+                touchEndY = e.changedTouches[0].screenY;
+                this.handleSwipe(touchStartY, touchEndY);
+            }, { passive: true });
+        }
+        
+        handleSwipe(startY, endY) {
+            const threshold = 50;
+            const diff = startY - endY;
+            
+            // Swipe up = next, Swipe down = prev
+            if (Math.abs(diff) > threshold) {
+                if (diff > 0) {
+                    this.next(); // Swiped up
+                } else {
+                    this.prev(); // Swiped down
+                }
+            }
+        }
+        
+        goTo(index, direction = 'next') {
+            if (this.isAnimating || index === this.currentIndex) return;
+            this.isAnimating = true;
+            
+            const currentImg = this.images[this.currentIndex];
+            const nextImg = this.images[index];
+            
+            // Determine slide direction (vertical)
+            const isNext = direction === 'next';
+            
+            // Current image slides up (out)
+            currentImg.classList.remove('active');
+            currentImg.classList.add('slide-up');
+            this.dots[this.currentIndex]?.classList.remove('active');
+            
+            // Next image starts from bottom and slides up (in)
+            nextImg.classList.remove('slide-up', 'slide-down');
+            if (isNext) {
+                nextImg.style.transform = 'translateY(100%)';
+            } else {
+                nextImg.style.transform = 'translateY(-100%)';
+            }
+            nextImg.style.opacity = '0';
+            
+            // Force reflow
+            nextImg.offsetHeight;
+            
+            // Animate in
+            requestAnimationFrame(() => {
+                nextImg.style.transform = '';
+                nextImg.style.opacity = '';
+                nextImg.classList.add('active');
+            });
+            
+            // Update current index
+            this.currentIndex = index;
+            this.dots[this.currentIndex]?.classList.add('active');
+            
+            // Clean up after animation
+            setTimeout(() => {
+                currentImg.classList.remove('slide-up', 'slide-down');
+                currentImg.style.transform = '';
+                this.isAnimating = false;
+            }, 800);
+            
+            // Reset progress
+            this.resetProgress();
+        }
+        
+        next() {
+            const nextIndex = (this.currentIndex + 1) % this.images.length;
+            this.goTo(nextIndex, 'next');
+        }
+        
+        prev() {
+            const prevIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+            this.goTo(prevIndex, 'prev');
+        }
+        
+        startAutoplay() {
+            this.slideInterval = setInterval(() => this.next(), this.slideDuration);
+            this.startProgress();
+        }
+        
+        startProgress() {
+            if (!this.progressBar) return;
+            
+            let progress = 0;
+            const increment = 100 / (this.slideDuration / 50);
+            
+            this.progressBar.style.width = '0%';
+            
+            this.progressInterval = setInterval(() => {
+                progress += increment;
+                this.progressBar.style.width = Math.min(progress, 100) + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(this.progressInterval);
+                }
+            }, 50);
+        }
+        
+        resetProgress() {
+            clearInterval(this.progressInterval);
+            clearInterval(this.slideInterval);
+            this.startAutoplay();
+        }
+        
+        pause() {
+            clearInterval(this.slideInterval);
+            clearInterval(this.progressInterval);
+        }
+        
+        resume() {
+            this.startAutoplay();
+        }
+    }
+    
+    // Initialize Hero Slider
+    document.addEventListener('DOMContentLoaded', () => {
+        new HeroSlider();
+    });
 
-    // Intersection Observer for stats animation
-    const statsObserver = new IntersectionObserver((entries) => {
+    // ============================================
+    // ANIMATED COUNTERS
+    // ============================================
+    class AnimatedCounter {
+        constructor(element) {
+            this.element = element;
+            this.target = parseFloat(element.dataset.count) || 0;
+            this.suffix = element.dataset.suffix || '+';
+            this.isDecimal = element.dataset.decimal === 'true';
+            this.duration = 2000;
+            this.animated = false;
+        }
+        
+        animate() {
+            if (this.animated) return;
+            this.animated = true;
+            
+            const startTime = performance.now();
+            const startValue = 0;
+            
+            const updateCounter = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / this.duration, 1);
+                
+                // Easing function (ease-out-cubic)
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                
+                let currentValue = startValue + (this.target - startValue) * easeProgress;
+                
+                if (this.isDecimal) {
+                    this.element.textContent = currentValue.toFixed(1);
+                } else if (this.target >= 1000) {
+                    this.element.textContent = Math.floor(currentValue / 1000) + this.suffix;
+                } else {
+                    this.element.textContent = Math.floor(currentValue) + this.suffix;
+                }
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                }
+            };
+            
+            requestAnimationFrame(updateCounter);
+        }
+    }
+    
+    // Initialize counters with Intersection Observer
+    const statElements = document.querySelectorAll('.hero-stat-value[data-count]');
+    const counters = Array.from(statElements).map(el => new AnimatedCounter(el));
+    
+    const counterObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const value = entry.target.textContent;
-                const numericValue = parseInt(value);
-                if (!isNaN(numericValue)) {
-                    animateCounter(entry.target, numericValue);
-                }
-                statsObserver.unobserve(entry.target);
+                const counter = counters.find(c => c.element === entry.target);
+                if (counter) counter.animate();
             }
         });
     }, { threshold: 0.5 });
+    
+    statElements.forEach(el => counterObserver.observe(el));
 
-    stats.forEach(stat => statsObserver.observe(stat));
+    // ============================================
+    // PARALLAX EFFECT ON SCROLL
+    // ============================================
+    const heroContent = document.querySelector('.hero-content');
+    const heroStats = document.querySelector('.hero-stats');
+    
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        const heroHeight = document.querySelector('.hero')?.offsetHeight || 0;
+        
+        if (scrollY < heroHeight) {
+            const parallaxValue = scrollY * 0.3;
+            if (heroContent) {
+                heroContent.style.transform = `translateY(${parallaxValue}px)`;
+                heroContent.style.opacity = 1 - (scrollY / heroHeight) * 0.5;
+            }
+            if (heroStats) {
+                heroStats.style.transform = `translateX(-50%) translateY(${parallaxValue * 0.5}px)`;
+            }
+        }
+    }, { passive: true });
 </script>
 @endsection

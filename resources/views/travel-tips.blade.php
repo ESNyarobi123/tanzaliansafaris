@@ -181,7 +181,7 @@
             <ul>
                 <li><i class="fas fa-check-circle"></i> US Dollars (post-2006) are widely accepted everywhere.</li>
                 <li><i class="fas fa-check-circle"></i> Local currency: Tanzanian Shilling (TZS) for small items.</li>
-                <li><i class="fas fa-check-circle"></i> ATMs are available in Arusha, Dar, and major towns.</li>
+                <li><i class="fas fa-check-circle"></i> ATMs are available in Dar es salaam, Dar, and major towns.</li>
                 <li><i class="fas fa-check-circle"></i> Credit cards are accepted at most lodges and hotels.</li>
             </ul>
         </div>

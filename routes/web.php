@@ -110,4 +110,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/newsletter', [AdminController::class, 'newsletter'])->name('newsletter');
     Route::delete('/newsletter/{subscriber}', [AdminController::class, 'deleteNewsletter'])->name('newsletter.delete');
     Route::post('/newsletter/send', [AdminController::class, 'sendAnnouncement'])->name('newsletter.send');
+
+    // Hero Images
+    Route::get('/hero-images', [AdminController::class, 'heroImages'])->name('hero-images');
+    Route::post('/hero-images/upload', [AdminController::class, 'uploadHeroImage'])->name('hero-images.upload');
+    Route::post('/hero-images/{image}/update', [AdminController::class, 'updateHeroImage'])->name('hero-images.update');
+    Route::post('/hero-images/{image}/toggle', [AdminController::class, 'toggleHeroStatus'])->name('hero-images.toggle');
+    Route::delete('/hero-images/{image}', [AdminController::class, 'deleteHeroImage'])->name('hero-images.delete');
+    Route::post('/hero-images/reorder', [AdminController::class, 'reorderHeroImages'])->name('hero-images.reorder');
 });

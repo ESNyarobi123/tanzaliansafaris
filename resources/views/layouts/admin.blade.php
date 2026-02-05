@@ -891,6 +891,10 @@
 
             <div class="menu-section">
                 <div class="menu-section-title">Content</div>
+                <a href="{{ route('admin.hero-images') }}" class="menu-item {{ request()->routeIs('admin.hero-images') ? 'active' : '' }}">
+                    <i class="fas fa-panorama"></i>
+                    <span>Hero Slider</span>
+                </a>
                 <a href="{{ route('admin.gallery') }}" class="menu-item {{ request()->routeIs('admin.gallery') ? 'active' : '' }}">
                     <i class="fas fa-images"></i>
                     <span>Gallery</span>

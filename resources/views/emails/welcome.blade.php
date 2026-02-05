@@ -29,7 +29,7 @@
         </div>
         <div class="footer">
             <p>&copy; {{ date('Y') }} Tanzalian Safari's. All rights reserved.</p>
-            <p>Arusha, Tanzania</p>
+            <p>Dar es salaam, Tanzania</p>
         </div>
     </div>
 </body>

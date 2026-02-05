@@ -780,8 +780,8 @@
                     <!-- Day 1 -->
                     <div class="itinerary-day" data-day="01">
                         <div class="itinerary-day-header">
-                            <div class="itinerary-day-title">Arrival in Arusha</div>
-                            <div class="itinerary-day-route"><i class="fas fa-plane-arrival"></i> Kilimanjaro Airport → Arusha</div>
+                            <div class="itinerary-day-title">Arrival in Dar es salaam</div>
+                            <div class="itinerary-day-route"><i class="fas fa-plane-arrival"></i> Kilimanjaro Airport → Dar es salaam</div>
                         </div>
                         <div class="itinerary-day-content">
                             <div class="itinerary-activities">
@@ -789,7 +789,7 @@
                                     <div class="itinerary-time">12:00 PM</div>
                                     <div class="itinerary-activity-content">
                                         <h4>Airport Pickup</h4>
-                                        <p>Our representative will meet you at Kilimanjaro International Airport with a warm welcome. Transfer to your hotel in Arusha in a comfortable private vehicle.</p>
+                                        <p>Our representative will meet you at Kilimanjaro International Airport with a warm welcome. Transfer to your hotel in Dar es salaam in a comfortable private vehicle.</p>
                                     </div>
                                 </div>
                                 <div class="itinerary-activity">
@@ -810,7 +810,7 @@
                             <div class="itinerary-day-footer">
                                 <div class="itinerary-info-item">
                                     <i class="fas fa-bed"></i>
-                                    <span>Arusha Coffee Lodge (4★)</span>
+                                    <span>Dar es salaam Coffee Lodge (4★)</span>
                                 </div>
                                 <div class="itinerary-info-item">
                                     <i class="fas fa-utensils"></i>
@@ -827,8 +827,8 @@
                     <!-- Day 2 -->
                     <div class="itinerary-day" data-day="02">
                         <div class="itinerary-day-header">
-                            <div class="itinerary-day-title">Arusha to Serengeti</div>
-                            <div class="itinerary-day-route"><i class="fas fa-route"></i> Arusha → Serengeti National Park</div>
+                            <div class="itinerary-day-title">Dar es salaam to Serengeti</div>
+                            <div class="itinerary-day-route"><i class="fas fa-route"></i> Dar es salaam → Serengeti National Park</div>
                         </div>
                         <div class="itinerary-day-content">
                             <div class="itinerary-activities">
@@ -1004,7 +1004,7 @@
                     <div class="itinerary-day" data-day="05">
                         <div class="itinerary-day-header">
                             <div class="itinerary-day-title">Ngorongoro Crater & Departure</div>
-                            <div class="itinerary-day-route"><i class="fas fa-home"></i> Ngorongoro → Arusha → Airport</div>
+                            <div class="itinerary-day-route"><i class="fas fa-home"></i> Ngorongoro → Dar es salaam → Airport</div>
                         </div>
                         <div class="itinerary-day-content">
                             <div class="itinerary-activities">
@@ -1032,8 +1032,8 @@
                                 <div class="itinerary-activity">
                                     <div class="itinerary-time">2:00 PM</div>
                                     <div class="itinerary-activity-content">
-                                        <h4>Ascend & Return to Arusha</h4>
-                                        <p>Begin the drive back to Arusha with a stop at a local market for souvenir shopping if time permits.</p>
+                                        <h4>Ascend & Return to Dar es salaam</h4>
+                                        <p>Begin the drive back to Dar es salaam with a stop at a local market for souvenir shopping if time permits.</p>
                                     </div>
                                 </div>
                                 <div class="itinerary-activity">

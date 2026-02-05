@@ -951,7 +951,7 @@
         <h1 data-aos="fade-up">Start Your Journey</h1>
         <p data-aos="fade-up" data-aos-delay="100">Tell us about your dream safari and we'll make it a reality.</p>
         
-        <!-- Trust Badges on Booking Page -->
+        Trust Badges on Booking Page
         <div class="booking-trust-badges" data-aos="fade-up" data-aos-delay="200">
             <div class="booking-trust-item">
                 <i class="fas fa-shield-alt"></i>

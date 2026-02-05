@@ -12,6 +12,7 @@ use App\Models\SiteSetting;
 use App\Models\Newsletter;
 use App\Models\BroadcastHistory;
 use App\Models\TeamMember;
+use App\Models\HeroImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -514,5 +515,92 @@ class AdminController extends Controller
         
         $member->delete();
         return back()->with('success', 'Team member deleted successfully.');
+    }
+
+    // ==================== HERO IMAGES ====================
+
+    public function heroImages()
+    {
+        $images = HeroImage::ordered()->get();
+        return view('admin.hero-images', compact('images'));
+    }
+
+    public function uploadHeroImage(Request $request)
+    {
+        $request->validate([
+            'title' => 'nullable|string|max:255',
+            'subtitle' => 'nullable|string|max:255',
+            'images' => 'required|array|min:1',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:10240',
+        ]);
+
+        $path = public_path('uploads/hero');
+        if (!File::isDirectory($path)) {
+            File::makeDirectory($path, 0755, true);
+        }
+
+        $uploadedCount = 0;
+        foreach ($request->file('images') as $index => $image) {
+            $filename = 'hero_' . time() . '_' . $index . '_' . bin2hex(random_bytes(4)) . '.' . $image->getClientOriginalExtension();
+            $image->move($path, $filename);
+
+            HeroImage::create([
+                'title' => $request->title,
+                'subtitle' => $request->subtitle,
+                'image_path' => $filename,
+                'status' => 'active',
+                'sort_order' => HeroImage::max('sort_order') + 1,
+            ]);
+            $uploadedCount++;
+        }
+
+        return back()->with('success', "$uploadedCount hero image(s) uploaded successfully.");
+    }
+
+    public function updateHeroImage(Request $request, HeroImage $image)
+    {
+        $request->validate([
+            'title' => 'nullable|string|max:255',
+            'subtitle' => 'nullable|string|max:255',
+            'sort_order' => 'nullable|integer',
+        ]);
+
+        $image->update($request->only(['title', 'subtitle', 'sort_order']));
+
+        return back()->with('success', 'Hero image updated successfully.');
+    }
+
+    public function toggleHeroStatus(HeroImage $image)
+    {
+        $newStatus = $image->status === 'active' ? 'inactive' : 'active';
+        $image->update(['status' => $newStatus]);
+
+        return back()->with('success', 'Hero image status updated.');
+    }
+
+    public function deleteHeroImage(HeroImage $image)
+    {
+        $filePath = public_path('uploads/hero/' . $image->image_path);
+        if (File::exists($filePath)) {
+            File::delete($filePath);
+        }
+
+        $image->delete();
+
+        return back()->with('success', 'Hero image deleted.');
+    }
+
+    public function reorderHeroImages(Request $request)
+    {
+        $request->validate([
+            'order' => 'required|array',
+            'order.*' => 'integer|exists:hero_images,id',
+        ]);
+
+        foreach ($request->order as $index => $id) {
+            HeroImage::where('id', $id)->update(['sort_order' => $index]);
+        }
+
+        return response()->json(['success' => true]);
     }
 }

@@ -742,7 +742,7 @@
                     </div>
                     
                     <p class="guide-bio">
-                        Born in Arusha, John has been guiding safaris for 18 years. He's an expert in big cat behavior and a passionate wildlife photographer. His knowledge of the Serengeti ecosystem is unmatched.
+                        Born in Dar es salaam, John has been guiding safaris for 18 years. He's an expert in big cat behavior and a passionate wildlife photographer. His knowledge of the Serengeti ecosystem is unmatched.
                     </p>
 
                     <div class="guide-specialties">
